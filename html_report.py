@@ -284,39 +284,63 @@ def generate_bull_bear_case(
 
 
 def generate_ohlcv_json(ohlcv: list) -> str:
-    """Convert OHLCV data to JSON for Chart.js."""
+    """Convert OHLCV data to JSON for Chart.js.
+    Handles various timestamp field names and filters out bad data."""
     if not ohlcv:
         return "[]"
 
     points = []
     for candle in ohlcv:
-        ts = candle.get("timestamp", candle.get("time", ""))
-        close = candle.get("close", candle.get("price_close", 0))
-        volume = candle.get("volume", candle.get("volume_usd", 0))
-        open_p = candle.get("open", candle.get("price_open", close))
-        high = candle.get("high", candle.get("price_high", close))
-        low = candle.get("low", candle.get("price_low", close))
+        # Try multiple timestamp field names
+        ts = candle.get("interval_start", candle.get("timestamp", candle.get("time", "")))
+        close = candle.get("close", candle.get("price_close", None))
+        volume = candle.get("volume_usd", candle.get("volume", 0))
+        open_p = candle.get("open", candle.get("price_open", None))
+        high = candle.get("high", candle.get("price_high", None))
+        low = candle.get("low", candle.get("price_low", None))
+
+        # Filter: skip candles with null/zero prices
+        if close is None or close == 0:
+            continue
+        if open_p is None:
+            open_p = close
+
+        # Filter: skip future dates (garbage data)
+        if ts and str(ts) > "2027":
+            continue
+        # Filter: skip very old pre-launch data if we have enough recent data
+        # (handled after collection)
 
         # Format timestamp label
         label = ""
         if ts:
             try:
+                ts_str = str(ts)
                 if isinstance(ts, (int, float)):
                     dt = datetime.fromtimestamp(ts, tz=timezone.utc)
                 else:
-                    dt = datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
-                label = dt.strftime("%H:%M")
+                    dt = datetime.fromisoformat(ts_str.replace("Z", "+00:00"))
+                # Use "Mar 15" for daily, "Mar 15 04:00" for intraday
+                label = dt.strftime("%b %d %H:%M") if "T" in ts_str else dt.strftime("%b %d")
             except Exception:
-                label = str(ts)[:5]
+                label = str(ts)[:10]
 
         points.append({
             "label": label,
             "open": float(open_p) if open_p else 0,
-            "high": float(high) if high else 0,
-            "low": float(low) if low else 0,
-            "close": float(close) if close else 0,
+            "high": float(high) if high else float(close),
+            "low": float(low) if low else float(close),
+            "close": float(close),
             "volume": float(volume) if volume else 0,
         })
+
+    # If we have too many points, take the last 42 (roughly 7 days at 4h)
+    if len(points) > 42:
+        points = points[-42:]
+
+    # If fewer than 3 valid points, chart won't be useful
+    if len(points) < 3:
+        return "[]"
 
     return json.dumps(points)
 
@@ -438,7 +462,7 @@ def generate_holders_explainer(holders: list) -> str:
     return " ".join(parts)
 
 
-def generate_top_buyer_explainer(top_buyer_balance: list, top_buyer_addr: str) -> str:
+def generate_top_buyer_explainer(top_buyer_balance: list, top_buyer_addr: str, bought_amount: float = 0) -> str:
     """Generate explainer for top buyer deep dive."""
     if not top_buyer_balance:
         return "Could not retrieve portfolio data for the top buyer."
@@ -446,16 +470,22 @@ def generate_top_buyer_explainer(top_buyer_balance: list, top_buyer_addr: str) -
     total_value = sum(h.get("value_usd", 0) for h in top_buyer_balance)
     token_count = len(top_buyer_balance)
 
+    # Check if trader has exited
+    if bought_amount > 0 and total_value < bought_amount * 0.01:
+        return (f"This wallet bought {format_usd(bought_amount)} worth of this token but currently holds only "
+                f"{format_usd(total_value)} total across all tokens. They have fully exited their position. "
+                f"This is important context: the biggest buyer by volume was a short-term trader, not a conviction holder. "
+                f"Look at buyers #2-5 in the table above for holders who may still be in.")
+
     parts = [f"This wallet holds {token_count} tokens worth approximately {format_usd(total_value)} total."]
 
     if total_value > 1_000_000:
-        parts.append("This is a high-value wallet — likely a fund or sophisticated individual trader. Their conviction carry weight.")
+        parts.append("This is a high-value wallet — likely a fund or sophisticated individual trader. Their conviction carries weight.")
     elif total_value > 100_000:
         parts.append("Mid-sized wallet. Could be a serious retail trader or small fund.")
     else:
         parts.append("Relatively small portfolio. Their position in this token may represent a significant bet relative to their total holdings.")
 
-    # Check portfolio diversity
     if top_buyer_balance and total_value > 0:
         top_holding = max(top_buyer_balance, key=lambda x: x.get("value_usd", 0))
         top_pct = (top_holding.get("value_usd", 0) / total_value * 100) if total_value > 0 else 0
@@ -586,8 +616,7 @@ def generate_html_report(
     html = html.replace("{{SM_FLOW_NO_DATA}}",
         "" if sm_has_data else '<div class="no-data-overlay"><span>Smart money flow data not available for this token</span></div>')
 
-    html = html.replace("{{PRICE_CHART_NO_DATA}}",
-        "" if ohlcv else '<div class="no-data-overlay"><span>OHLCV price data not available</span></div>')
+    # PRICE_CHART_NO_DATA is set later, after OHLCV filtering
 
     # Flow Intelligence
     fi_data = {}
@@ -670,14 +699,21 @@ def generate_html_report(
     html = html.replace("{{KEY_QUESTIONS_ITEMS}}", q_html)
 
     # OHLCV Price Chart
-    html = html.replace("{{OHLCV_JSON}}", generate_ohlcv_json(ohlcv))
+    ohlcv_json_str = generate_ohlcv_json(ohlcv)
+    ohlcv_has_data = ohlcv_json_str != "[]"
+    html = html.replace("{{OHLCV_JSON}}", ohlcv_json_str)
+
+    # Update price chart no-data overlay based on filtered data
+    html = html.replace("{{PRICE_CHART_NO_DATA}}",
+        "" if ohlcv_has_data else '<div class="no-data-overlay"><span>OHLCV price data not available for this token</span></div>')
 
     # Explainers
     html = html.replace("{{SM_FLOW_EXPLAINER}}", generate_sm_flow_explainer(sm_entry))
     html = html.replace("{{FLOW_INTEL_EXPLAINER}}", generate_flow_intel_explainer(fi_data))
     html = html.replace("{{BUYERS_EXPLAINER}}", generate_buyers_explainer(who_bought_sold))
     html = html.replace("{{HOLDERS_EXPLAINER}}", generate_holders_explainer(holders))
-    html = html.replace("{{TOP_BUYER_EXPLAINER}}", generate_top_buyer_explainer(top_buyer_balance, top_buyer_addr or ""))
+    buyer_bought_for_explainer = who_bought_sold[0].get("bought_volume_usd", 0) if who_bought_sold else 0
+    html = html.replace("{{TOP_BUYER_EXPLAINER}}", generate_top_buyer_explainer(top_buyer_balance, top_buyer_addr or "", buyer_bought_for_explainer))
 
     # Risk indicators
     risk_html, reward_html, risk_explainer, reward_explainer = generate_risk_html(indicators)
@@ -753,14 +789,24 @@ def generate_html_report(
         sm_context = "No smart money holdings data available."
     html = html.replace("{{SM_HOLDINGS_CONTEXT}}", sm_context)
 
-    # Top buyer deep dive
+    # Top buyer deep dive — check if they still hold a meaningful position
+    buyer_total_portfolio = sum(h.get("value_usd", 0) for h in (top_buyer_balance or []))
+    buyer_bought_amount = who_bought_sold[0].get("bought_volume_usd", 0) if who_bought_sold else 0
+    buyer_exited = buyer_bought_amount > 0 and buyer_total_portfolio < buyer_bought_amount * 0.01
+
     html = html.replace("{{TOP_BUYER_ADDR}}", top_buyer_addr or "N/A")
     tb_rows = ""
-    for h in (top_buyer_balance or [])[:10]:
-        sym = h.get("token_symbol", "?")
-        amt = h.get("token_amount", 0)
-        val = h.get("value_usd", 0)
-        tb_rows += f'<tr><td>{sym}</td><td>{amt:,.4f}</td><td>{format_usd(val)}</td></tr>'
+    if buyer_exited:
+        tb_rows = f'''<tr><td colspan="3" style="text-align:center;color:var(--yellow);padding:20px;">
+            ⚠️ This trader has exited their position. They bought {format_usd(buyer_bought_amount)} but currently hold only {format_usd(buyer_total_portfolio)}.
+            This is a completed trade, not an active holder.
+        </td></tr>'''
+    else:
+        for h in (top_buyer_balance or [])[:10]:
+            sym = h.get("token_symbol", "?")
+            amt = h.get("token_amount", 0)
+            val = h.get("value_usd", 0)
+            tb_rows += f'<tr><td>{sym}</td><td>{amt:,.4f}</td><td>{format_usd(val)}</td></tr>'
     if not tb_rows:
         tb_rows = '<tr><td colspan="3" style="text-align:center;color:var(--text-dim)">Portfolio data unavailable</td></tr>'
     html = html.replace("{{TOP_BUYER_ROWS}}", tb_rows)
