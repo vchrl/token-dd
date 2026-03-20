@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Due Diligence Report: JUP | Unchain Data</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0e17;
+    --card: #111827;
+    --border: #1f2937;
+    --text: #e5e7eb;
+    --text-dim: #9ca3af;
+    --accent: #3b82f6;
+    --green: #10b981;
+    --red: #ef4444;
+    --yellow: #f59e0b;
+    --purple: #8b5cf6;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+    padding: 24px;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+  .header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .header h1 span { color: var(--accent); }
+  .header-meta {
+    text-align: right;
+    color: var(--text-dim);
+    font-size: 13px;
+  }
+  .header-meta .chain-badge {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .metrics-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .metric-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+  .metric-card .label {
+    font-size: 12px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .metric-card .value {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+  }
+  .metric-card .sub {
+    font-size: 13px;
+    margin-top: 2px;
+  }
+  .positive { color: var(--green); }
+  .negative { color: var(--red); }
+  .neutral { color: var(--yellow); }
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    margin-bottom: 24px;
+  }
+  @media (max-width: 900px) { .grid-2 { grid-template-columns: 1fr; } }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 24px;
+  }
+  .card h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card h2 .icon { font-size: 20px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  th {
+    text-align: left;
+    color: var(--text-dim);
+    font-weight: 500;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    color: var(--text);
+  }
+  tr:hover td { background: rgba(255,255,255,0.02); }
+  .verdict-box {
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  .verdict-box.bullish { border-color: var(--green); }
+  .verdict-box.bearish { border-color: var(--red); }
+  .verdict-box.neutral { border-color: var(--yellow); }
+  .verdict-label {
+    font-size: 14px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .verdict-value {
+    font-size: 28px;
+    font-weight: 700;
+  }
+  .verdict-desc {
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-top: 8px;
+  }
+  .conviction-bar {
+    width: 100%;
+    height: 12px;
+    background: #1f2937;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-top: 12px;
+  }
+  .conviction-fill {
+    height: 100%;
+    border-radius: 6px;
+    transition: width 0.5s ease;
+  }
+  .chart-container {
+    position: relative;
+    height: 250px;
+  }
+  .risk-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .risk-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 14px;
+    background: rgba(255,255,255,0.02);
+    border-radius: 8px;
+  }
+  .risk-item .ri-label { font-size: 13px; }
+  .risk-badge {
+    padding: 2px 10px;
+    border-radius: 8px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
+  .risk-badge.high { background: rgba(239,68,68,0.15); color: var(--red); }
+  .risk-badge.medium { background: rgba(245,158,11,0.15); color: var(--yellow); }
+  .risk-badge.low { background: rgba(16,185,129,0.15); color: var(--green); }
+  .risk-badge.bullish { background: rgba(16,185,129,0.15); color: var(--green); }
+  .risk-badge.bearish { background: rgba(239,68,68,0.15); color: var(--red); }
+  .risk-badge.neutral2 { background: rgba(245,158,11,0.15); color: var(--yellow); }
+  .footer {
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 12px;
+    padding: 32px 0 16px;
+    border-top: 1px solid var(--border);
+  }
+  .footer a { color: var(--accent); text-decoration: none; }
+  .tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 500;
+  }
+  .tag-chain { background: rgba(59,130,246,0.15); color: var(--accent); }
+  .addr { font-family: 'SF Mono', 'Fira Code', monospace; font-size: 12px; color: var(--text-dim); }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div>
+    <h1>Due Diligence: <span>JUP</span></h1>
+    <div style="color:var(--text-dim);font-size:14px;margin-top:4px;">
+      <code class="addr">JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN</code>
+    </div>
+  </div>
+  <div class="header-meta">
+    <div><span class="chain-badge">Solana</span></div>
+    <div>2026-03-20 19:57 UTC</div>
+    <div>14 API calls via x402</div>
+    <div>Cost: ~$0.42</div>
+  </div>
+</div>
+
+<!-- Key Metrics -->
+<div class="metrics-row">
+  <div class="metric-card">
+    <div class="label">Market Cap</div>
+    <div class="value">$1.20B</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Price</div>
+    <div class="value">$0.442000</div>
+    <div class="sub negative">-3.20%</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">24h Volume</div>
+    <div class="value">$45.60M</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Liquidity</div>
+    <div class="value">$12.40M</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Token Age</div>
+    <div class="value">420 days</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">SM Conviction</div>
+    <div class="value negative">0/100</div>
+    <div class="conviction-bar"><div class="conviction-fill" style="width:0%;background:#ef4444"></div></div>
+  </div>
+</div>
+
+<!-- Verdict -->
+<div class="verdict-box bearish">
+  <div class="verdict-label">Verdict</div>
+  <div class="verdict-value negative">BEARISH</div>
+  <div class="verdict-desc">No clear SM accumulation signal</div>
+</div>
+
+<!-- Charts Row -->
+<div class="grid-2">
+  <!-- SM Flow Chart -->
+  <div class="card">
+    <h2><span class="icon">📊</span> Smart Money Net Flows</h2>
+    <div class="chart-container">
+      <canvas id="smFlowChart"></canvas>
+    </div>
+  </div>
+  <!-- Flow Intelligence -->
+  <div class="card">
+    <h2><span class="icon">🏷️</span> Flow Intelligence by Label</h2>
+    <div class="chart-container">
+      <canvas id="flowIntelChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<!-- Risk Assessment -->
+<div class="grid-2">
+  <div class="card">
+    <h2><span class="icon">⚠️</span> Risk Indicators</h2>
+    <div class="risk-grid">
+      <div class="risk-item">
+                    <span class="ri-label">Btc Reflexivity</span>
+                    <span class="risk-badge medium">MEDIUM</span>
+                </div><div class="risk-item">
+                    <span class="ri-label">Cex Flows</span>
+                    <span class="risk-badge high">HIGH</span>
+                </div><div class="risk-item">
+                    <span class="ri-label">Liquidity Risk</span>
+                    <span class="risk-badge low">LOW</span>
+                </div><div class="risk-item">
+                    <span class="ri-label">Token Supply Inflation</span>
+                    <span class="risk-badge low">LOW</span>
+                </div>
+    </div>
+  </div>
+  <div class="card">
+    <h2><span class="icon">💰</span> Reward Indicators</h2>
+    <div class="risk-grid">
+      <div class="risk-item">
+                    <span class="ri-label">Concentration Risk</span>
+                    <span class="risk-badge neutral2">Medium</span>
+                </div><div class="risk-item">
+                    <span class="ri-label">Funding Rate</span>
+                    <span class="risk-badge bullish">Bullish</span>
+                </div><div class="risk-item">
+                    <span class="ri-label">Price Momentum</span>
+                    <span class="risk-badge bearish">Bearish</span>
+                </div><div class="risk-item">
+                    <span class="ri-label">Trading Range</span>
+                    <span class="risk-badge neutral2">Neutral</span>
+                </div>
+    </div>
+  </div>
+</div>
+
+<!-- Top Buyers & Sellers -->
+<div class="card">
+  <h2><span class="icon">🐋</span> Top Buyers & Sellers (7d)</h2>
+  <table>
+    <thead>
+      <tr><th>Address</th><th>Label</th><th>Bought</th><th>Sold</th><th>Net</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+            <td class="addr">E2itUS...dqsv</td>
+            <td>High Balance</td>
+            <td>$170.2K</td>
+            <td>$0.00</td>
+            <td class="positive">$170.2K</td>
+        </tr><tr>
+            <td class="addr">9EEjTL...1z2G</td>
+            <td>vfxpro88.sol</td>
+            <td>$114.3K</td>
+            <td>$0.00</td>
+            <td class="positive">$114.3K</td>
+        </tr><tr>
+            <td class="addr">EeT7og...kxJf</td>
+            <td>goldzebra.sol</td>
+            <td>$45.5K</td>
+            <td>$0.00</td>
+            <td class="positive">$45.5K</td>
+        </tr><tr>
+            <td class="addr">GJvewf...T4YA</td>
+            <td>Trading Bot</td>
+            <td>$226.8K</td>
+            <td>$184.1K</td>
+            <td class="positive">$42.7K</td>
+        </tr><tr>
+            <td class="addr">FwcSBp...6gSP</td>
+            <td>JTO Airdrop Recipient</td>
+            <td>$29.5K</td>
+            <td>$0.00</td>
+            <td class="positive">$29.5K</td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Holders + SM Context -->
+<div class="grid-2">
+  <div class="card">
+    <h2><span class="icon">👥</span> Top Holders</h2>
+    <table>
+      <thead><tr><th>#</th><th>Address</th><th>Holdings</th></tr></thead>
+      <tbody><tr>
+            <td>1</td>
+            <td class="addr">EXJHiM...Hm6T</td>
+            <td>1,700,000,000</td>
+        </tr><tr>
+            <td>2</td>
+            <td class="addr">61aq58...xHXV</td>
+            <td>1,682,700,001</td>
+        </tr><tr>
+            <td>3</td>
+            <td class="addr">Any5gL...T7iz</td>
+            <td>349,350,312</td>
+        </tr><tr>
+            <td>4</td>
+            <td class="addr">FVhQ3Q...fekf</td>
+            <td>321,492,923</td>
+        </tr><tr>
+            <td>5</td>
+            <td class="addr">9WzDXw...AWWM</td>
+            <td>164,970,200</td>
+        </tr></tbody>
+    </table>
+  </div>
+  <div class="card">
+    <h2><span class="icon">🧠</span> SM Holdings (Solana)</h2>
+    <table>
+      <thead><tr><th>Token</th><th>SM Value</th></tr></thead>
+      <tbody><tr><td>JUP</td><td>$2.89M</td></tr><tr><td>RENDER</td><td>$4.33M</td></tr><tr><td>META</td><td>$3.48M</td></tr><tr><td>PUMP</td><td>$1.82M</td></tr><tr><td>PENGU</td><td>$869.8K</td></tr><tr><td>PUNCH</td><td>$315.9K</td></tr><tr><td>WOJAK</td><td>$185.7K</td></tr></tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Top Buyer Deep Dive -->
+<div class="card">
+  <h2><span class="icon">🔍</span> Top Buyer Portfolio</h2>
+  <p style="color:var(--text-dim);font-size:13px;margin-bottom:12px;">Wallet: <code class="addr">E2itUS5j8oXmLkXk52FfZMghE3dqsv</code></p>
+  <table>
+    <thead><tr><th>Token</th><th>Amount</th><th>Value (USD)</th></tr></thead>
+    <tbody><tr><td>SOL</td><td>2,052.9300</td><td>$181.7K</td></tr><tr><td>PENGU</td><td>735,223.5000</td><td>$5.2K</td></tr><tr><td>$WIF</td><td>3,871.5900</td><td>$682.54</td></tr><tr><td>FARTCOIN</td><td>472.6900</td><td>$90.21</td></tr><tr><td>HOUSE</td><td>28,189.4400</td><td>$40.06</td></tr></tbody>
+  </table>
+</div>
+
+<!-- Footer -->
+<div class="footer">
+  <p>Generated with <strong>14 Nansen API calls</strong> via CLI + x402 micropayments</p>
+  <p>Built by <a href="https://unchaindata.xyz">Unchain Data</a> | <a href="https://twitter.com/0x_vcharles">@0x_vcharles</a> | #NansenCLI</p>
+  <p style="margin-top:8px;">Not financial advice. DYOR.</p>
+</div>
+
+<script>
+// SM Flow Chart
+const smCtx = document.getElementById('smFlowChart').getContext('2d');
+new Chart(smCtx, {
+  type: 'bar',
+  data: {
+    labels: ['1H', '24H', '7D', '30D'],
+    datasets: [{
+      label: 'Net Flow (USD)',
+      data: [0, 0, 0, 0],
+      backgroundColor: [0, 0, 0, 0].map(v => v >= 0 ? 'rgba(16,185,129,0.7)' : 'rgba(239,68,68,0.7)'),
+      borderColor: [0, 0, 0, 0].map(v => v >= 0 ? '#10b981' : '#ef4444'),
+      borderWidth: 1,
+      borderRadius: 6,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => {
+            const v = ctx.raw;
+            const sign = v >= 0 ? '+' : '';
+            if (Math.abs(v) >= 1e6) return sign + '$' + (v/1e6).toFixed(2) + 'M';
+            if (Math.abs(v) >= 1e3) return sign + '$' + (v/1e3).toFixed(1) + 'K';
+            return sign + '$' + v.toFixed(2);
+          }
+        }
+      }
+    },
+    scales: {
+      y: {
+        grid: { color: 'rgba(255,255,255,0.05)' },
+        ticks: { color: '#9ca3af', callback: v => {
+          if (Math.abs(v) >= 1e6) return '$' + (v/1e6).toFixed(1) + 'M';
+          if (Math.abs(v) >= 1e3) return '$' + (v/1e3).toFixed(0) + 'K';
+          return '$' + v;
+        }}
+      },
+      x: { grid: { display: false }, ticks: { color: '#9ca3af' } }
+    }
+  }
+});
+
+// Flow Intelligence Donut
+const fiCtx = document.getElementById('flowIntelChart').getContext('2d');
+new Chart(fiCtx, {
+  type: 'doughnut',
+  data: {
+    labels: ['Whales', 'Smart Traders', 'Exchanges', 'Fresh Wallets', 'Top PnL', 'Public Figures'],
+    datasets: [{
+      data: [-76400, 0, 60900, 417500, 468.96, 0].map(Math.abs),
+      backgroundColor: ['#3b82f6', '#8b5cf6', '#f59e0b', '#10b981', '#ec4899', '#6366f1'],
+      borderWidth: 0,
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    cutout: '65%',
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: { color: '#9ca3af', padding: 12, font: { size: 11 } }
+      },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => {
+            const v = ctx.raw;
+            const orig = [-76400, 0, 60900, 417500, 468.96, 0][ctx.dataIndex];
+            const sign = orig >= 0 ? '+' : '-';
+            if (v >= 1e6) return ctx.label + ': ' + sign + '$' + (v/1e6).toFixed(2) + 'M';
+            if (v >= 1e3) return ctx.label + ': ' + sign + '$' + (v/1e3).toFixed(1) + 'K';
+            return ctx.label + ': ' + sign + '$' + v.toFixed(2);
+          }
+        }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>

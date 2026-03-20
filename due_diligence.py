@@ -38,15 +38,17 @@ SUPPORTED_CHAINS = [
 
 REPORTS_DIR = Path(__file__).parent / "reports"
 API_CALL_COUNT = 0
+API_CALL_LOG = []
 
 
 # ─── Nansen CLI Wrapper ─────────────────────────────────────────────
 def nansen_call(command: list[str], description: str = "") -> dict | None:
     """Execute a Nansen CLI command and return parsed JSON."""
-    global API_CALL_COUNT
+    global API_CALL_COUNT, API_CALL_LOG
     
     full_cmd = ["nansen"] + command
     desc = description or " ".join(command[:3])
+    cmd_str = " ".join(full_cmd)
     
     try:
         result = subprocess.run(
@@ -63,6 +65,7 @@ def nansen_call(command: list[str], description: str = "") -> dict | None:
         except json.JSONDecodeError:
             if result.returncode != 0:
                 print(f"  [{desc}] Error: {output[:100]}")
+            API_CALL_LOG.append({"command": cmd_str, "status": "Parse Error"})
             return None
         
         if not data.get("success", False):
@@ -71,23 +74,30 @@ def nansen_call(command: list[str], description: str = "") -> dict | None:
             err_msg = data.get("error", "Unknown")
             if code == "CREDITS_EXHAUSTED":
                 print(f"  [{desc}] Skipped (needs credits/x402)")
+                API_CALL_LOG.append({"command": cmd_str, "status": "x402 Payment"})
             elif status == 429 or code == "RATE_LIMITED":
                 print(f"  [{desc}] Rate limited, skipping")
+                API_CALL_LOG.append({"command": cmd_str, "status": "Rate Limited"})
             elif "No API key" in str(err_msg) or "UNAUTHORIZED" in str(code):
                 print(f"  [{desc}] Skipped (auth issue, x402 may not support this endpoint)")
+                API_CALL_LOG.append({"command": cmd_str, "status": "Auth Error"})
             else:
                 print(f"  [{desc}] Error: {err_msg}")
+                API_CALL_LOG.append({"command": cmd_str, "status": f"Error: {err_msg}"})
             return None
         
         API_CALL_COUNT += 1
         print(f"  [{desc}] OK (call #{API_CALL_COUNT})")
+        API_CALL_LOG.append({"command": cmd_str, "status": "OK"})
         return data.get("data", {})
             
     except subprocess.TimeoutExpired:
         print(f"  [{desc}] Timeout")
+        API_CALL_LOG.append({"command": cmd_str, "status": "Timeout"})
         return None
     except Exception as e:
         print(f"  [{desc}] Exception: {e}")
+        API_CALL_LOG.append({"command": cmd_str, "status": f"Exception: {e}"})
         return None
 
 
@@ -721,11 +731,12 @@ def generate_report(
 # ─── Main Pipeline ───────────────────────────────────────────────────
 def run_due_diligence(token: str, chain: str):
     """Run the full due diligence pipeline for a token."""
-    global API_CALL_COUNT
+    global API_CALL_COUNT, API_CALL_LOG
     API_CALL_COUNT = 0
+    API_CALL_LOG = []
     
     print(f"\n{'='*60}")
-    print(f"PROTOCOL DUE DILIGENCE ENGINE")
+    print(f"PROTOCOL DUE DILIGENCE ENGINE v2")
     print(f"Token: {token}")
     print(f"Chain: {chain}")
     print(f"{'='*60}")
@@ -755,19 +766,62 @@ def run_due_diligence(token: str, chain: str):
     
     # 4. Top buyer deep dive
     print("\nPhase 4: Wallet Forensics")
+    top_buyer_addr = ""
     top_buyer_balance = []
     top_buyer_cp = []
     if who_bs:
-        top_addr = who_bs[0].get("address", "")
-        if top_addr:
-            top_buyer_balance = collect_profiler_balance(top_addr, chain)
-            top_buyer_cp = collect_profiler_counterparties(top_addr, chain)
+        top_buyer_addr = who_bs[0].get("address", "")
+        if top_buyer_addr:
+            top_buyer_balance = collect_profiler_balance(top_buyer_addr, chain)
+            top_buyer_cp = collect_profiler_counterparties(top_buyer_addr, chain)
     
-    # Generate report
+    # Resolve symbol
+    symbol = "UNKNOWN"
+    for entry in screener:
+        if entry.get("token_address", "").lower() == token.lower():
+            symbol = entry.get("token_symbol", "UNKNOWN")
+            break
+    for entry in sm_netflow:
+        if entry.get("token_address", "").lower() == token.lower():
+            symbol = entry.get("token_symbol", symbol)
+            break
+    if symbol == "UNKNOWN" and token_info:
+        info_data = token_info.get("data", token_info)
+        if isinstance(info_data, list) and info_data:
+            symbol = info_data[0].get("token_symbol", symbol)
+        elif isinstance(info_data, dict):
+            symbol = info_data.get("token_symbol", symbol)
+    if symbol == "UNKNOWN" and who_bs:
+        for entry in who_bs:
+            if entry.get("token_symbol"):
+                symbol = entry["token_symbol"]
+                break
+    if symbol == "UNKNOWN" and indicators:
+        ind_data = indicators.get("data", indicators)
+        if isinstance(ind_data, dict):
+            ti = ind_data.get("token_info", {})
+            if ti.get("token_symbol"):
+                symbol = ti["token_symbol"]
+
+    # Find token in screener/SM data
+    screener_entry = None
+    for entry in screener:
+        if entry.get("token_address", "").lower() == token.lower():
+            screener_entry = entry
+            break
+
+    sm_entry = None
+    for entry in sm_netflow:
+        if entry.get("token_address", "").lower() == token.lower():
+            sm_entry = entry
+            break
+
+    # Generate reports
     print(f"\n{'='*60}")
-    print(f"Generating report... ({API_CALL_COUNT} API calls made)")
+    print(f"Generating reports... ({API_CALL_COUNT} API calls made)")
     print(f"{'='*60}\n")
     
+    # Markdown report (keep for compatibility)
     report = generate_report(
         token=token,
         chain=chain,
@@ -788,31 +842,47 @@ def run_due_diligence(token: str, chain: str):
         top_buyer_counterparties=top_buyer_cp,
     )
     
-    # Save report
+    # HTML report (v2 — the good one)
+    from html_report import generate_html_report
+    html_report = generate_html_report(
+        symbol=symbol,
+        token=token,
+        chain=chain,
+        api_calls=API_CALL_COUNT,
+        api_log=API_CALL_LOG,
+        screener_entry=screener_entry,
+        sm_entry=sm_entry,
+        flow_intel=flow_intel,
+        who_bought_sold=who_bs,
+        indicators=indicators,
+        holders=holders,
+        ohlcv=ohlcv,
+        sm_holdings=sm_holdings,
+        top_buyer_addr=top_buyer_addr,
+        top_buyer_balance=top_buyer_balance,
+    )
+    
+    # Save reports
     REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    symbol = "UNKNOWN"
-    for entry in screener:
-        if entry.get("token_address", "").lower() == token.lower():
-            symbol = entry.get("token_symbol", "UNKNOWN")
-            break
-    for entry in sm_netflow:
-        if entry.get("token_address", "").lower() == token.lower():
-            symbol = entry.get("token_symbol", symbol)
-            break
     
-    filename = f"{symbol}_{chain}_{timestamp}.md"
-    filepath = REPORTS_DIR / filename
-    filepath.write_text(report)
+    md_filename = f"{symbol}_{chain}_{timestamp}.md"
+    md_filepath = REPORTS_DIR / md_filename
+    md_filepath.write_text(report)
+    
+    html_filename = f"{symbol}_{chain}_{timestamp}.html"
+    html_filepath = REPORTS_DIR / html_filename
+    html_filepath.write_text(html_report)
     
     print(report)
     print(f"\n{'='*60}")
-    print(f"Report saved to: {filepath}")
+    print(f"Markdown: {md_filepath}")
+    print(f"HTML:     {html_filepath}")
     print(f"Total API calls: {API_CALL_COUNT}")
     print(f"Estimated cost (x402): ~${API_CALL_COUNT * 0.03:.2f}")
     print(f"{'='*60}")
     
-    return report, filepath
+    return report, html_filepath
 
 
 def run_scan_mode(chain: str, top_n: int = 5, chains: list[str] = None):
