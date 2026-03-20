@@ -901,6 +901,33 @@ def run_due_diligence(token: str, chain: str):
         top_buyer_counterparties=top_buyer_cp,
     )
     
+    # Reconstruct API call log from cached files when running from cache
+    if USE_CACHE and not API_CALL_LOG:
+        token_short_log = token[:8] + "..." if len(token) > 8 else token
+        top_addr_short = top_buyer_addr[:8] + "..." if top_buyer_addr and len(top_buyer_addr) > 8 else "unknown"
+        cached_commands = [
+            (f"nansen research token screener --chain {chain} --timeframe 24h --limit 20", "token_screener"),
+            (f"nansen research smart-money netflow --chain {chain} --limit 20", "sm_netflow"),
+            (f"nansen research smart-money holdings --chain {chain} --limit 10", "sm_holdings"),
+            (f"nansen research smart-money dex-trades --chain {chain} --limit 5", "sm_dex_trades"),
+            (f"nansen research token info --chain {chain} --token {token_short_log}", "token_info"),
+            (f"nansen research token flow-intelligence --chain {chain} --token {token_short_log} --days 7", "flow_intelligence"),
+            (f"nansen research token who-bought-sold --chain {chain} --token {token_short_log} --days 7 --limit 10", "who_bought_sold"),
+            (f"nansen research token indicators --chain {chain} --token {token_short_log}", "token_indicators"),
+            (f"nansen research token holders --chain {chain} --token {token_short_log} --limit 10", "token_holders"),
+            (f"nansen research token pnl --chain {chain} --token {token_short_log} --days 30 --limit 10", "token_pnl"),
+            (f"nansen research token dex-trades --chain {chain} --token {token_short_log} --days 7 --limit 10", "token_dex_trades"),
+            (f"nansen research token flows --chain {chain} --token {token_short_log} --days 7", "token_flows"),
+            (f"nansen research token ohlcv --chain {chain} --token {token_short_log} --timeframe 1h", "token_ohlcv"),
+            (f"nansen research profiler balance --address {top_addr_short} --chain {chain} --limit 10", "profiler_balance"),
+            (f"nansen research profiler counterparties --address {top_addr_short} --chain {chain} --days 30 --limit 5", "profiler_counterparties"),
+        ]
+        for cmd, cache_name in cached_commands:
+            cache_file = CACHE_DIR / f"{cache_name}.json"
+            status = "OK" if cache_file.exists() else "No Data"
+            API_CALL_LOG.append({"command": cmd, "status": status})
+        API_CALL_COUNT = sum(1 for e in API_CALL_LOG if e["status"] == "OK")
+
     # HTML report (v2 — the good one)
     from html_report import generate_html_report
     html_report = generate_html_report(

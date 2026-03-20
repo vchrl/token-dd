@@ -768,6 +768,7 @@ def generate_html_report(
     sm_total = sum(h.get("total_value_usd", h.get("value_usd", 0)) for h in (sm_holdings or []))
     sm_rows = ""
     token_rank = None
+    token_pct = 0
     for idx, h in enumerate((sm_holdings or [])[:10], 1):
         sym = h.get("token_symbol", "?")
         val = h.get("total_value_usd", h.get("value_usd", 0))
@@ -776,13 +777,14 @@ def generate_html_report(
         sm_rows += f'<tr><td{highlight}>{sym}</td><td>{format_usd(val)}</td><td>{pct:.1f}%</td></tr>'
         if sym == symbol:
             token_rank = idx
+            token_pct = pct
     if not sm_rows:
         sm_rows = '<tr><td colspan="3" style="text-align:center;color:var(--text-dim)">No data available</td></tr>'
     html = html.replace("{{SM_HOLDINGS_ROWS}}", sm_rows)
 
     # SM Holdings context line
     if token_rank:
-        sm_context = f"{symbol} ranks #{token_rank} out of {len(sm_holdings)} tracked smart money holdings on {chain.capitalize()}, representing {((sm_holdings[token_rank-1].get('total_value_usd', 0) / sm_total * 100) if sm_total else 0):.1f}% of tracked smart money portfolio value."
+        sm_context = f"{symbol} ranks #{token_rank} out of {len(sm_holdings)} tracked smart money holdings on {chain.capitalize()}, representing {token_pct:.1f}% of tracked smart money portfolio value."
     elif sm_holdings:
         sm_context = f"{symbol} does not appear in the top {len(sm_holdings)} smart money holdings on {chain.capitalize()}. This may indicate limited institutional interest."
     else:
