@@ -341,7 +341,7 @@
   <div class="card">
     <h2><span class="icon">👥</span> Top Holders</h2>
     <table>
-      <thead><tr><th>#</th><th>Address</th><th>Label</th><th>Holdings</th></tr></thead>
+      <thead><tr><th>#</th><th>Address</th><th>Label</th><th>Holdings</th><th>Value (USD)</th></tr></thead>
       <tbody>{{HOLDERS_ROWS}}</tbody>
     </table>
     <div class="explainer">
@@ -351,8 +351,9 @@
   </div>
   <div class="card">
     <h2><span class="icon">🧠</span> What Else Smart Money Holds on {{CHAIN}}</h2>
+    <p style="color:var(--text-dim);font-size:12px;margin-bottom:12px;">{{SM_HOLDINGS_CONTEXT}}</p>
     <table>
-      <thead><tr><th>Token</th><th>Smart Money Value</th></tr></thead>
+      <thead><tr><th>Token</th><th>Smart Money Value</th><th>% of Portfolio</th></tr></thead>
       <tbody>{{SM_HOLDINGS_ROWS}}</tbody>
     </table>
     <div class="explainer">

@@ -511,7 +511,18 @@ def generate_html_report(
         age = screener_entry.get("token_age_days", 0)
 
         html = html.replace("{{MARKET_CAP}}", format_usd(mcap))
-        html = html.replace("{{PRICE}}", f"${price:,.6f}" if price and price < 1 else f"${price:,.2f}" if price else "N/A")
+        # Fix 2: Smart price formatting — no unnecessary decimals
+        if not price:
+            price_str = "N/A"
+        elif price < 0.001:
+            price_str = f"${price:.6f}"
+        elif price < 0.01:
+            price_str = f"${price:.4f}"
+        elif price < 1:
+            price_str = f"${price:.2f}"
+        else:
+            price_str = f"${price:,.2f}"
+        html = html.replace("{{PRICE}}", price_str)
         pc_str = f"{'+' if pc and pc > 0 else ''}{pc*100:.2f}%" if pc else "N/A"
         html = html.replace("{{PRICE_CHANGE}}", pc_str)
         html = html.replace("{{PRICE_CHANGE_CLASS}}", "positive" if pc and pc > 0 else "negative" if pc else "neutral")
@@ -525,17 +536,34 @@ def generate_html_report(
         html = html.replace("{{PRICE_CHANGE_CLASS}}", "neutral")
         html = html.replace("{{TOKEN_AGE}}", "N/A")
 
-    # SM Conviction
+    # SM Conviction — Fix 3: fall back to flow intelligence if no SM netflow match
     conviction = 0
+    conviction_note = ""
     sm_1h = sm_entry.get("net_flow_1h_usd", 0) if sm_entry else 0
     sm_24h = sm_entry.get("net_flow_24h_usd", 0) if sm_entry else 0
     sm_7d = sm_entry.get("net_flow_7d_usd", 0) if sm_entry else 0
     sm_30d = sm_entry.get("net_flow_30d_usd", 0) if sm_entry else 0
 
-    if sm_1h > 0: conviction += 15
-    if sm_24h > 0: conviction += 25
-    if sm_7d > 0: conviction += 35
-    if sm_30d > 0: conviction += 25
+    if sm_entry:
+        if sm_1h > 0: conviction += 15
+        if sm_24h > 0: conviction += 25
+        if sm_7d > 0: conviction += 35
+        if sm_30d > 0: conviction += 25
+    else:
+        # Fallback: derive partial conviction from flow intelligence
+        fi_check = flow_intel[0] if isinstance(flow_intel, list) and flow_intel else flow_intel
+        if isinstance(fi_check, dict):
+            whale = fi_check.get("whale_net_flow_usd", 0)
+            smart = fi_check.get("smart_trader_net_flow_usd", 0)
+            exchange = fi_check.get("exchange_net_flow_usd", 0)
+            fresh = fi_check.get("fresh_wallets_net_flow_usd", 0)
+            if whale > 0: conviction += 20
+            if smart > 0: conviction += 25
+            if exchange < 0: conviction += 15  # outflow from exchanges = bullish
+            if fresh > 0 and whale > 0: conviction += 10  # broad interest
+            conviction = min(conviction, 70)  # cap at 70 — can't be "high" without direct SM data
+            if conviction > 0:
+                conviction_note = " (from flow intelligence — no direct smart money tracking)"
 
     html = html.replace("{{CONVICTION_SCORE}}", str(conviction))
     if conviction >= 75:
@@ -655,32 +683,52 @@ def generate_html_report(
         bs_rows = '<tr><td colspan="5" style="text-align:center;color:var(--text-dim)">No buyer/seller data available for this period</td></tr>'
     html = html.replace("{{BUYERS_SELLERS_ROWS}}", bs_rows)
 
-    # Holders table — with clickable addresses and labels
+    # Holders table — Fix 1: clickable full addresses, Fix 4: unlabeled fallback, Fix 6: USD value
+    token_price = screener_entry.get("price_usd", 0) if screener_entry else 0
     h_rows = ""
     for i, h in enumerate((holders or [])[:10], 1):
         addr = h.get("address", "")
         label = h.get("label", h.get("address_label", ""))
         amount = h.get("token_amount", 0)
-        label_badge = f' <span style="color:var(--accent);font-size:11px;">({label})</span>' if label else ""
+        # Fix 4: show "Unlabeled" in dim text instead of empty
+        label_display = label if label else '<span style="color:var(--text-dim)">Unlabeled</span>'
+        # Fix 6: calculate USD value from holdings × price
+        usd_value = format_usd(amount * token_price) if token_price and amount else "—"
         h_rows += f'''<tr>
             <td>{i}</td>
-            <td>{addr_link(chain, addr)}{label_badge}</td>
-            <td>{label}</td>
+            <td>{addr_link(chain, addr)}</td>
+            <td>{label_display}</td>
             <td>{amount:,.0f}</td>
+            <td>{usd_value}</td>
         </tr>'''
     if not h_rows:
-        h_rows = '<tr><td colspan="4" style="text-align:center;color:var(--text-dim)">No holder data available</td></tr>'
+        h_rows = '<tr><td colspan="5" style="text-align:center;color:var(--text-dim)">No holder data available</td></tr>'
     html = html.replace("{{HOLDERS_ROWS}}", h_rows)
 
-    # SM Holdings table
+    # SM Holdings table — Fix 5: add % of portfolio + context line
+    sm_total = sum(h.get("total_value_usd", h.get("value_usd", 0)) for h in (sm_holdings or []))
     sm_rows = ""
-    for h in (sm_holdings or [])[:10]:
+    token_rank = None
+    for idx, h in enumerate((sm_holdings or [])[:10], 1):
         sym = h.get("token_symbol", "?")
         val = h.get("total_value_usd", h.get("value_usd", 0))
-        sm_rows += f'<tr><td>{sym}</td><td>{format_usd(val)}</td></tr>'
+        pct = (val / sm_total * 100) if sm_total > 0 else 0
+        highlight = ' style="color:#fff;font-weight:600"' if sym == symbol else ""
+        sm_rows += f'<tr><td{highlight}>{sym}</td><td>{format_usd(val)}</td><td>{pct:.1f}%</td></tr>'
+        if sym == symbol:
+            token_rank = idx
     if not sm_rows:
-        sm_rows = '<tr><td colspan="2" style="text-align:center;color:var(--text-dim)">No data available</td></tr>'
+        sm_rows = '<tr><td colspan="3" style="text-align:center;color:var(--text-dim)">No data available</td></tr>'
     html = html.replace("{{SM_HOLDINGS_ROWS}}", sm_rows)
+
+    # SM Holdings context line
+    if token_rank:
+        sm_context = f"{symbol} ranks #{token_rank} out of {len(sm_holdings)} tracked smart money holdings on {chain.capitalize()}, representing {((sm_holdings[token_rank-1].get('total_value_usd', 0) / sm_total * 100) if sm_total else 0):.1f}% of tracked smart money portfolio value."
+    elif sm_holdings:
+        sm_context = f"{symbol} does not appear in the top {len(sm_holdings)} smart money holdings on {chain.capitalize()}. This may indicate limited institutional interest."
+    else:
+        sm_context = "No smart money holdings data available."
+    html = html.replace("{{SM_HOLDINGS_CONTEXT}}", sm_context)
 
     # Top buyer deep dive
     html = html.replace("{{TOP_BUYER_ADDR}}", top_buyer_addr or "N/A")

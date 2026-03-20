@@ -1,6 +1,7 @@
 """
 Test HTML report generation using cached/mock JUP data.
 NO API CALLS — uses hardcoded data from the v1 run.
+Uses FULL-LENGTH addresses (44 chars for Solana) so Solscan links work.
 """
 from html_report import generate_html_report
 from pathlib import Path
@@ -38,12 +39,13 @@ flow_intel = [{
     "fresh_wallets_wallet_count": 15,
 }]
 
+# Full-length Solana addresses (44 chars) — Fix 1
 who_bought_sold = [
-    {"address": "E2itUS7P9bX5KkRqAm3CwJFdqsv", "address_label": "High Balance", "bought_volume_usd": 170200, "sold_volume_usd": 0, "trade_volume_usd": 170200},
-    {"address": "9EEjTLk8xQz4vF1z2G", "address_label": "vfxpro88.sol", "bought_volume_usd": 114300, "sold_volume_usd": 0, "trade_volume_usd": 114300},
-    {"address": "EeT7ogR5pQ1nkxJf", "address_label": "goldzebra.sol", "bought_volume_usd": 45500, "sold_volume_usd": 0, "trade_volume_usd": 45500},
-    {"address": "GJvewfT9mQr4T4YA", "address_label": "Trading Bot", "bought_volume_usd": 226800, "sold_volume_usd": 184100, "trade_volume_usd": 42700},
-    {"address": "FwcSBpL8qN6gSP", "address_label": "JTO Airdrop Recipient", "bought_volume_usd": 29500, "sold_volume_usd": 0, "trade_volume_usd": 29500},
+    {"address": "E2itUS7P9bX5KkRqAm3CwJFn8v4pQx2LmYTzdqsvR1AB", "address_label": "High Balance", "bought_volume_usd": 170200, "sold_volume_usd": 0, "trade_volume_usd": 170200},
+    {"address": "9EEjTLk8xQz4vF7nMpRWs3KhYcDuBjN6Xt9fGw1z2GAB", "address_label": "vfxpro88.sol", "bought_volume_usd": 114300, "sold_volume_usd": 0, "trade_volume_usd": 114300},
+    {"address": "EeT7ogR5pQ1nH4Km8Ys2vWxBfDc6Lr3JtZq9AukxJfAB", "address_label": "goldzebra.sol", "bought_volume_usd": 45500, "sold_volume_usd": 0, "trade_volume_usd": 45500},
+    {"address": "GJvewfT9mQr2Xn5Kp8Lc3YdBhVs6Wt1Jz4FoRaN4T4YA", "address_label": "Trading Bot", "bought_volume_usd": 226800, "sold_volume_usd": 184100, "trade_volume_usd": 42700},
+    {"address": "FwcSBpL8qN3Rv6Km2Yt7Xd5Hj9Wg1Zs4Bn8FoTc6gSPAB", "address_label": "JTO Airdrop Recipient", "bought_volume_usd": 29500, "sold_volume_usd": 0, "trade_volume_usd": 29500},
 ]
 
 indicators = {
@@ -68,12 +70,13 @@ indicators = {
     }
 }
 
+# Full-length addresses for holders — Fix 1
 holders = [
-    {"address": "EXJHiMGFnp4K8qHm6T", "token_amount": 1_700_000_000, "label": "Team Treasury"},
-    {"address": "61aq58Rn7pVxHXV", "token_amount": 1_682_700_001, "label": "Staking Contract"},
-    {"address": "Any5gLp9qRvT7iz", "token_amount": 349_350_312, "label": ""},
-    {"address": "FVhQ3QmLk4pfekf", "token_amount": 321_492_923, "label": "Fund"},
-    {"address": "9WzDXwR4n3AWWM", "token_amount": 164_970_200, "label": ""},
+    {"address": "EXJHiMGFnp4K8qZ2Rv7Xd5Hj9Wg1Bs3Lm6Yt8NcHm6TAB", "token_amount": 1_700_000_000, "label": "Team Treasury"},
+    {"address": "61aq58Rn7pVx3Km9Ys2Wt5Bd8Hj1Fv4Lz6Xc0GqxHXVAB", "token_amount": 1_682_700_001, "label": "Staking Contract"},
+    {"address": "Any5gLp9qRv2Xn7Km3Ys8Bd1Wt4Hj6Fz0LcVsNaT7izAB", "token_amount": 349_350_312, "label": ""},
+    {"address": "FVhQ3QmLk4p8Rv2Xn5Km7Ys9Bd1Wt3Hj6Fz0LcNafekfAB", "token_amount": 321_492_923, "label": "Fund"},
+    {"address": "9WzDXwR4n3Km7Ys2Xd5Bd8Hj1Wt9Fv4Lz6Qc0GpAWWMAB", "token_amount": 164_970_200, "label": ""},
 ]
 
 # Mock OHLCV data (24 hourly candles)
@@ -105,16 +108,16 @@ ohlcv = [
 ]
 
 sm_holdings = [
-    {"token_symbol": "JUP", "total_value_usd": 2_890_000},
     {"token_symbol": "RENDER", "total_value_usd": 4_330_000},
     {"token_symbol": "META", "total_value_usd": 3_480_000},
+    {"token_symbol": "JUP", "total_value_usd": 2_890_000},
     {"token_symbol": "PUMP", "total_value_usd": 1_820_000},
     {"token_symbol": "PENGU", "total_value_usd": 869_800},
     {"token_symbol": "PUNCH", "total_value_usd": 315_900},
     {"token_symbol": "WOJAK", "total_value_usd": 185_700},
 ]
 
-top_buyer_addr = "E2itUS7P9bX5KkRqAm3CwJFdqsv"
+top_buyer_addr = "E2itUS7P9bX5KkRqAm3CwJFn8v4pQx2LmYTzdqsvR1AB"
 top_buyer_balance = [
     {"token_symbol": "SOL", "token_amount": 2052.93, "value_usd": 181_700},
     {"token_symbol": "PENGU", "token_amount": 735223.5, "value_usd": 5_200},
@@ -165,3 +168,34 @@ outpath.parent.mkdir(parents=True, exist_ok=True)
 outpath.write_text(html)
 print(f"✅ Report generated: {outpath}")
 print(f"   Size: {len(html):,} bytes")
+
+# Verify Fix 1: check all solscan links have full addresses
+import re
+links = re.findall(r'href="(https://solscan\.io/[^"]+)"', html)
+print(f"\n🔗 Solscan links found: {len(links)}")
+for link in links:
+    addr_part = link.split("/")[-1]
+    status = "✅" if len(addr_part) >= 32 else "❌ SHORT"
+    print(f"   {status} {link}")
+
+# Verify Fix 2: price display
+price_match = re.search(r'<div class="value">\$([^<]+)</div>', html)
+if price_match:
+    print(f"\n💰 Price display: ${price_match.group(1)}")
+
+# Verify Fix 3: conviction score
+conv_match = re.search(r'<div class="value [^"]*">(\d+)/100</div>', html)
+if conv_match:
+    print(f"\n📊 Conviction score: {conv_match.group(1)}/100")
+
+# Verify Fix 4: check for empty label cells
+empty_labels = html.count('<td></td>')
+print(f"\n🏷️ Empty <td></td> cells: {empty_labels}")
+
+# Verify Fix 5: SM holdings % column
+has_pct = "% of Portfolio" in html or "sm-pct" in html
+print(f"\n📈 SM Holdings has % column: {has_pct}")
+
+# Verify Fix 6: Holdings USD value
+has_usd_col = "Value (USD)" in html and "holders" in html.lower()
+print(f"\n💵 Holdings has USD value: {has_usd_col}")
