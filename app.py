@@ -125,6 +125,14 @@ LANDING_HTML = r"""<!DOCTYPE html>
     letter-spacing: 3px;
     margin-bottom: 16px;
   }
+  .typing-cursor {
+    display: inline-block;
+    width: 7px; height: 14px;
+    background: #00D4AA;
+    vertical-align: text-bottom;
+    margin-left: 1px;
+    animation: blink 0.7s step-end infinite;
+  }
   .report-btn {
     display: inline-block;
     margin-top: 8px;
@@ -192,18 +200,12 @@ const STEPS = [
 ];
 
 const ASCII_BANNER = `\
- \u2588\u2588\u2588\u2557   \u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2557   \u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2557   \u2588\u2588\u2557
- \u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2551
- \u2588\u2588\u2554\u2588\u2588\u2557 \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2554\u2588\u2588\u2557 \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2554\u2588\u2588\u2557 \u2588\u2588\u2551
- \u2588\u2588\u2551\u255a\u2588\u2588\u2557\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2551\u255a\u2588\u2588\u2557\u2588\u2588\u2551\u255a\u2550\u2550\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u255d  \u2588\u2588\u2551\u255a\u2588\u2588\u2557\u2588\u2588\u2551
- \u2588\u2588\u2551 \u255a\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2551 \u255a\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2551 \u255a\u2588\u2588\u2588\u2588\u2551
- \u255a\u2550\u255d  \u255a\u2550\u2550\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u2550\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u2550\u2550\u255d
-           \u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2557      \u2588\u2588\u2557
-           \u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d\u2588\u2588\u2551      \u2588\u2588\u2551
-           \u2588\u2588\u2551     \u2588\u2588\u2551      \u2588\u2588\u2551
-           \u2588\u2588\u2551     \u2588\u2588\u2551      \u2588\u2588\u2551
-           \u255a\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2551
-            \u255a\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u255d`;
+ \u2588\u2588\u2588\u2557   \u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2557   \u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2557   \u2588\u2588\u2557  \u2588\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2557      \u2588\u2588\u2557
+ \u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2551  \u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d \u2588\u2588\u2551      \u2588\u2588\u2551
+ \u2588\u2588\u2554\u2588\u2588\u2557 \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2554\u2588\u2588\u2557 \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2554\u2588\u2588\u2557 \u2588\u2588\u2551  \u2588\u2588\u2551     \u2588\u2588\u2551      \u2588\u2588\u2551
+ \u2588\u2588\u2551\u255a\u2588\u2588\u2557\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2551\u255a\u2588\u2588\u2557\u2588\u2588\u2551\u255a\u2550\u2550\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u255d  \u2588\u2588\u2551\u255a\u2588\u2588\u2557\u2588\u2588\u2551  \u2588\u2588\u2551     \u2588\u2588\u2551      \u2588\u2588\u2551
+ \u2588\u2588\u2551 \u255a\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2551 \u255a\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2551 \u255a\u2588\u2588\u2588\u2588\u2551  \u255a\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2551
+ \u255a\u2550\u255d  \u255a\u2550\u2550\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u2550\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u2550\u2550\u255d   \u255a\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u255d`;
 
 function addLine(html, cls) {
   const div = document.createElement('div');
@@ -246,7 +248,7 @@ async function showBanner() {
 
   // Typewriter text
   await typeText('<span class="d">Powered by Nansen CLI + x402 micropayments</span>', 30);
-  await typeText('<span class="d">Built by Vincent Charles \u00b7 #NansenCLI</span>', 30);
+  await typeText('<span class="d">Built by <a href="https://linktr.ee/vincent.charles" target="_blank" style="color:#00D4AA;text-decoration:none">Vincent Charles</a> \u00b7 #NansenCLI</span>', 30);
   addLine('<span class="separator">\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500</span>');
   addLine('');
   await typeText('<span class="d">Enter a token address to run 15 Nansen CLI</span>', 30);
@@ -314,17 +316,55 @@ async function runPipeline(token) {
     method: 'POST', body: formData, redirect: 'follow'
   }).then(r => r.url).catch(() => '/sample');
 
-  // Animate steps: show spinner for 600ms, then resolve
+  // Hacker typewriter: type out each step character by character
+  async function hackerType(el, text, baseDelay) {
+    // Create a cursor element that follows the text
+    const cur = document.createElement('span');
+    cur.className = 'typing-cursor';
+    el.appendChild(cur);
+    let buf = '';
+    for (let i = 0; i < text.length; i++) {
+      // Skip HTML tags instantly
+      if (text[i] === '<') {
+        const close = text.indexOf('>', i);
+        if (close !== -1) { buf += text.substring(i, close + 1); i = close; continue; }
+      }
+      buf += text[i];
+      // Update text before cursor
+      while (el.lastChild !== cur && el.lastChild) el.removeChild(el.lastChild);
+      if (el.firstChild === cur) { el.insertBefore(document.createRange().createContextualFragment(buf), cur); }
+      else { cur.insertAdjacentHTML('beforebegin', ''); el.innerHTML = ''; el.insertAdjacentHTML('beforeend', buf); el.appendChild(cur); }
+      // Random delay: mostly fast, occasional micro-pause
+      const r = Math.random();
+      const delay = r < 0.15 ? baseDelay * 3 : r < 0.4 ? baseDelay * 1.5 : baseDelay;
+      await sleep(delay);
+    }
+    // Remove cursor when done
+    if (cur.parentNode) cur.remove();
+  }
+
   for (let i = 0; i < STEPS.length; i++) {
     const [name, snippet] = STEPS[i];
     const num = String(i + 1).padStart(2, ' ');
+
+    // Show spinner line first
     const stepLine = addLine(
       '<span class="d">[' + num + '/15]</span> <span class="spinner"></span> <span class="d">' + name + '</span>'
     );
-    await sleep(600);
-    stepLine.innerHTML =
-      '<span class="d">[' + num + '/15]</span> <span class="g">\u2713</span> <span class="w">' + name + '</span>  <span class="d">' + snippet + '</span>';
-    if (i < STEPS.length - 1) await sleep(200);
+    await sleep(500);
+
+    // Replace with completed line, typed out hacker-style
+    stepLine.innerHTML = '';
+    const fullText = '<span class="d">[' + num + '/15]</span> <span class="g">\u2713</span> <span class="w">' + name + '</span>  <span class="d">' + snippet + '</span>';
+    await hackerType(stepLine, fullText, 8);
+    stepLine.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+    // Brief "thinking" pause between steps
+    if (i < STEPS.length - 1) {
+      const thinkLine = addLine('<span class="typing-cursor"></span>');
+      await sleep(300 + Math.random() * 200);
+      thinkLine.remove();
+    }
   }
 
   addLine('');
