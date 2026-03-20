@@ -41,6 +41,8 @@ LANDING_HTML = r"""<!DOCTYPE html>
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 16px 70px rgba(0,0,0,0.5), 0 0 40px rgba(0,212,170,0.06);
+    display: flex; flex-direction: column;
+    max-height: 92vh;
   }
   .titlebar {
     background: #161b22;
@@ -48,6 +50,7 @@ LANDING_HTML = r"""<!DOCTYPE html>
     display: flex; align-items: center; gap: 8px;
     border-bottom: 1px solid #21262d;
     user-select: none;
+    flex-shrink: 0;
   }
   .dot { width: 12px; height: 12px; border-radius: 50%; }
   .dot.r { background: #ff5f57; }
@@ -57,22 +60,30 @@ LANDING_HTML = r"""<!DOCTYPE html>
     flex: 1; text-align: center;
     color: #484f58; font-size: 12px;
   }
-  .terminal {
-    padding: 20px;
-    min-height: 480px;
+  /* Fixed header area inside terminal */
+  .term-header {
+    padding: 20px 20px 0 20px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #161b22;
+    padding-bottom: 12px;
+  }
+  /* Scrollable output area */
+  .term-body {
+    padding: 12px 20px 20px 20px;
+    flex: 1;
+    overflow-y: auto;
     color: #c9d1d9;
     font-size: 14px;
     line-height: 1.7;
-    overflow-y: auto;
-    max-height: 80vh;
   }
   @media (max-width: 600px) {
-    .terminal { font-size: 11px; padding: 12px; }
-    .ascii-art { font-size: 4.5px !important; letter-spacing: 0.5px !important; }
-    .ascii-sub { font-size: 11px !important; }
+    .term-body { font-size: 11px; padding: 10px 12px 12px 12px; }
+    .term-header { padding: 12px 12px 8px 12px; }
+    .ascii-art { font-size: 3.8px !important; letter-spacing: 0px !important; }
+    .ascii-sub { font-size: 10px !important; letter-spacing: 1px !important; }
   }
   @media (min-width: 601px) and (max-width: 780px) {
-    .ascii-art { font-size: 6.5px !important; }
+    .ascii-art { font-size: 5.5px !important; }
   }
   .g { color: #00D4AA; }
   .y { color: #ffa502; }
@@ -81,13 +92,6 @@ LANDING_HTML = r"""<!DOCTYPE html>
   .w { color: #e6edf3; font-weight: bold; }
   .line { min-height: 1.7em; }
   .prompt { color: #00D4AA; }
-  .cursor {
-    display: inline-block;
-    width: 8px; height: 16px;
-    background: #00D4AA;
-    vertical-align: text-bottom;
-    animation: blink 1s step-end infinite;
-  }
   @keyframes blink { 50% { opacity: 0; } }
   .input-line { display: flex; align-items: center; }
   .input-line input {
@@ -100,31 +104,44 @@ LANDING_HTML = r"""<!DOCTYPE html>
   .separator { color: #21262d; }
   .spinner { display: inline-block; }
   @keyframes spin {
-    0% { content: "\2807"; } 10% { content: "\2819"; } 20% { content: "\2839"; }
-    30% { content: "\2838"; } 40% { content: "\283c"; } 50% { content: "\2834"; }
-    60% { content: "\2826"; } 70% { content: "\2827"; } 80% { content: "\2807"; } 90% { content: "\280f"; }
+    0%{content:"\\2807"}10%{content:"\\2819"}20%{content:"\\2839"}
+    30%{content:"\\2838"}40%{content:"\\283c"}50%{content:"\\2834"}
+    60%{content:"\\2826"}70%{content:"\\2827"}80%{content:"\\2807"}90%{content:"\\280f"}
   }
   .spinner::before {
-    content: "\2807";
+    content: "\\2807";
     animation: spin 0.8s linear infinite;
     color: #ffa502;
   }
   .hidden { display: none; }
   .ascii-art {
     color: #00D4AA;
-    font-size: 8px;
+    font-size: 7px;
     line-height: 1.15;
-    letter-spacing: 1px;
+    letter-spacing: 0.5px;
     white-space: pre;
     margin-bottom: 4px;
     text-shadow: 0 0 10px rgba(0,212,170,0.3);
+    overflow-x: hidden;
   }
   .ascii-sub {
     color: #9ca3af;
     font-size: 13px;
     letter-spacing: 3px;
-    margin-bottom: 16px;
+    margin-bottom: 8px;
   }
+  .header-line {
+    color: #484f58;
+    font-size: 14px;
+    line-height: 1.7;
+    min-height: 1.7em;
+  }
+  .header-line a {
+    color: #00D4AA;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .header-line a:hover { text-decoration: underline; }
   .typing-cursor {
     display: inline-block;
     width: 7px; height: 14px;
@@ -161,9 +178,21 @@ LANDING_HTML = r"""<!DOCTYPE html>
     <div class="dot r"></div>
     <div class="dot y"></div>
     <div class="dot g"></div>
-    <div class="titlebar-text">token-dd — bash</div>
+    <div class="titlebar-text">token-dd &mdash; bash</div>
   </div>
-  <div class="terminal" id="term">
+  <!-- Fixed header: ASCII art + info lines -->
+  <div class="term-header" id="header">
+    <pre class="ascii-art"> ███╗   ██╗ █████╗ ███╗   ██╗███████╗███████╗███╗   ██╗   ██████╗ ██╗     ██╗
+ ████╗  ██║██╔══██╗████╗  ██║██╔════╝██╔════╝████╗  ██║  ██╔════╝ ██║     ██║
+ ██╔██╗ ██║███████║██╔██╗ ██║███████╗█████╗  ██╔██╗ ██║  ██║      ██║     ██║
+ ██║╚██╗██║██╔══██║██║╚██╗██║╚════██║██╔══╝  ██║╚██╗██║  ██║      ██║     ██║
+ ██║ ╚████║██║  ██║██║ ╚████║███████║███████╗██║ ╚████║  ╚██████╗ ███████╗██║
+ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝╚═╝  ╚═══╝  ╚═════╝ ╚══════╝╚═╝</pre>
+    <div class="ascii-sub">token due diligence engine</div>
+    <div id="headerLines"></div>
+  </div>
+  <!-- Scrollable body: prompt + pipeline output -->
+  <div class="term-body" id="body">
     <div id="output"></div>
     <div id="inputArea" class="hidden">
       <div class="input-line">
@@ -175,90 +204,78 @@ LANDING_HTML = r"""<!DOCTYPE html>
 </div>
 
 <script>
+const headerLines = document.getElementById('headerLines');
 const output = document.getElementById('output');
+const body = document.getElementById('body');
 const inputArea = document.getElementById('inputArea');
 const tokenInput = document.getElementById('tokenInput');
 
 const DEMO_TOKEN = 'pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn';
 
 const STEPS = [
-  ["Token overview",           "PUMP \u00b7 $1.1B market cap +0.9%"],
-  ["Smart money netflow",      "$728.4K net inflow (7d) \u00b7 4 traders"],
+  ["Token overview",           "PUMP \\u00b7 $1.1B market cap +0.9%"],
+  ["Smart money netflow",      "$728.4K net inflow (7d) \\u00b7 4 traders"],
   ["Smart money holdings",     "$14.1M across 10 tokens"],
   ["Smart money DEX trades",   "5 recent trades"],
   ["Token info",               "PUMP metadata loaded"],
   ["Flow intelligence",        "Whales +$236.3K, Exchanges -$815.5K"],
   ["Who bought/sold",          "$52.1M bought vs $37.8M sold"],
-  ["Nansen Score",             "\u26a0 HIGH risk: BTC Reflexivity"],
+  ["Nansen Score",             "\\u26a0 HIGH risk: BTC Reflexivity"],
   ["Holder distribution",      "Top holder: 49% (pump.fun custody)"],
   ["PnL leaderboard",          "Top traders mapped"],
   ["DEX trades",               "10 trades analyzed"],
   ["Token flows",              "Flow data loaded"],
-  ["Price history",            "721 candles \u00b7 $0.0017 \u2013 $0.0022"],
+  ["Price history",            "721 candles \\u00b7 $0.0017 \\u2013 $0.0022"],
   ["Profiler balance",         "Top buyer portfolio: $40.87"],
   ["Profiler counterparties",  "5 counterparties identified"],
 ];
 
-const ASCII_BANNER = `\
- \u2588\u2588\u2588\u2557   \u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2557   \u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2557   \u2588\u2588\u2557  \u2588\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2557      \u2588\u2588\u2557
- \u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2551  \u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d \u2588\u2588\u2551      \u2588\u2588\u2551
- \u2588\u2588\u2554\u2588\u2588\u2557 \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2554\u2588\u2588\u2557 \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2554\u2588\u2588\u2557 \u2588\u2588\u2551  \u2588\u2588\u2551     \u2588\u2588\u2551      \u2588\u2588\u2551
- \u2588\u2588\u2551\u255a\u2588\u2588\u2557\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2551\u255a\u2588\u2588\u2557\u2588\u2588\u2551\u255a\u2550\u2550\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u255d  \u2588\u2588\u2551\u255a\u2588\u2588\u2557\u2588\u2588\u2551  \u2588\u2588\u2551     \u2588\u2588\u2551      \u2588\u2588\u2551
- \u2588\u2588\u2551 \u255a\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2551 \u255a\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2551 \u255a\u2588\u2588\u2588\u2588\u2551  \u255a\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2551
- \u255a\u2550\u255d  \u255a\u2550\u2550\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u2550\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u2550\u2550\u255d   \u255a\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u255d`;
+// ASCII art is embedded directly in the HTML <pre> tag
+
+function scrollBottom() {
+  body.scrollTop = body.scrollHeight;
+}
 
 function addLine(html, cls) {
   const div = document.createElement('div');
   div.className = 'line ' + (cls || '');
   div.innerHTML = html;
   output.appendChild(div);
-  div.scrollIntoView({ behavior: 'smooth', block: 'end' });
-  return div;
-}
-
-function addRaw(html, cls) {
-  const div = document.createElement('div');
-  if (cls) div.className = cls;
-  div.innerHTML = html;
-  output.appendChild(div);
+  scrollBottom();
   return div;
 }
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-async function typeText(text, speed) {
-  const line = addLine('');
+async function typeHeaderLine(text, speed) {
+  const div = document.createElement('div');
+  div.className = 'header-line';
+  headerLines.appendChild(div);
   for (let i = 0; i < text.length; i++) {
-    // skip inside HTML tags
     if (text[i] === '<') {
       const close = text.indexOf('>', i);
-      if (close !== -1) { line.innerHTML += text.substring(i, close + 1); i = close; continue; }
+      if (close !== -1) { div.innerHTML += text.substring(i, close + 1); i = close; continue; }
     }
-    line.innerHTML += text[i];
+    div.innerHTML += text[i];
     await sleep(speed || 30);
   }
-  return line;
+  return div;
 }
 
 async function showBanner() {
-  // ASCII art — instant
-  addRaw('<pre>' + ASCII_BANNER + '</pre>', 'ascii-art');
-  addRaw('token due diligence engine', 'ascii-sub');
-  addLine('');
+  await sleep(200);
+  await typeHeaderLine('Powered by Nansen CLI + x402 micropayments', 30);
+  await typeHeaderLine('Built by <a href="https://linktr.ee/vincent.charles" target="_blank">Vincent Charles</a> \\u00b7 #NansenCLI', 30);
 
-  // Typewriter text
-  await typeText('<span class="d">Powered by Nansen CLI + x402 micropayments</span>', 30);
-  await typeText('<span class="d">Built by <a href="https://linktr.ee/vincent.charles" target="_blank" style="color:#00D4AA;text-decoration:none">Vincent Charles</a> \u00b7 #NansenCLI</span>', 30);
-  addLine('<span class="separator">\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500</span>');
-  addLine('');
-  await typeText('<span class="d">Enter a token address to run 15 Nansen CLI</span>', 30);
-  await typeText('<span class="d">calls and generate a due diligence report.</span>', 30);
+  addLine('<span class="d">Enter a token address to run 15 Nansen CLI</span>');
+  addLine('<span class="d">calls and generate a due diligence report.</span>');
   addLine('');
 }
 
 async function showPrompt() {
   inputArea.classList.remove('hidden');
   tokenInput.focus();
+  scrollBottom();
 
   const params = new URLSearchParams(window.location.search);
   const autoDemo = params.get('demo') === 'true';
@@ -304,7 +321,7 @@ async function runPipeline(token) {
   addLine('');
   addLine('<span class="d">Select chain [solana]: </span><span class="w">solana</span>');
   addLine('');
-  await sleep(800);
+  await sleep(920);
   addLine('<span class="g">Initializing pipeline...</span>');
   addLine('');
 
@@ -316,75 +333,67 @@ async function runPipeline(token) {
     method: 'POST', body: formData, redirect: 'follow'
   }).then(r => r.url).catch(() => '/sample');
 
-  // Hacker typewriter: type out each step character by character
+  // Hacker typewriter with random delays
   async function hackerType(el, text, baseDelay) {
-    // Create a cursor element that follows the text
     const cur = document.createElement('span');
     cur.className = 'typing-cursor';
     el.appendChild(cur);
     let buf = '';
     for (let i = 0; i < text.length; i++) {
-      // Skip HTML tags instantly
       if (text[i] === '<') {
         const close = text.indexOf('>', i);
         if (close !== -1) { buf += text.substring(i, close + 1); i = close; continue; }
       }
       buf += text[i];
-      // Update text before cursor
-      while (el.lastChild !== cur && el.lastChild) el.removeChild(el.lastChild);
-      if (el.firstChild === cur) { el.insertBefore(document.createRange().createContextualFragment(buf), cur); }
-      else { cur.insertAdjacentHTML('beforebegin', ''); el.innerHTML = ''; el.insertAdjacentHTML('beforeend', buf); el.appendChild(cur); }
-      // Random delay: mostly fast, occasional micro-pause
+      el.innerHTML = buf;
+      el.appendChild(cur);
+      scrollBottom();
       const r = Math.random();
-      const delay = r < 0.15 ? baseDelay * 3 : r < 0.4 ? baseDelay * 1.5 : baseDelay;
+      const delay = r < 0.12 ? baseDelay * 4 : r < 0.35 ? baseDelay * 1.8 : baseDelay;
       await sleep(delay);
     }
-    // Remove cursor when done
     if (cur.parentNode) cur.remove();
   }
 
+  // 15% slower: base 9.2ms (was 8), spinner 575ms (was 500), think 345-575ms (was 300-500)
   for (let i = 0; i < STEPS.length; i++) {
     const [name, snippet] = STEPS[i];
     const num = String(i + 1).padStart(2, ' ');
 
-    // Show spinner line first
     const stepLine = addLine(
       '<span class="d">[' + num + '/15]</span> <span class="spinner"></span> <span class="d">' + name + '</span>'
     );
-    await sleep(500);
+    await sleep(575);
 
-    // Replace with completed line, typed out hacker-style
     stepLine.innerHTML = '';
-    const fullText = '<span class="d">[' + num + '/15]</span> <span class="g">\u2713</span> <span class="w">' + name + '</span>  <span class="d">' + snippet + '</span>';
-    await hackerType(stepLine, fullText, 8);
-    stepLine.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    const fullText = '<span class="d">[' + num + '/15]</span> <span class="g">\\u2713</span> <span class="w">' + name + '</span>  <span class="d">' + snippet + '</span>';
+    await hackerType(stepLine, fullText, 9.2);
+    scrollBottom();
 
-    // Brief "thinking" pause between steps
     if (i < STEPS.length - 1) {
       const thinkLine = addLine('<span class="typing-cursor"></span>');
-      await sleep(300 + Math.random() * 200);
+      await sleep(345 + Math.random() * 230);
       thinkLine.remove();
     }
   }
 
   addLine('');
-  addLine('<span class="g">\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550</span>');
-  addLine('<span class="w">  \u2705 REPORT READY</span>');
+  addLine('<span class="g">\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550</span>');
+  addLine('<span class="w">  \\u2705 REPORT READY</span>');
   addLine('<span class="d">  Token:</span> <span class="w">PUMP</span> <span class="d">|</span> <span class="d">Verdict:</span> <span class="g">BULLISH</span>');
   addLine('<span class="d">  Smart Money Conviction:</span> <span class="y">60/100</span>');
   addLine('<span class="d">  API Calls: 15 | Cost: ~$0.45</span>');
-  addLine('<span class="g">\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550</span>');
+  addLine('<span class="g">\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550</span>');
   addLine('');
 
-  // Store report URL, show button
   const reportUrl = await reportPromise;
   const btnLine = addLine('');
   const btn = document.createElement('a');
   btn.href = reportUrl;
   btn.className = 'report-btn';
-  btn.textContent = '[ View Full Report \u2192 ]';
+  btn.textContent = '[ View Full Report \\u2192 ]';
   btnLine.appendChild(btn);
-  btn.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  scrollBottom();
 }
 
 // Boot
@@ -393,8 +402,8 @@ async function runPipeline(token) {
   await showPrompt();
 })();
 
-// Click anywhere focuses input
-document.querySelector('.terminal').addEventListener('click', () => {
+// Click anywhere in body focuses input
+body.addEventListener('click', () => {
   if (!inputArea.classList.contains('hidden')) tokenInput.focus();
 });
 </script>
