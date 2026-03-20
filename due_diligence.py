@@ -39,6 +39,35 @@ SUPPORTED_CHAINS = [
 REPORTS_DIR = Path(__file__).parent / "reports"
 API_CALL_COUNT = 0
 API_CALL_LOG = []
+CACHE_DIR = None  # Set per-run in run_due_diligence
+
+
+# ─── Cache helpers ───────────────────────────────────────────────────
+def cache_save(name: str, data) -> None:
+    """Save raw API response to cache directory."""
+    if CACHE_DIR is None:
+        return
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    filepath = CACHE_DIR / f"{name}.json"
+    with open(filepath, "w") as f:
+        json.dump(data, f, indent=2, default=str)
+    print(f"  [cache] Saved {name}.json")
+
+
+def cache_load(name: str):
+    """Load cached API response. Returns _CACHE_MISS sentinel if not found."""
+    if CACHE_DIR is None:
+        return _CACHE_MISS
+    filepath = CACHE_DIR / f"{name}.json"
+    if not filepath.exists():
+        return _CACHE_MISS
+    with open(filepath) as f:
+        data = json.load(f)
+    print(f"  [cache] Loaded {name}.json")
+    return data  # Can be None/null — that's a valid cached "no data" response
+
+
+_CACHE_MISS = object()  # Sentinel to distinguish "not cached" from "cached as None"
 
 
 # ─── Nansen CLI Wrapper ─────────────────────────────────────────────
@@ -101,163 +130,187 @@ def nansen_call(command: list[str], description: str = "") -> dict | None:
         return None
 
 
-# ─── Data Collection ─────────────────────────────────────────────────
+# ─── Data Collection (with cache support) ────────────────────────────
+USE_CACHE = False  # Set to True via --from-cache flag
+
+
+def _collect(cache_name: str, command: list[str], desc: str, extract_key: str | None = "data"):
+    """Generic collect: check cache first, else call API and cache result."""
+    if USE_CACHE:
+        cached = cache_load(cache_name)
+        if cached is not _CACHE_MISS:
+            return cached  # Could be None, [], etc. — all valid cached results
+        print(f"  [cache] MISS: {cache_name} — no cached data")
+        return [] if extract_key == "data" else None
+
+    data = nansen_call(command, desc)
+    if data is not None:
+        result = data.get(extract_key, []) if extract_key and isinstance(data, dict) else data
+        cache_save(cache_name, result)
+        return result
+    return [] if extract_key == "data" else None
+
+
 def collect_token_screener(chain: str, limit: int = 20) -> list:
     """Get top tokens by smart money activity."""
-    data = nansen_call(
+    return _collect(
+        "token_screener",
         ["research", "token", "screener", "--chain", chain,
          "--timeframe", "24h", "--limit", str(limit)],
         "Token Screener"
     )
-    return data.get("data", []) if data else []
 
 
 def collect_smart_money_netflow(chain: str, limit: int = 20) -> list:
     """Get smart money net flows."""
-    data = nansen_call(
+    return _collect(
+        "sm_netflow",
         ["research", "smart-money", "netflow", "--chain", chain,
          "--limit", str(limit)],
         "SM Netflow"
     )
-    return data.get("data", []) if data else []
 
 
 def collect_flow_intelligence(chain: str, token: str, days: int = 7) -> list:
     """Get flow intelligence broken down by label type."""
-    data = nansen_call(
+    return _collect(
+        "flow_intelligence",
         ["research", "token", "flow-intelligence", "--chain", chain,
          "--token", token, "--days", str(days)],
         "Flow Intelligence"
     )
-    return data.get("data", []) if data else []
 
 
 def collect_who_bought_sold(chain: str, token: str, days: int = 7, limit: int = 10) -> list:
     """Get top buyers and sellers."""
-    data = nansen_call(
+    return _collect(
+        "who_bought_sold",
         ["research", "token", "who-bought-sold", "--chain", chain,
          "--token", token, "--days", str(days), "--limit", str(limit)],
         "Who Bought/Sold"
     )
-    return data.get("data", []) if data else []
 
 
 def collect_token_info(chain: str, token: str) -> dict | None:
     """Get token info."""
-    data = nansen_call(
+    return _collect(
+        "token_info",
         ["research", "token", "info", "--chain", chain, "--token", token],
-        "Token Info"
+        "Token Info",
+        extract_key=None
     )
-    return data if data else None
 
 
 def collect_token_indicators(chain: str, token: str) -> dict | None:
     """Get Nansen Score / risk indicators."""
-    data = nansen_call(
+    return _collect(
+        "token_indicators",
         ["research", "token", "indicators", "--chain", chain, "--token", token],
-        "Nansen Score"
+        "Nansen Score",
+        extract_key=None
     )
-    return data if data else None
 
 
 def collect_token_holders(chain: str, token: str, limit: int = 10) -> list:
     """Get holder analysis."""
-    data = nansen_call(
+    return _collect(
+        "token_holders",
         ["research", "token", "holders", "--chain", chain,
          "--token", token, "--limit", str(limit)],
         "Holders"
     )
-    return data.get("data", []) if data else []
 
 
 def collect_token_pnl(chain: str, token: str, days: int = 30, limit: int = 10) -> list:
     """Get PnL leaderboard."""
-    data = nansen_call(
+    return _collect(
+        "token_pnl",
         ["research", "token", "pnl", "--chain", chain,
          "--token", token, "--days", str(days), "--limit", str(limit)],
         "PnL Leaderboard"
     )
-    return data.get("data", []) if data else []
 
 
 def collect_token_dex_trades(chain: str, token: str, days: int = 7, limit: int = 10) -> list:
     """Get DEX trades."""
-    data = nansen_call(
+    return _collect(
+        "token_dex_trades",
         ["research", "token", "dex-trades", "--chain", chain,
          "--token", token, "--days", str(days), "--limit", str(limit)],
         "DEX Trades"
     )
-    return data.get("data", []) if data else []
 
 
 def collect_token_flows(chain: str, token: str, days: int = 7) -> dict | None:
     """Get token flow metrics."""
-    data = nansen_call(
+    return _collect(
+        "token_flows",
         ["research", "token", "flows", "--chain", chain,
          "--token", token, "--days", str(days)],
-        "Token Flows"
+        "Token Flows",
+        extract_key=None
     )
-    return data if data else None
 
 
 def collect_token_ohlcv(chain: str, token: str, timeframe: str = "1h") -> list:
     """Get OHLCV candle data."""
-    data = nansen_call(
+    return _collect(
+        "token_ohlcv",
         ["research", "token", "ohlcv", "--chain", chain,
          "--token", token, "--timeframe", timeframe, "--limit", "24"],
         "OHLCV"
     )
-    return data.get("data", []) if data else []
 
 
 def collect_profiler_balance(address: str, chain: str) -> list:
     """Get wallet balance."""
-    data = nansen_call(
+    return _collect(
+        "profiler_balance",
         ["research", "profiler", "balance", "--address", address,
          "--chain", chain, "--limit", "10"],
         f"Balance {address[:8]}..."
     )
-    return data.get("data", []) if data else []
 
 
 def collect_profiler_labels(address: str, chain: str) -> dict | None:
     """Get wallet labels."""
-    data = nansen_call(
+    return _collect(
+        "profiler_labels",
         ["research", "profiler", "labels", "--address", address,
          "--chain", chain],
-        f"Labels {address[:8]}..."
+        f"Labels {address[:8]}...",
+        extract_key=None
     )
-    return data if data else None
 
 
 def collect_smart_money_holdings(chain: str, limit: int = 20) -> list:
     """Get aggregated SM holdings."""
-    data = nansen_call(
+    return _collect(
+        "sm_holdings",
         ["research", "smart-money", "holdings", "--chain", chain,
          "--limit", str(limit)],
         "SM Holdings"
     )
-    return data.get("data", []) if data else []
 
 
 def collect_smart_money_dex_trades(chain: str, limit: int = 10) -> list:
     """Get SM DEX trades."""
-    data = nansen_call(
+    return _collect(
+        "sm_dex_trades",
         ["research", "smart-money", "dex-trades", "--chain", chain,
          "--limit", str(limit)],
         "SM DEX Trades"
     )
-    return data.get("data", []) if data else []
 
 
 def collect_profiler_counterparties(address: str, chain: str, days: int = 30) -> list:
     """Get top counterparties."""
-    data = nansen_call(
+    return _collect(
+        "profiler_counterparties",
         ["research", "profiler", "counterparties", "--address", address,
          "--chain", chain, "--days", str(days), "--limit", "5"],
         f"Counterparties {address[:8]}..."
     )
-    return data.get("data", []) if data else []
 
 
 # ─── Cross-Chain Smart Money Scanner ─────────────────────────────────
@@ -731,14 +784,20 @@ def generate_report(
 # ─── Main Pipeline ───────────────────────────────────────────────────
 def run_due_diligence(token: str, chain: str):
     """Run the full due diligence pipeline for a token."""
-    global API_CALL_COUNT, API_CALL_LOG
+    global API_CALL_COUNT, API_CALL_LOG, CACHE_DIR
     API_CALL_COUNT = 0
     API_CALL_LOG = []
     
+    # Set cache directory for this token
+    token_short = token[:8] if len(token) > 8 else token
+    CACHE_DIR = REPORTS_DIR / f"{token_short}_{chain}_raw"
+    
+    mode = "CACHE" if USE_CACHE else "LIVE"
     print(f"\n{'='*60}")
-    print(f"PROTOCOL DUE DILIGENCE ENGINE v2")
+    print(f"PROTOCOL DUE DILIGENCE ENGINE v2 [{mode}]")
     print(f"Token: {token}")
     print(f"Chain: {chain}")
+    print(f"Cache: {CACHE_DIR}")
     print(f"{'='*60}")
     print(f"\nCollecting data from Nansen CLI...\n")
     
@@ -1009,6 +1068,8 @@ Examples:
     parser.add_argument("token", nargs="?", help="Token address to analyze")
     parser.add_argument("--chain", default="solana", choices=SUPPORTED_CHAINS,
                        help="Blockchain (default: solana)")
+    parser.add_argument("--from-cache", action="store_true",
+                       help="Use cached API responses instead of live calls (zero cost)")
     parser.add_argument("--scan", action="store_true",
                        help="Scan mode: discover top movers across chains")
     parser.add_argument("--chains", type=str, default=None,
@@ -1017,6 +1078,9 @@ Examples:
                        help="Number of top signals to run DD on in scan mode")
     
     args = parser.parse_args()
+    
+    global USE_CACHE
+    USE_CACHE = args.from_cache
     
     if args.scan:
         chains = args.chains.split(",") if args.chains else None
