@@ -168,14 +168,39 @@ LANDING_HTML = """<!DOCTYPE html>
     box-shadow: 0 0 15px rgba(0,212,170,0.2);
     text-shadow: 0 0 8px rgba(0,212,170,0.4);
   }
-  .chain-select {
-    background: none; border: 1px solid #21262d; border-radius: 4px;
-    color: #00D4AA; font-family: inherit; font-size: inherit;
-    padding: 2px 6px; cursor: pointer; outline: none;
-    appearance: none; -webkit-appearance: none;
+  .chain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px 16px;
+    margin: 6px 0 4px 18px;
+    font-size: 13px;
   }
-  .chain-select:focus { border-color: #00D4AA; }
-  .chain-select option { background: #0d1117; color: #e6edf3; }
+  .chain-item {
+    color: #484f58;
+    padding: 1px 4px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: color 0.15s;
+    white-space: nowrap;
+  }
+  .chain-item:hover { color: #c9d1d9; }
+  .chain-item.active {
+    color: #00D4AA;
+    font-weight: bold;
+  }
+  .chain-item.hidden-chain { display: none; }
+  .chain-filter {
+    background: none; border: none; outline: none;
+    color: #e6edf3; font-family: inherit; font-size: inherit;
+    caret-color: #00D4AA; width: 120px;
+  }
+  .chain-filter::placeholder { color: #30363d; }
+  .chain-hint { color: #30363d; font-size: 12px; margin: 4px 0 0 18px; }
+  @keyframes pulse-chain {
+    0%,100% { text-shadow: none; }
+    50% { text-shadow: 0 0 8px rgba(0,212,170,0.6); }
+  }
+  .chain-pulse { animation: pulse-chain 0.3s ease 2; }
 </style>
 </head>
 <body>
@@ -202,19 +227,6 @@ LANDING_HTML = """<!DOCTYPE html>
   <div class="term-body" id="body">
     <div id="output"></div>
     <div id="inputArea" class="hidden">
-      <div class="input-line" id="chainLine" style="margin-bottom:4px">
-        <span class="d">Select chain: </span>
-        <select class="chain-select" id="chainSelect">
-          <option value="solana" selected>solana</option>
-          <option value="ethereum">ethereum</option>
-          <option value="base">base</option>
-          <option value="arbitrum">arbitrum</option>
-          <option value="bnb">bnb</option>
-          <option value="polygon">polygon</option>
-          <option value="optimism">optimism</option>
-          <option value="avalanche">avalanche</option>
-        </select>
-      </div>
       <div class="input-line">
         <span class="prompt">$ </span>
         <input type="text" id="tokenInput" placeholder="paste token address..." autofocus autocomplete="off" spellcheck="false">
@@ -228,9 +240,16 @@ const output = document.getElementById('output');
 const body = document.getElementById('body');
 const inputArea = document.getElementById('inputArea');
 const tokenInput = document.getElementById('tokenInput');
-const chainSelect = document.getElementById('chainSelect');
 
 const DEMO_TOKEN = 'pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn';
+const CHAINS = [
+  'solana','ethereum','base',
+  'arbitrum','polygon','optimism',
+  'avalanche','bnb','linea',
+  'scroll','mantle','ronin',
+  'sei','sonic','hyperevm',
+  'monad','plasma','iotaevm',
+];
 
 const STEPS = [
   ["Token overview",           "PUMP \xb7 $1.1B market cap +0.9%"],
@@ -272,6 +291,89 @@ async function showIntro() {
   addLine('');
 }
 
+// Chain grid selector
+function showChainGrid(selectedChain) {
+  return new Promise((resolve) => {
+    addLine('<span class="d">Select chain:</span>');
+    const gridDiv = document.createElement('div');
+    gridDiv.className = 'chain-grid';
+    output.appendChild(gridDiv);
+
+    const items = [];
+    CHAINS.forEach(c => {
+      const span = document.createElement('span');
+      span.className = 'chain-item' + (c === selectedChain ? ' active' : '');
+      span.textContent = (c === selectedChain ? '> ' : '  ') + c;
+      span.dataset.chain = c;
+      span.addEventListener('click', () => selectChain(c));
+      gridDiv.appendChild(span);
+      items.push(span);
+    });
+
+    const hintDiv = document.createElement('div');
+    hintDiv.className = 'chain-hint';
+    hintDiv.textContent = CHAINS.length + ' chains supported \xb7 Click to select or type to filter';
+    output.appendChild(hintDiv);
+
+    // Filter input
+    const filterLine = document.createElement('div');
+    filterLine.className = 'input-line';
+    filterLine.style.marginTop = '6px';
+    filterLine.innerHTML = '<span class="d">filter: </span>';
+    const filterInput = document.createElement('input');
+    filterInput.className = 'chain-filter';
+    filterInput.placeholder = '';
+    filterInput.autocomplete = 'off';
+    filterLine.appendChild(filterInput);
+    output.appendChild(filterLine);
+    filterInput.focus();
+    scrollBottom();
+
+    let currentChain = selectedChain;
+
+    filterInput.addEventListener('input', () => {
+      const q = filterInput.value.toLowerCase();
+      let firstMatch = null;
+      items.forEach(it => {
+        const c = it.dataset.chain;
+        const match = !q || c.includes(q);
+        it.classList.toggle('hidden-chain', !match);
+        if (match && !firstMatch) firstMatch = c;
+      });
+      if (firstMatch) {
+        currentChain = firstMatch;
+        items.forEach(it => {
+          const c = it.dataset.chain;
+          const isActive = c === currentChain;
+          it.classList.toggle('active', isActive);
+          it.textContent = (isActive ? '> ' : '  ') + c;
+        });
+      }
+    });
+
+    filterInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') selectChain(currentChain);
+    });
+
+    function selectChain(chain) {
+      // Pulse the selected chain
+      items.forEach(it => {
+        if (it.dataset.chain === chain) {
+          it.classList.add('active', 'chain-pulse');
+        }
+      });
+      setTimeout(() => {
+        gridDiv.remove();
+        hintDiv.remove();
+        filterLine.remove();
+        addLine('<span class="d">Chain: </span><span class="g">' + chain + ' \u2713</span>');
+        scrollBottom();
+        resolve(chain);
+      }, 600);
+    }
+  });
+}
+
 async function showPrompt() {
   inputArea.classList.remove('hidden');
   tokenInput.focus();
@@ -298,11 +400,9 @@ async function showPrompt() {
       if (demoTimer) { clearTimeout(demoTimer); demoTimer = null; }
       const val = tokenInput.value.trim();
       if (val.length >= 10) {
-        const chain = chainSelect.value;
         inputArea.classList.add('hidden');
-        addLine('<span class="d">Chain: </span><span class="w">' + chain + '</span>');
         addLine('<span class="prompt">$ </span>' + val);
-        runPipeline(val, chain);
+        showChainGrid('solana').then(chain => runPipeline(val, chain));
       }
     }
   });
@@ -310,13 +410,41 @@ async function showPrompt() {
 
 async function runDemo() {
   inputArea.classList.add('hidden');
-  addLine('<span class="d">Chain: </span><span class="w">solana</span>');
+  // Type token address
   const line = addLine('<span class="prompt">$ </span>');
   for (let i = 0; i < DEMO_TOKEN.length; i++) {
     line.innerHTML += DEMO_TOKEN[i];
     await sleep(12);
   }
   await sleep(400);
+
+  // Show chain grid briefly, auto-select solana
+  addLine('<span class="d">Select chain:</span>');
+  const gridDiv = document.createElement('div');
+  gridDiv.className = 'chain-grid';
+  output.appendChild(gridDiv);
+  CHAINS.forEach(c => {
+    const span = document.createElement('span');
+    span.className = 'chain-item' + (c === 'solana' ? ' active' : '');
+    span.textContent = (c === 'solana' ? '> ' : '  ') + c;
+    gridDiv.appendChild(span);
+  });
+  const hintDiv = document.createElement('div');
+  hintDiv.className = 'chain-hint';
+  hintDiv.textContent = CHAINS.length + ' chains supported';
+  output.appendChild(hintDiv);
+  scrollBottom();
+
+  await sleep(500);
+  // Pulse solana
+  gridDiv.querySelector('.active').classList.add('chain-pulse');
+  await sleep(600);
+  // Remove grid, show confirmed
+  gridDiv.remove();
+  hintDiv.remove();
+  addLine('<span class="d">Chain: </span><span class="g">solana \u2713</span>');
+  scrollBottom();
+
   runPipeline(DEMO_TOKEN, 'solana');
 }
 
