@@ -361,20 +361,25 @@ function showChainGrid(selectedChain) {
     });
 
     function selectChain(chain) {
-      // Pulse the selected chain
       items.forEach(it => {
         if (it.dataset.chain === chain) {
           it.classList.add('active', 'chain-pulse');
         }
       });
       setTimeout(() => {
-        gridDiv.remove();
-        hintDiv.remove();
-        filterLine.remove();
-        addLine('<span class="d">Chain: </span><span class="g">' + chain + ' \u2713</span>');
-        scrollBottom();
-        resolve(chain);
-      }, 600);
+        gridDiv.style.transition = 'opacity 0.4s ease';
+        gridDiv.style.opacity = '0';
+        hintDiv.style.transition = 'opacity 0.4s ease';
+        hintDiv.style.opacity = '0';
+        setTimeout(() => {
+          gridDiv.remove();
+          hintDiv.remove();
+          filterLine.remove();
+          addLine('<span class="d">Chain: </span><span class="g">' + chain + ' \u2713</span>');
+          scrollBottom();
+          resolve(chain);
+        }, 400);
+      }, 800);
     }
   });
 }
@@ -423,28 +428,61 @@ async function runDemo() {
   }
   await sleep(400);
 
-  // Show chain grid briefly, auto-select solana
+  // Show chain grid with fade-in
   addLine('<span class="d">Select chain:</span>');
   const gridDiv = document.createElement('div');
   gridDiv.className = 'chain-grid';
+  gridDiv.style.opacity = '0';
+  gridDiv.style.transition = 'opacity 0.5s ease';
   output.appendChild(gridDiv);
+
+  const items = [];
   CHAINS.forEach(c => {
     const span = document.createElement('span');
-    span.className = 'chain-item' + (c === 'solana' ? ' active' : '');
-    span.textContent = (c === 'solana' ? '> ' : '  ') + c;
+    span.className = 'chain-item';
+    span.textContent = '  ' + c;
+    span.dataset.chain = c;
     gridDiv.appendChild(span);
+    items.push(span);
   });
+
   const hintDiv = document.createElement('div');
   hintDiv.className = 'chain-hint';
+  hintDiv.style.opacity = '0';
+  hintDiv.style.transition = 'opacity 0.5s ease';
   hintDiv.textContent = CHAINS.length + ' chains supported';
   output.appendChild(hintDiv);
   scrollBottom();
 
-  await sleep(500);
-  // Pulse solana
-  gridDiv.querySelector('.active').classList.add('chain-pulse');
+  // Fade in grid (500ms)
+  requestAnimationFrame(() => { gridDiv.style.opacity = '1'; hintDiv.style.opacity = '1'; });
   await sleep(600);
-  // Remove grid, show confirmed
+
+  // Cycle highlight through chains at 150ms each
+  for (let i = 0; i < CHAINS.length; i++) {
+    items.forEach((it, j) => {
+      const isActive = j === i;
+      it.classList.toggle('active', isActive);
+      it.textContent = (isActive ? '> ' : '  ') + it.dataset.chain;
+    });
+    scrollBottom();
+    await sleep(150);
+  }
+
+  // Land on solana (index 0) — highlight + pulse for 800ms
+  items.forEach((it, j) => {
+    const isActive = j === 0;
+    it.classList.toggle('active', isActive);
+    it.textContent = (isActive ? '> ' : '  ') + it.dataset.chain;
+  });
+  items[0].classList.add('chain-pulse');
+  await sleep(800);
+
+  // Fade out grid (400ms)
+  gridDiv.style.opacity = '0';
+  hintDiv.style.opacity = '0';
+  await sleep(400);
+
   gridDiv.remove();
   hintDiv.remove();
   addLine('<span class="d">Chain: </span><span class="g">solana \u2713</span>');
@@ -536,6 +574,7 @@ body.addEventListener('click', () => {
   if (!inputArea.classList.contains('hidden')) tokenInput.focus();
 });
 </script>
+<p style="text-align:center;color:#00D4AA;font-family:'Inter',monospace;font-size:12px;margin-top:16px;opacity:0.7;">Demo mode \u2014 due to x402 API call costs, this runs from cached data \xb7 <a href="https://github.com/vchrl/token-dd" style="color:#00D4AA;">View source on GitHub \u2192</a></p>
 </body>
 </html>"""
 
