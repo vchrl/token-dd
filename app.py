@@ -20,7 +20,7 @@ RATE_LIMIT_SECONDS = 300  # 5 minutes
 
 
 # ─── Landing Page ────────────────────────────────────────────────────
-LANDING_HTML = """<!DOCTYPE html>
+LANDING_HTML = r"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -36,13 +36,13 @@ LANDING_HTML = """<!DOCTYPE html>
   }
   .window {
     width: 100%; max-width: 780px;
-    height: 80vh;
     background: #0d1117;
     border: 1px solid #21262d;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 16px 70px rgba(0,0,0,0.5), 0 0 40px rgba(0,212,170,0.06);
     display: flex; flex-direction: column;
+    max-height: 92vh;
   }
   .titlebar {
     background: #161b22;
@@ -60,22 +60,23 @@ LANDING_HTML = """<!DOCTYPE html>
     flex: 1; text-align: center;
     color: #484f58; font-size: 12px;
   }
+  /* Fixed header area inside terminal */
   .term-header {
-    padding: 20px 20px 12px 20px;
+    padding: 20px 20px 0 20px;
     flex-shrink: 0;
     border-bottom: 1px solid #161b22;
+    padding-bottom: 12px;
   }
+  /* Scrollable output area */
   .term-body {
     padding: 12px 20px 20px 20px;
     flex: 1;
     overflow-y: auto;
-    min-height: 0;
     color: #c9d1d9;
     font-size: 14px;
     line-height: 1.7;
   }
   @media (max-width: 600px) {
-    .window { height: 90vh; }
     .term-body { font-size: 11px; padding: 10px 12px 12px 12px; }
     .term-header { padding: 12px 12px 8px 12px; }
     .ascii-art { font-size: 3.8px !important; letter-spacing: 0px !important; }
@@ -103,12 +104,12 @@ LANDING_HTML = """<!DOCTYPE html>
   .separator { color: #21262d; }
   .spinner { display: inline-block; }
   @keyframes spin {
-    0%{content:"\u2807"}10%{content:"\u2819"}20%{content:"\u2839"}
-    30%{content:"\u2838"}40%{content:"\u283c"}50%{content:"\u2834"}
-    60%{content:"\u2826"}70%{content:"\u2827"}80%{content:"\u2807"}90%{content:"\u280f"}
+    0%{content:"\\2807"}10%{content:"\\2819"}20%{content:"\\2839"}
+    30%{content:"\\2838"}40%{content:"\\283c"}50%{content:"\\2834"}
+    60%{content:"\\2826"}70%{content:"\\2827"}80%{content:"\\2807"}90%{content:"\\280f"}
   }
   .spinner::before {
-    content: "\u2807";
+    content: "\\2807";
     animation: spin 0.8s linear infinite;
     color: #ffa502;
   }
@@ -129,17 +130,18 @@ LANDING_HTML = """<!DOCTYPE html>
     letter-spacing: 3px;
     margin-bottom: 8px;
   }
-  .header-info {
+  .header-line {
     color: #484f58;
     font-size: 14px;
     line-height: 1.7;
+    min-height: 1.7em;
   }
-  .header-info a {
+  .header-line a {
     color: #00D4AA;
     text-decoration: none;
     font-weight: bold;
   }
-  .header-info a:hover { text-decoration: underline; }
+  .header-line a:hover { text-decoration: underline; }
   .typing-cursor {
     display: inline-block;
     width: 7px; height: 14px;
@@ -168,39 +170,6 @@ LANDING_HTML = """<!DOCTYPE html>
     box-shadow: 0 0 15px rgba(0,212,170,0.2);
     text-shadow: 0 0 8px rgba(0,212,170,0.4);
   }
-  .chain-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 2px 16px;
-    margin: 6px 0 4px 18px;
-    font-size: 13px;
-  }
-  .chain-item {
-    color: #484f58;
-    padding: 1px 4px;
-    cursor: pointer;
-    border-radius: 3px;
-    transition: color 0.15s;
-    white-space: nowrap;
-  }
-  .chain-item:hover { color: #c9d1d9; }
-  .chain-item.active {
-    color: #00D4AA;
-    font-weight: bold;
-  }
-  .chain-item.hidden-chain { display: none; }
-  .chain-filter {
-    background: none; border: none; outline: none;
-    color: #e6edf3; font-family: inherit; font-size: inherit;
-    caret-color: #00D4AA; width: 120px;
-  }
-  .chain-filter::placeholder { color: #30363d; }
-  .chain-hint { color: #30363d; font-size: 12px; margin: 4px 0 0 18px; }
-  @keyframes pulse-chain {
-    0%,100% { text-shadow: none; }
-    50% { text-shadow: 0 0 8px rgba(0,212,170,0.6); }
-  }
-  .chain-pulse { animation: pulse-chain 0.3s ease 2; }
 </style>
 </head>
 <body>
@@ -211,14 +180,18 @@ LANDING_HTML = """<!DOCTYPE html>
     <div class="dot g"></div>
     <div class="titlebar-text">token-dd &mdash; bash</div>
   </div>
-  <div class="term-header">
-    <pre class="ascii-art" id="asciiBanner"></pre>
+  <!-- Fixed header: ASCII art + info lines -->
+  <div class="term-header" id="header">
+    <pre class="ascii-art"> ███╗   ██╗ █████╗ ███╗   ██╗███████╗███████╗███╗   ██╗   ██████╗ ██╗     ██╗
+ ████╗  ██║██╔══██╗████╗  ██║██╔════╝██╔════╝████╗  ██║  ██╔════╝ ██║     ██║
+ ██╔██╗ ██║███████║██╔██╗ ██║███████╗█████╗  ██╔██╗ ██║  ██║      ██║     ██║
+ ██║╚██╗██║██╔══██║██║╚██╗██║╚════██║██╔══╝  ██║╚██╗██║  ██║      ██║     ██║
+ ██║ ╚████║██║  ██║██║ ╚████║███████║███████╗██║ ╚████║  ╚██████╗ ███████╗██║
+ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝╚═╝  ╚═══╝  ╚═════╝ ╚══════╝╚═╝</pre>
     <div class="ascii-sub">token due diligence engine</div>
-    <div class="header-info">
-      <div>Powered by Nansen CLI + x402 micropayments</div>
-      <div>Built by <a href="https://linktr.ee/vincent.charles" target="_blank">Vincent Charles</a> \xb7 #NansenCLI</div>
-    </div>
+    <div id="headerLines"></div>
   </div>
+  <!-- Scrollable body: prompt + pipeline output -->
   <div class="term-body" id="body">
     <div id="output"></div>
     <div id="inputArea" class="hidden">
@@ -231,48 +204,33 @@ LANDING_HTML = """<!DOCTYPE html>
 </div>
 
 <script>
-// HARDCODED ASCII BANNER — do not regenerate or modify dynamically
-const ASCII_BANNER =
-" \u2588\u2588\u2588\u2557   \u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2557   \u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2557   \u2588\u2588\u2557  \u2588\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2557     \u2588\u2588\u2557\n" +
-" \u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2551 \u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d \u2588\u2588\u2551     \u2588\u2588\u2551\n" +
-" \u2588\u2588\u2554\u2588\u2588\u2557 \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2554\u2588\u2588\u2557 \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2554\u2588\u2588\u2557 \u2588\u2588\u2551 \u2588\u2588\u2551      \u2588\u2588\u2551     \u2588\u2588\u2551\n" +
-" \u2588\u2588\u2551\u255a\u2588\u2588\u2557\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2551\u255a\u2588\u2588\u2557\u2588\u2588\u2551\u255a\u2550\u2550\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u255d  \u2588\u2588\u2551\u255a\u2588\u2588\u2557\u2588\u2588\u2551 \u2588\u2588\u2551      \u2588\u2588\u2551     \u2588\u2588\u2551\n" +
-" \u2588\u2588\u2551 \u255a\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2551 \u255a\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2551 \u255a\u2588\u2588\u2588\u2588\u2551 \u255a\u2588\u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2551\n" +
-" \u255a\u2550\u255d  \u255a\u2550\u2550\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u2550\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u2550\u2550\u255d  \u255a\u2550\u2550\u2550\u2550\u2550\u255d \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u255d";
-document.getElementById('asciiBanner').textContent = ASCII_BANNER;
-
+const headerLines = document.getElementById('headerLines');
 const output = document.getElementById('output');
 const body = document.getElementById('body');
 const inputArea = document.getElementById('inputArea');
 const tokenInput = document.getElementById('tokenInput');
 
 const DEMO_TOKEN = 'pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn';
-const CHAINS = [
-  'solana','ethereum','base',
-  'arbitrum','polygon','optimism',
-  'avalanche','bnb','linea',
-  'scroll','mantle','ronin',
-  'sei','sonic','hyperevm',
-  'monad','plasma','iotaevm',
-];
 
 const STEPS = [
-  ["Token overview",           "PUMP \xb7 $1.1B market cap +0.9%"],
-  ["Smart money netflow",      "$728.4K net inflow (7d) \xb7 4 traders"],
+  ["Token overview",           "PUMP \\u00b7 $1.1B market cap +0.9%"],
+  ["Smart money netflow",      "$728.4K net inflow (7d) \\u00b7 4 traders"],
   ["Smart money holdings",     "$14.1M across 10 tokens"],
   ["Smart money DEX trades",   "5 recent trades"],
   ["Token info",               "PUMP metadata loaded"],
   ["Flow intelligence",        "Whales +$236.3K, Exchanges -$815.5K"],
   ["Who bought/sold",          "$52.1M bought vs $37.8M sold"],
-  ["Nansen Score",             "\u26a0 HIGH risk: BTC Reflexivity"],
+  ["Nansen Score",             "\\u26a0 HIGH risk: BTC Reflexivity"],
   ["Holder distribution",      "Top holder: 49% (pump.fun custody)"],
   ["PnL leaderboard",          "Top traders mapped"],
   ["DEX trades",               "10 trades analyzed"],
   ["Token flows",              "Flow data loaded"],
-  ["Price history",            "721 candles \xb7 $0.0017 \u2013 $0.0022"],
+  ["Price history",            "721 candles \\u00b7 $0.0017 \\u2013 $0.0022"],
   ["Profiler balance",         "Top buyer portfolio: $40.87"],
   ["Profiler counterparties",  "5 counterparties identified"],
 ];
+
+// ASCII art is embedded directly in the HTML <pre> tag
 
 function scrollBottom() {
   body.scrollTop = body.scrollHeight;
@@ -289,99 +247,29 @@ function addLine(html, cls) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-async function showIntro() {
+async function typeHeaderLine(text, speed) {
+  const div = document.createElement('div');
+  div.className = 'header-line';
+  headerLines.appendChild(div);
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] === '<') {
+      const close = text.indexOf('>', i);
+      if (close !== -1) { div.innerHTML += text.substring(i, close + 1); i = close; continue; }
+    }
+    div.innerHTML += text[i];
+    await sleep(speed || 30);
+  }
+  return div;
+}
+
+async function showBanner() {
   await sleep(200);
+  await typeHeaderLine('Powered by Nansen CLI + x402 micropayments', 30);
+  await typeHeaderLine('Built by <a href="https://linktr.ee/vincent.charles" target="_blank">Vincent Charles</a> \\u00b7 #NansenCLI', 30);
+
   addLine('<span class="d">Enter a token address to run 15 Nansen CLI</span>');
   addLine('<span class="d">calls and generate a due diligence report.</span>');
   addLine('');
-}
-
-// Chain grid selector
-function showChainGrid(selectedChain) {
-  return new Promise((resolve) => {
-    addLine('<span class="d">Select chain:</span>');
-    const gridDiv = document.createElement('div');
-    gridDiv.className = 'chain-grid';
-    output.appendChild(gridDiv);
-
-    const items = [];
-    CHAINS.forEach(c => {
-      const span = document.createElement('span');
-      span.className = 'chain-item' + (c === selectedChain ? ' active' : '');
-      span.textContent = (c === selectedChain ? '> ' : '  ') + c;
-      span.dataset.chain = c;
-      span.addEventListener('click', () => selectChain(c));
-      gridDiv.appendChild(span);
-      items.push(span);
-    });
-
-    const hintDiv = document.createElement('div');
-    hintDiv.className = 'chain-hint';
-    hintDiv.textContent = CHAINS.length + ' chains supported \xb7 Click to select or type to filter';
-    output.appendChild(hintDiv);
-
-    // Filter input
-    const filterLine = document.createElement('div');
-    filterLine.className = 'input-line';
-    filterLine.style.marginTop = '6px';
-    filterLine.innerHTML = '<span class="d">filter: </span>';
-    const filterInput = document.createElement('input');
-    filterInput.className = 'chain-filter';
-    filterInput.placeholder = '';
-    filterInput.autocomplete = 'off';
-    filterLine.appendChild(filterInput);
-    output.appendChild(filterLine);
-    filterInput.focus();
-    scrollBottom();
-
-    let currentChain = selectedChain;
-
-    filterInput.addEventListener('input', () => {
-      const q = filterInput.value.toLowerCase();
-      let firstMatch = null;
-      items.forEach(it => {
-        const c = it.dataset.chain;
-        const match = !q || c.includes(q);
-        it.classList.toggle('hidden-chain', !match);
-        if (match && !firstMatch) firstMatch = c;
-      });
-      if (firstMatch) {
-        currentChain = firstMatch;
-        items.forEach(it => {
-          const c = it.dataset.chain;
-          const isActive = c === currentChain;
-          it.classList.toggle('active', isActive);
-          it.textContent = (isActive ? '> ' : '  ') + c;
-        });
-      }
-    });
-
-    filterInput.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') selectChain(currentChain);
-    });
-
-    function selectChain(chain) {
-      items.forEach(it => {
-        if (it.dataset.chain === chain) {
-          it.classList.add('active', 'chain-pulse');
-        }
-      });
-      setTimeout(() => {
-        gridDiv.style.transition = 'opacity 0.4s ease';
-        gridDiv.style.opacity = '0';
-        hintDiv.style.transition = 'opacity 0.4s ease';
-        hintDiv.style.opacity = '0';
-        setTimeout(() => {
-          gridDiv.remove();
-          hintDiv.remove();
-          filterLine.remove();
-          addLine('<span class="d">Chain: </span><span class="g">' + chain + ' \u2713</span>');
-          scrollBottom();
-          resolve(chain);
-        }, 400);
-      }, 800);
-    }
-  });
 }
 
 async function showPrompt() {
@@ -412,7 +300,7 @@ async function showPrompt() {
       if (val.length >= 10) {
         inputArea.classList.add('hidden');
         addLine('<span class="prompt">$ </span>' + val);
-        showChainGrid('solana').then(chain => runPipeline(val, chain));
+        runPipeline(val);
       }
     }
   });
@@ -420,90 +308,32 @@ async function showPrompt() {
 
 async function runDemo() {
   inputArea.classList.add('hidden');
-  // Type token address
   const line = addLine('<span class="prompt">$ </span>');
   for (let i = 0; i < DEMO_TOKEN.length; i++) {
     line.innerHTML += DEMO_TOKEN[i];
     await sleep(12);
   }
   await sleep(400);
-
-  // Show chain grid with fade-in
-  addLine('<span class="d">Select chain:</span>');
-  const gridDiv = document.createElement('div');
-  gridDiv.className = 'chain-grid';
-  gridDiv.style.opacity = '0';
-  gridDiv.style.transition = 'opacity 0.5s ease';
-  output.appendChild(gridDiv);
-
-  const items = [];
-  CHAINS.forEach(c => {
-    const span = document.createElement('span');
-    span.className = 'chain-item';
-    span.textContent = '  ' + c;
-    span.dataset.chain = c;
-    gridDiv.appendChild(span);
-    items.push(span);
-  });
-
-  const hintDiv = document.createElement('div');
-  hintDiv.className = 'chain-hint';
-  hintDiv.style.opacity = '0';
-  hintDiv.style.transition = 'opacity 0.5s ease';
-  hintDiv.textContent = CHAINS.length + ' chains supported';
-  output.appendChild(hintDiv);
-  scrollBottom();
-
-  // Fade in grid (500ms)
-  requestAnimationFrame(() => { gridDiv.style.opacity = '1'; hintDiv.style.opacity = '1'; });
-  await sleep(600);
-
-  // Cycle highlight through chains at 150ms each
-  for (let i = 0; i < CHAINS.length; i++) {
-    items.forEach((it, j) => {
-      const isActive = j === i;
-      it.classList.toggle('active', isActive);
-      it.textContent = (isActive ? '> ' : '  ') + it.dataset.chain;
-    });
-    scrollBottom();
-    await sleep(150);
-  }
-
-  // Land on solana (index 0) — highlight + pulse for 800ms
-  items.forEach((it, j) => {
-    const isActive = j === 0;
-    it.classList.toggle('active', isActive);
-    it.textContent = (isActive ? '> ' : '  ') + it.dataset.chain;
-  });
-  items[0].classList.add('chain-pulse');
-  await sleep(800);
-
-  // Fade out grid (400ms)
-  gridDiv.style.opacity = '0';
-  hintDiv.style.opacity = '0';
-  await sleep(400);
-
-  gridDiv.remove();
-  hintDiv.remove();
-  addLine('<span class="d">Chain: </span><span class="g">solana \u2713</span>');
-  scrollBottom();
-
-  runPipeline(DEMO_TOKEN, 'solana');
+  runPipeline(DEMO_TOKEN);
 }
 
-async function runPipeline(token, chain) {
+async function runPipeline(token) {
+  addLine('');
+  addLine('<span class="d">Select chain [solana]: </span><span class="w">solana</span>');
   addLine('');
   await sleep(920);
   addLine('<span class="g">Initializing pipeline...</span>');
   addLine('');
 
+  // POST to /run in background
   const formData = new FormData();
   formData.append('token', token);
-  formData.append('chain', chain);
+  formData.append('chain', 'solana');
   const reportPromise = fetch('/run', {
     method: 'POST', body: formData, redirect: 'follow'
   }).then(r => r.url).catch(() => '/sample');
 
+  // Hacker typewriter with random delays
   async function hackerType(el, text, baseDelay) {
     const cur = document.createElement('span');
     cur.className = 'typing-cursor';
@@ -525,6 +355,7 @@ async function runPipeline(token, chain) {
     if (cur.parentNode) cur.remove();
   }
 
+  // 15% slower: base 9.2ms (was 8), spinner 575ms (was 500), think 345-575ms (was 300-500)
   for (let i = 0; i < STEPS.length; i++) {
     const [name, snippet] = STEPS[i];
     const num = String(i + 1).padStart(2, ' ');
@@ -535,7 +366,7 @@ async function runPipeline(token, chain) {
     await sleep(575);
 
     stepLine.innerHTML = '';
-    const fullText = '<span class="d">[' + num + '/15]</span> <span class="g">\u2713</span> <span class="w">' + name + '</span>  <span class="d">' + snippet + '</span>';
+    const fullText = '<span class="d">[' + num + '/15]</span> <span class="g">\\u2713</span> <span class="w">' + name + '</span>  <span class="d">' + snippet + '</span>';
     await hackerType(stepLine, fullText, 9.2);
     scrollBottom();
 
@@ -547,12 +378,12 @@ async function runPipeline(token, chain) {
   }
 
   addLine('');
-  addLine('<span class="g">\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550</span>');
-  addLine('<span class="w">  \u2705 REPORT READY</span>');
+  addLine('<span class="g">\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550</span>');
+  addLine('<span class="w">  \\u2705 REPORT READY</span>');
   addLine('<span class="d">  Token:</span> <span class="w">PUMP</span> <span class="d">|</span> <span class="d">Verdict:</span> <span class="g">BULLISH</span>');
   addLine('<span class="d">  Smart Money Conviction:</span> <span class="y">60/100</span>');
   addLine('<span class="d">  API Calls: 15 | Cost: ~$0.45</span>');
-  addLine('<span class="g">\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550</span>');
+  addLine('<span class="g">\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550</span>');
   addLine('');
 
   const reportUrl = await reportPromise;
@@ -560,21 +391,22 @@ async function runPipeline(token, chain) {
   const btn = document.createElement('a');
   btn.href = reportUrl;
   btn.className = 'report-btn';
-  btn.textContent = '[ View Full Report \u2192 ]';
+  btn.textContent = '[ View Full Report \\u2192 ]';
   btnLine.appendChild(btn);
   scrollBottom();
 }
 
+// Boot
 (async () => {
-  await showIntro();
+  await showBanner();
   await showPrompt();
 })();
 
+// Click anywhere in body focuses input
 body.addEventListener('click', () => {
   if (!inputArea.classList.contains('hidden')) tokenInput.focus();
 });
 </script>
-<p style="text-align:center;color:#00D4AA;font-family:'Inter',monospace;font-size:12px;margin-top:16px;opacity:0.7;">Demo mode \u2014 due to x402 API call costs, this runs from cached data \xb7 <a href="https://github.com/vchrl/token-dd" style="color:#00D4AA;">View source on GitHub \u2192</a></p>
 </body>
 </html>"""
 
