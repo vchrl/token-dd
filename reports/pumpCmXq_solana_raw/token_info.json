@@ -1,0 +1,29 @@
+{
+  "data": {
+    "name": "Pump",
+    "symbol": "PUMP",
+    "contract_address": "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
+    "logo": "https://coin-images.coingecko.com/coins/images/67164/small/pump.jpg?1751949376",
+    "token_details": {
+      "token_deployment_date": "2025-07-10 13:10:28",
+      "website": "https://pump.fun/board",
+      "x": "pumpdotfun",
+      "telegram": "",
+      "market_cap_usd": 1096010744.2414432,
+      "fdv_usd": 1858860178,
+      "circulating_supply": 590000000000,
+      "total_supply": 999989182509.4008
+    },
+    "spot_metrics": {
+      "volume_total_usd": 22650442.550710715,
+      "buy_volume_usd": 11037811.21026489,
+      "sell_volume_usd": 11612631.340445826,
+      "total_buys": 46948,
+      "total_sells": 46338,
+      "unique_buyers": 1936,
+      "unique_sellers": 1967,
+      "liquidity_usd": 12855323.107009346,
+      "total_holders": 57742
+    }
+  }
+}

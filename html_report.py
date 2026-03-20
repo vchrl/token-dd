@@ -621,8 +621,31 @@ def generate_html_report(
     if whale_flow > 0: total_signal += 1
     if smart_flow > 0: total_signal += 1
 
+    # Check for price-SM divergence: SM accumulating while price drops
+    price_dropping = False
+    sm_accumulating = False
+    if screener_entry:
+        pc = screener_entry.get("price_change", 0)
+        if pc and pc < -0.03:  # Price down more than 3%
+            price_dropping = True
+    if sm_entry:
+        if sm_entry.get("net_flow_7d_usd", 0) > 0 or sm_entry.get("net_flow_30d_usd", 0) > 0:
+            sm_accumulating = True
+    # Also check SM holdings for the token
+    if sm_holdings and symbol:
+        for h in sm_holdings:
+            if h.get("token_symbol", "") == symbol:
+                sm_accumulating = True
+                break
+
+    divergence_signal = price_dropping and sm_accumulating
+
     if total_signal >= 4:
         verdict, verdict_desc = "BULLISH", "Strong smart money accumulation with whale backing"
+        verdict_class, verdict_color = "bullish", "positive"
+    elif divergence_signal:
+        verdict = "DIVERGENCE"
+        verdict_desc = "Smart money is accumulating while price drops — classic divergence signal. Sophisticated traders are buying what retail is selling."
         verdict_class, verdict_color = "bullish", "positive"
     elif total_signal >= 2.5:
         verdict, verdict_desc = "CAUTIOUSLY BULLISH", "Positive smart money signals but mixed whale activity"

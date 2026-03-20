@@ -1,0 +1,48 @@
+{
+  "token_address": "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
+  "chain": "solana",
+  "token_info": {
+    "market_cap_usd": 1096739369,
+    "market_cap_group": "largecap",
+    "is_stablecoin": false
+  },
+  "risk_indicators": [
+    {
+      "indicator_type": "btc-reflexivity",
+      "score": "high",
+      "signal": 1.68,
+      "signal_percentile": 95.95015576323988,
+      "last_trigger_on": "2026-03-19"
+    },
+    {
+      "indicator_type": "liquidity-risk",
+      "score": "low",
+      "signal": 0.11248124078534488,
+      "signal_percentile": 47.69230769230769,
+      "last_trigger_on": "2026-03-20"
+    },
+    {
+      "indicator_type": "token-supply-inflation",
+      "score": "low",
+      "signal": -0.016335269411532106,
+      "signal_percentile": 35.85657370517929,
+      "last_trigger_on": "2026-03-20"
+    }
+  ],
+  "reward_indicators": [
+    {
+      "indicator_type": "funding-rate",
+      "score": "bullish",
+      "signal": 1,
+      "signal_percentile": 4.761904761904762,
+      "last_trigger_on": "2026-03-20"
+    },
+    {
+      "indicator_type": "trading-range",
+      "score": "neutral",
+      "signal": 4.865213905608123,
+      "signal_percentile": 63.56275303643725,
+      "last_trigger_on": "2026-03-19"
+    }
+  ]
+}

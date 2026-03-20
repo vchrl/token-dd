@@ -1,0 +1,116 @@
+[
+  {
+    "counterparty_address": "8PSmqJy63d4cAKRLKUitJCBLSjuL1cvZxC53vdCyjUey",
+    "counterparty_address_label": [
+      "Token Millionaire [8PSmqJy6]"
+    ],
+    "interaction_count": 10299,
+    "total_volume_usd": 7245376.47203981,
+    "volume_in_usd": 0,
+    "volume_out_usd": 7245376.47203981,
+    "tokens_info": [
+      {
+        "token_address": "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
+        "token_symbol": "PUMP",
+        "token_name": "Pump",
+        "num_transfer": "10298"
+      },
+      {
+        "token_address": "So11111111111111111111111111111111111111112",
+        "token_symbol": "SOL",
+        "token_name": "Solana",
+        "num_transfer": "1"
+      }
+    ]
+  },
+  {
+    "counterparty_address": "9gt57BV7tqQmza7ChF6ZTFaxv26QgPFac3587V5hZkwh",
+    "counterparty_address_label": [
+      "[9gt57BV7]"
+    ],
+    "interaction_count": 37,
+    "total_volume_usd": 7221558.324280084,
+    "volume_in_usd": 7221558.324280084,
+    "volume_out_usd": 0,
+    "tokens_info": [
+      {
+        "token_address": "So11111111111111111111111111111111111111112",
+        "token_symbol": "SOL",
+        "token_name": "Solana",
+        "num_transfer": "37"
+      }
+    ]
+  },
+  {
+    "counterparty_address": "4xDsmeTWPNjgSVSS1VTfzFq3iHZhp77ffPkAmkZkdu71",
+    "counterparty_address_label": [
+      "\ud83c\udfe6 Jupiter: Aggregator Authority [4xDsmeTW]"
+    ],
+    "interaction_count": 2392,
+    "total_volume_usd": 1608110.6056703932,
+    "volume_in_usd": 805530.5727089072,
+    "volume_out_usd": 802580.032961486,
+    "tokens_info": [
+      {
+        "token_address": "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
+        "token_symbol": "PUMP",
+        "token_name": "Pump",
+        "num_transfer": "1196"
+      },
+      {
+        "token_address": "So11111111111111111111111111111111111111112",
+        "token_symbol": "SOL",
+        "token_name": "Solana",
+        "num_transfer": "1196"
+      }
+    ]
+  },
+  {
+    "counterparty_address": "2MFoS3MPtvyQ4Wh4M9pdfPjz6UhVoNbFbGJAskCPCj3h",
+    "counterparty_address_label": [
+      "\ud83c\udfe6 Jupiter: Aggregator Authority [2MFoS3MP]"
+    ],
+    "interaction_count": 2160,
+    "total_volume_usd": 1598427.937046043,
+    "volume_in_usd": 800916.7879569458,
+    "volume_out_usd": 797511.1490890974,
+    "tokens_info": [
+      {
+        "token_address": "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
+        "token_symbol": "PUMP",
+        "token_name": "Pump",
+        "num_transfer": "1080"
+      },
+      {
+        "token_address": "So11111111111111111111111111111111111111112",
+        "token_symbol": "SOL",
+        "token_name": "Solana",
+        "num_transfer": "1080"
+      }
+    ]
+  },
+  {
+    "counterparty_address": "BQ72nSv9f3PRyRKCBnHLVrerrv37CYTHm5h3s9VSGQDV",
+    "counterparty_address_label": [
+      "\ud83c\udfe6 Jupiter: Aggregator Authority [BQ72nSv9]"
+    ],
+    "interaction_count": 2256,
+    "total_volume_usd": 1591647.7681453666,
+    "volume_in_usd": 797792.9014245361,
+    "volume_out_usd": 793854.8667208306,
+    "tokens_info": [
+      {
+        "token_address": "So11111111111111111111111111111111111111112",
+        "token_symbol": "SOL",
+        "token_name": "Solana",
+        "num_transfer": "1128"
+      },
+      {
+        "token_address": "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
+        "token_symbol": "PUMP",
+        "token_name": "Pump",
+        "num_transfer": "1128"
+      }
+    ]
+  }
+]

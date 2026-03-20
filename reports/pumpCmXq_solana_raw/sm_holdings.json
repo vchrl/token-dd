@@ -1,0 +1,148 @@
+[
+  {
+    "chain": "solana",
+    "token_address": "JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN",
+    "token_symbol": "JUP",
+    "token_sectors": [
+      "Scaling & Connectivity",
+      "Decentralised Exchanges",
+      "Perps, Options and Derivatives"
+    ],
+    "value_usd": 2896743.175261365,
+    "balance_24h_percent_change": 0,
+    "holders_count": 18,
+    "share_of_holdings_percent": 0.0018050267501190061,
+    "token_age_days": 785,
+    "market_cap_usd": 552967701
+  },
+  {
+    "chain": "solana",
+    "token_address": "2zMMhcVQEXDtdE6vsFS7S7D5oUodfJHE8vd1gnBouauv",
+    "token_symbol": "PENGU",
+    "token_sectors": [
+      "NFTs",
+      "Scaling & Connectivity",
+      "GameFi"
+    ],
+    "value_usd": 874517.6998352361,
+    "balance_24h_percent_change": 0,
+    "holders_count": 8,
+    "share_of_holdings_percent": 0.0005449319273921198,
+    "token_age_days": 476,
+    "market_cap_usd": 445118497
+  },
+  {
+    "chain": "solana",
+    "token_address": "METAwkXcqyXKy1AtsSgJ8JiUHwGCafnZL38n3vYmeta",
+    "token_symbol": "META",
+    "token_sectors": [
+      "GambleFi"
+    ],
+    "value_usd": 3496692.983579955,
+    "balance_24h_percent_change": 0,
+    "holders_count": 7,
+    "share_of_holdings_percent": 0.002178869161138449,
+    "token_age_days": 225,
+    "market_cap_usd": 77825631
+  },
+  {
+    "chain": "solana",
+    "token_address": "rndrizKT3MK1iimdxRdWabcF7Zg7AR5T4nud4EkHBof",
+    "token_symbol": "RENDER",
+    "token_sectors": [
+      "Artificial Intelligence",
+      "Scaling & Connectivity",
+      "Metaverse"
+    ],
+    "value_usd": 4339855.034003799,
+    "balance_24h_percent_change": 0,
+    "holders_count": 7,
+    "share_of_holdings_percent": 0.0027042626681285566,
+    "token_age_days": 871,
+    "market_cap_usd": 875309561
+  },
+  {
+    "chain": "solana",
+    "token_address": "8J69rbLTzWWgUJziFY8jeu5tDwEPBwUz4pKBMr5rpump",
+    "token_symbol": "WOJAK",
+    "token_sectors": [
+      "Memecoins"
+    ],
+    "value_usd": 187472.5507322886,
+    "balance_24h_percent_change": -0.0031018637167299027,
+    "holders_count": 7,
+    "share_of_holdings_percent": 0.00011681842279797247,
+    "token_age_days": 137,
+    "market_cap_usd": 3957314
+  },
+  {
+    "chain": "solana",
+    "token_address": "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
+    "token_symbol": "PUMP",
+    "token_sectors": [
+      "Memecoins"
+    ],
+    "value_usd": 1827114.6860191608,
+    "balance_24h_percent_change": 4.794665612217606e-05,
+    "holders_count": 6,
+    "share_of_holdings_percent": 0.0011385168391748453,
+    "token_age_days": 253,
+    "market_cap_usd": 1096256276
+  },
+  {
+    "chain": "solana",
+    "token_address": "9BB6NFEcjBCtnNLFko2FqVQBq8HHM13kCyYcdQbgpump",
+    "token_symbol": "FARTCOIN",
+    "token_sectors": [
+      "Memecoins",
+      "Artificial Intelligence",
+      "AI Agents"
+    ],
+    "value_usd": 28457.315354951366,
+    "balance_24h_percent_change": 0,
+    "holders_count": 6,
+    "share_of_holdings_percent": 1.7732402337540653e-05,
+    "token_age_days": 518,
+    "market_cap_usd": 191578055
+  },
+  {
+    "chain": "solana",
+    "token_address": "4TyZGqRLG3VcHTGMcLBoPUmqYitMVojXinAmkL8xpump",
+    "token_symbol": "TESTICLE",
+    "token_sectors": [
+      "Memecoins"
+    ],
+    "value_usd": 81843.3649878736,
+    "balance_24h_percent_change": 0,
+    "holders_count": 6,
+    "share_of_holdings_percent": 5.0998467653086275e-05,
+    "token_age_days": 89,
+    "market_cap_usd": 7481950
+  },
+  {
+    "chain": "solana",
+    "token_address": "NV2RYH954cTJ3ckFUpvfqaQXU4ARqqDH3562nFSpump",
+    "token_symbol": "PUNCH",
+    "token_sectors": [],
+    "value_usd": 306695.84806338506,
+    "balance_24h_percent_change": -0.007087470703865048,
+    "holders_count": 6,
+    "share_of_holdings_percent": 0.00019110917896782313,
+    "token_age_days": 43,
+    "market_cap_usd": 14551396
+  },
+  {
+    "chain": "solana",
+    "token_address": "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263",
+    "token_symbol": "BONK",
+    "token_sectors": [
+      "Memecoins"
+    ],
+    "value_usd": 26816.092798045425,
+    "balance_24h_percent_change": 0,
+    "holders_count": 6,
+    "share_of_holdings_percent": 1.6709719124401936e-05,
+    "token_age_days": 1198,
+    "market_cap_usd": 521013616
+  }
+]

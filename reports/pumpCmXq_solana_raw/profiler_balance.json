@@ -1,0 +1,12 @@
+[
+  {
+    "chain": "solana",
+    "address": "9jHrTCwpDANHLNQz5cem6XLUBM8KiTWKe766Br6KVCXM",
+    "token_address": "So11111111111111111111111111111111111111112",
+    "token_symbol": "SOL",
+    "token_name": "Solana",
+    "token_amount": 0.459303868,
+    "price_usd": 88.978453813349,
+    "value_usd": 40.86814800513055
+  }
+]

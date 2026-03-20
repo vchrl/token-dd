@@ -1,0 +1,102 @@
+[
+  {
+    "address": "9jHrTCwpDANHLNQz5cem6XLUBM8KiTWKe766Br6KVCXM",
+    "address_label": "[9jHrTCwp]",
+    "bought_token_volume": 3534829641.9839463,
+    "sold_token_volume": 0,
+    "token_trade_volume": 3534829641.9839463,
+    "bought_volume_usd": 7001373.375862882,
+    "sold_volume_usd": 0,
+    "trade_volume_usd": 7001373.375862882
+  },
+  {
+    "address": "99mRw3EzdJZWEUjgp1nrU4WeHsukUBjbh7gYE7pm4F3c",
+    "address_label": "\u200b\u200bTrading Bot [99mRw3Ez]",
+    "bought_token_volume": 1239648506.0524144,
+    "sold_token_volume": 0,
+    "token_trade_volume": 1239648506.0524144,
+    "bought_volume_usd": 2509434.080081847,
+    "sold_volume_usd": 0,
+    "trade_volume_usd": 2509434.080081847
+  },
+  {
+    "address": "2kfQuYG2FVZL2RqqKEttcdadbPWP4c7b6AFQztNcBWyV",
+    "address_label": "\ud83e\udd16 High Balance [2kfQuYG2]",
+    "bought_token_volume": 12002147884.90152,
+    "sold_token_volume": 11394862592.305576,
+    "token_trade_volume": 607285292.5959435,
+    "bought_volume_usd": 24278363.06621088,
+    "sold_volume_usd": 23058264.775738016,
+    "trade_volume_usd": 1220098.290472865
+  },
+  {
+    "address": "6jz6evaLNRDJkXUypB6coiTZoFHtVTck4cJBpQ78kXnq",
+    "address_label": "Top 100 on PUMP Leaderboard [6jz6evaL]",
+    "bought_token_volume": 1040872028.6298791,
+    "sold_token_volume": 483813183.375319,
+    "token_trade_volume": 557058845.2545601,
+    "bought_volume_usd": 2005675.2623065019,
+    "sold_volume_usd": 935338.1784091725,
+    "trade_volume_usd": 1070337.0838973294
+  },
+  {
+    "address": "9SMp4yLKGtW9TnLimfVPkDARsyNSfJw43WMke4r7KoZj",
+    "address_label": "\ud83e\udd16 Token Millionaire [9SMp4yLK]",
+    "bought_token_volume": 4265767683.3715014,
+    "sold_token_volume": 3756027566.8088965,
+    "token_trade_volume": 509740116.5626049,
+    "bought_volume_usd": 8517801.60765762,
+    "sold_volume_usd": 7513955.062053702,
+    "trade_volume_usd": 1003846.5456039188
+  },
+  {
+    "address": "HbjYfcWZBjCBYTJpZkLGxqArVmZVu3mQcRudb6Wg1sVh",
+    "address_label": "\ud83e\udd16 High Balance [HbjYfcWZ]",
+    "bought_token_volume": 1611539735.3577766,
+    "sold_token_volume": 1208880584.379921,
+    "token_trade_volume": 402659150.9778557,
+    "bought_volume_usd": 3298028.291717016,
+    "sold_volume_usd": 2463574.229444853,
+    "trade_volume_usd": 834454.0622721631
+  },
+  {
+    "address": "DbzsgT9ukJL3jpHxjLzz1X2iw4v4Rbr1iDtDq3zcrvDi",
+    "address_label": "Whale [DbzsgT9u]",
+    "bought_token_volume": 150777192.854125,
+    "sold_token_volume": 0,
+    "token_trade_volume": 150777192.854125,
+    "bought_volume_usd": 297072.3707918835,
+    "sold_volume_usd": 0,
+    "trade_volume_usd": 297072.3707918835
+  },
+  {
+    "address": "4AFAkCSkSNmra64irggEFd8ZtF4WCtFe51qVaFFNBL2D",
+    "address_label": "\ud83e\udd16 High Balance [4AFAkCSk]",
+    "bought_token_volume": 1992516622.2360978,
+    "sold_token_volume": 1908751698.3254235,
+    "token_trade_volume": 83764923.91067433,
+    "bought_volume_usd": 4005587.824103732,
+    "sold_volume_usd": 3841416.0654717204,
+    "trade_volume_usd": 164171.7586320117
+  },
+  {
+    "address": "2TBLRiCQhQGHnArLz8VTz7ZKLfdFGsyVWGAoeBNvMYTF",
+    "address_label": "Top 100 on TRUMP Leaderboard [2TBLRiCQ]",
+    "bought_token_volume": 40833725.467934,
+    "sold_token_volume": 0,
+    "token_trade_volume": 40833725.467934,
+    "bought_volume_usd": 74897.74132892201,
+    "sold_volume_usd": 0,
+    "trade_volume_usd": 74897.74132892201
+  },
+  {
+    "address": "BA4kkLs7cAzBGcTt6cngEjfbFAg9HeFLPgfDmRjmyqxq",
+    "address_label": "Former Smart Trader [BA4kkLs7]",
+    "bought_token_volume": 38364482.977485,
+    "sold_token_volume": 0,
+    "token_trade_volume": 38364482.977485,
+    "bought_volume_usd": 79611.97360165925,
+    "sold_volume_usd": 0,
+    "trade_volume_usd": 79611.97360165925
+  }
+]

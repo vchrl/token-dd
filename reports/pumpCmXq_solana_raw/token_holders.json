@@ -1,0 +1,122 @@
+[
+  {
+    "address": "Cfq1ts1iFr1eUWWBm8eFxUzm5R3YA3UvMZznwiShbgZt",
+    "address_label": "\u200b\u200b\ud83c\udfe6 pump.fun: Token Custody [Cfq1ts1i]",
+    "token_amount": 365461857223.2221,
+    "total_outflow": 634538142884.465,
+    "total_inflow": 1000000000107.6871,
+    "balance_change_24h": 0,
+    "balance_change_7d": 0,
+    "balance_change_30d": 89.64,
+    "ownership_percentage": 0.36546577071439174,
+    "value_usd": 679088783.2208416
+  },
+  {
+    "address": "G8CcfRffqZWHSAQJXLDfwbAkGE95SddUqVXnTrL4kqjm",
+    "address_label": "\u200b\u200b\ud83c\udfe6 pump.fun: krosavtchiktreasure.sol [G8CcfRff]",
+    "token_amount": 103962589332.79425,
+    "total_outflow": 0,
+    "total_inflow": 103956762936.37863,
+    "balance_change_24h": 0,
+    "balance_change_7d": 1239648487.911669,
+    "balance_change_30d": 16053903559.77426,
+    "ownership_percentage": 0.10396370259993083,
+    "value_usd": 193179744.73974535
+  },
+  {
+    "address": "8UhbNoBXmGoxJr2TeWW8wmSMoWmjS2rTT2tVJxzuTogC",
+    "address_label": "PUMP Whale [8UhbNoBX]",
+    "token_amount": 80000000010.00024,
+    "total_outflow": 0,
+    "total_inflow": 80000000010.00024,
+    "balance_change_24h": 0,
+    "balance_change_7d": 0,
+    "balance_change_30d": 0,
+    "ownership_percentage": 0.08000085667749486,
+    "value_usd": 148653276.91714677
+  },
+  {
+    "address": "9pkFKCR1mdS31JxjKdtmWg2awZUg6vJUYVY722DAcXzv",
+    "address_label": "PUMP Whale [9pkFKCR1]",
+    "token_amount": 35000000010.00026,
+    "total_outflow": 0,
+    "total_inflow": 35000000010.00026,
+    "balance_change_24h": 0,
+    "balance_change_7d": 0,
+    "balance_change_30d": 0,
+    "ownership_percentage": 0.035000374802029215,
+    "value_usd": 65035808.661704175
+  },
+  {
+    "address": "9WzDXwBbmkg8ZTbNMqUxvQRAyrZzDsGYdLVL9zYtAWWM",
+    "address_label": "\ud83c\udfe6 Binance: Deposits [9WzDXwBb]",
+    "token_amount": 30139976045.324,
+    "total_outflow": 21385848248.723,
+    "total_inflow": 51525824294.047,
+    "balance_change_24h": 0,
+    "balance_change_7d": 40,
+    "balance_change_30d": 40,
+    "ownership_percentage": 0.030140298794546046,
+    "value_usd": 56005077.55977068
+  },
+  {
+    "address": "85WTujfJ9meJq5hfjAeb5gftj7n8Q7QTsZJbRqMD5ERS",
+    "address_label": "\u200b\u200b\ud83c\udfe6 pump.fun [85WTujfJ]",
+    "token_amount": 29999946428,
+    "total_outflow": 0,
+    "total_inflow": 29999946428,
+    "balance_change_24h": 0,
+    "balance_change_7d": 0,
+    "balance_change_30d": 0,
+    "ownership_percentage": 0.030000267677736777,
+    "value_usd": 55744879.291294865
+  },
+  {
+    "address": "BBvQteuawKB2UtExfevL8HYLjWWsgmWXsp922vFbvCfT",
+    "address_label": "PUMP Whale [BBvQteua]",
+    "token_amount": 25000000010.02305,
+    "total_outflow": 0,
+    "total_inflow": 25000000010.02305,
+    "balance_change_24h": 0,
+    "balance_change_7d": 0,
+    "balance_change_30d": 0,
+    "ownership_percentage": 0.02500026771861519,
+    "value_usd": 46454149.04942594
+  },
+  {
+    "address": "GTeSSwovPiVirpvWJpThUWiLDSLsuApmJw621Yom3MhB",
+    "address_label": "PUMP Whale [GTeSSwov]",
+    "token_amount": 25000000010.000233,
+    "total_outflow": 0,
+    "total_inflow": 25000000010.000233,
+    "balance_change_24h": 0,
+    "balance_change_7d": 0,
+    "balance_change_30d": 0,
+    "ownership_percentage": 0.025000267718592376,
+    "value_usd": 46454149.04938354
+  },
+  {
+    "address": "AvqFxKNrYZNvxsj2oWhLW8det68HzCXBqswshoD2TdT6",
+    "address_label": "\u200b\u200b\ud83c\udfe6 pump.fun [AvqFxKNr]",
+    "token_amount": 24000000010.000267,
+    "total_outflow": 0,
+    "total_inflow": 24000000010.000267,
+    "balance_change_24h": 0,
+    "balance_change_7d": 0,
+    "balance_change_30d": 0,
+    "ownership_percentage": 0.02400025701024873,
+    "value_usd": 44595983.08815155
+  },
+  {
+    "address": "96HiV4cGWTJNCjGVff3RTHgPXmpYz7MSrGTAmxNKVWM9",
+    "address_label": "\u200b\u200b\ud83c\udfe6 pump.fun [96HiV4cG]",
+    "token_amount": 22999958928,
+    "total_outflow": 0,
+    "total_inflow": 22999958928,
+    "balance_change_24h": 0,
+    "balance_change_7d": 0,
+    "balance_change_30d": 0,
+    "ownership_percentage": 0.02300020521946486,
+    "value_usd": 42737740.78974497
+  }
+]

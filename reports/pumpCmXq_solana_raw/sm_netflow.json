@@ -1,0 +1,282 @@
+[
+  {
+    "token_address": "6iA73gWCKkLWKbVr8rgibV57MMRxzsaqS9cWpgKBpump",
+    "token_symbol": "\u6211\u7684\u5200\u76fe",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 4055.887246894488,
+    "net_flow_7d_usd": 24748.917316210936,
+    "net_flow_30d_usd": -51944.20808562631,
+    "chain": "solana",
+    "token_sectors": [],
+    "trader_count": 8,
+    "token_age_days": 23,
+    "market_cap_usd": 2815873
+  },
+  {
+    "token_address": "3a3ijue9qX1uvGvxyTtdsyAsgNuYP3nuCMyJtrZ8e38n",
+    "token_symbol": "\ud83c\udf31 CHUCK",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 3730.1109755237985,
+    "net_flow_7d_usd": 3730.1109755237985,
+    "net_flow_30d_usd": 3730.1109755237985,
+    "chain": "solana",
+    "token_sectors": [],
+    "trader_count": 1,
+    "token_age_days": 0,
+    "market_cap_usd": 261250.280432734
+  },
+  {
+    "token_address": "BUF3TvvZfCMMWaPZJMTGm5WWVmi2arQ9Swze4CPEbonk",
+    "token_symbol": "CLUTCH",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 1335.2679356348353,
+    "net_flow_7d_usd": -387.06316410975955,
+    "net_flow_30d_usd": 1904.6431499603534,
+    "chain": "solana",
+    "token_sectors": [],
+    "trader_count": 1,
+    "token_age_days": 176,
+    "market_cap_usd": 346376.142023199
+  },
+  {
+    "token_address": "5oq4zKetRkUMMrFtkWH7r1Q6HZJMsTjgCeU6isgYpump",
+    "token_symbol": "MOGGING",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 1318.7324661544342,
+    "net_flow_7d_usd": 2022.7820849907957,
+    "net_flow_30d_usd": 949.2168323291552,
+    "chain": "solana",
+    "token_sectors": [
+      "Memecoins"
+    ],
+    "trader_count": 4,
+    "token_age_days": 9,
+    "market_cap_usd": 57530
+  },
+  {
+    "token_address": "CMDujhQDibA4Cv99z4tBUaSXiHkxrpQJYaQTiakSBAGS",
+    "token_symbol": "\ud83c\udf31 0",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 520.694757235592,
+    "net_flow_7d_usd": 428.20684275865295,
+    "net_flow_30d_usd": 428.20684275865295,
+    "chain": "solana",
+    "token_sectors": [
+      "Bags.fm",
+      "Memecoin"
+    ],
+    "trader_count": 2,
+    "token_age_days": 1,
+    "market_cap_usd": 69824.6225146515
+  },
+  {
+    "token_address": "25E8X8fPnT9AdU1nA78snybnzVxkDvv5rK663Ngrpump",
+    "token_symbol": "GAS",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 499.96682883690096,
+    "net_flow_7d_usd": 999.9314076745682,
+    "net_flow_30d_usd": 2249.84941995246,
+    "chain": "solana",
+    "token_sectors": [],
+    "trader_count": 1,
+    "token_age_days": 30,
+    "market_cap_usd": 407200
+  },
+  {
+    "token_address": "4daoTLufDmV3ods48Zh8rymaZKBLtgEvuH9qALYLbonk",
+    "token_symbol": "MEMECOIN",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 364.08305711643175,
+    "net_flow_7d_usd": 651.199821155534,
+    "net_flow_30d_usd": -5719.496755047318,
+    "chain": "solana",
+    "token_sectors": [
+      "Memecoins"
+    ],
+    "trader_count": 2,
+    "token_age_days": 324,
+    "market_cap_usd": 117640
+  },
+  {
+    "token_address": "AVF9F4C4j8b1Kh4BmNHqybDaHgnZpJ7W7yLvL7hUpump",
+    "token_symbol": "LOBSTAR",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 256.6175603529699,
+    "net_flow_7d_usd": 784.0104005054169,
+    "net_flow_30d_usd": -78281.00821285982,
+    "chain": "solana",
+    "token_sectors": [
+      "Decentralised Exchanges"
+    ],
+    "trader_count": 14,
+    "token_age_days": 28,
+    "market_cap_usd": 5694097
+  },
+  {
+    "token_address": "pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn",
+    "token_symbol": "PUMP",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 88.26121054546262,
+    "net_flow_7d_usd": 728438.9096652062,
+    "net_flow_30d_usd": -63940.05908315975,
+    "chain": "solana",
+    "token_sectors": [
+      "Memecoins"
+    ],
+    "trader_count": 4,
+    "token_age_days": 253,
+    "market_cap_usd": 1096739369
+  },
+  {
+    "token_address": "AC3ydFNcS7hitJF3ApnndhLajrqXg4S37jSSUnqgpump",
+    "token_symbol": "\ud83c\udf31 FOID",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 66.69822262085702,
+    "net_flow_7d_usd": 66.69822262085702,
+    "net_flow_30d_usd": 66.69822262085702,
+    "chain": "solana",
+    "token_sectors": [],
+    "trader_count": 1,
+    "token_age_days": 0,
+    "market_cap_usd": 9491.7316111513
+  },
+  {
+    "token_address": "zGh48JtNHVBb5evgoZLXwgPD2Qu4MhkWdJLGDAupump",
+    "token_symbol": "RETIRE",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 24.523663453466458,
+    "net_flow_7d_usd": 3898.1275227594056,
+    "net_flow_30d_usd": 3871.5268072584768,
+    "chain": "solana",
+    "token_sectors": [
+      "Decentralised Exchanges"
+    ],
+    "trader_count": 2,
+    "token_age_days": 523,
+    "market_cap_usd": 4297979
+  },
+  {
+    "token_address": "2pjcq9k2X5oSArNKiVeQ2ENB63eJt8pwCabciGQGpump",
+    "token_symbol": "\ud83c\udf31 OPTIMISTIC",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 3.9997166307013376,
+    "net_flow_7d_usd": 3.9997166307013376,
+    "net_flow_30d_usd": 3.9997166307013376,
+    "chain": "solana",
+    "token_sectors": [],
+    "trader_count": 1,
+    "token_age_days": 1,
+    "market_cap_usd": 637094.27970992
+  },
+  {
+    "token_address": "2xMNNityqHbafNAgNBF95phKcdx97qahJMwkUh4Bpump",
+    "token_symbol": "TOASTER",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": 770.0167312653241,
+    "chain": "solana",
+    "token_sectors": [],
+    "trader_count": 1,
+    "token_age_days": 26,
+    "market_cap_usd": 16013.94
+  },
+  {
+    "token_address": "2nP9yKQNSGQy851iyawDvBkzkK2R2aqKArQCKc2gpump",
+    "token_symbol": "PSYOPANIME",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": -6069.6836350622525,
+    "net_flow_30d_usd": -3881.398540036575,
+    "chain": "solana",
+    "token_sectors": [
+      "Memecoins",
+      "AI Meme"
+    ],
+    "trader_count": 2,
+    "token_age_days": 69,
+    "market_cap_usd": 4694936
+  },
+  {
+    "token_address": "65YnRAiThkUda2czNFXVuMaCTiNpiq3LLLWbtGTLpump",
+    "token_symbol": "\ud83c\udf31 ALIENS",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": -489.4331308680148,
+    "net_flow_30d_usd": -489.4331308680148,
+    "chain": "solana",
+    "token_sectors": [],
+    "trader_count": 1,
+    "token_age_days": 2,
+    "market_cap_usd": 49351
+  },
+  {
+    "token_address": "79dGFnR8XUusyDiK3n8yZ6FXhJjWLFgzdsi2SkUpump",
+    "token_symbol": "LIA",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -86.81412719412799,
+    "chain": "solana",
+    "token_sectors": [],
+    "trader_count": 1,
+    "token_age_days": 25,
+    "market_cap_usd": 9629.25
+  },
+  {
+    "token_address": "AmSQu3NZTSKqTu5bTsfKimiBwEpfzT46RqzC5Apnbonk",
+    "token_symbol": "CHUD",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -549.7816073986723,
+    "chain": "solana",
+    "token_sectors": [
+      "Memecoins"
+    ],
+    "trader_count": 1,
+    "token_age_days": 38,
+    "market_cap_usd": 147792.24340942
+  },
+  {
+    "token_address": "5JP1Loni4DtDgvHupQAzcRXQtsWnWWVibdsD4igVpump",
+    "token_symbol": "AYYLMAO",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -4139.6854818387055,
+    "chain": "solana",
+    "token_sectors": [],
+    "trader_count": 5,
+    "token_age_days": 33,
+    "market_cap_usd": 44131
+  },
+  {
+    "token_address": "8P1PRDiJjSK8xA3zvaARSo2uTTj1nRagCGL1kD9Dpump",
+    "token_symbol": "TOKEN",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 1215.7409113989056,
+    "net_flow_30d_usd": 1215.7409113989056,
+    "chain": "solana",
+    "token_sectors": [],
+    "trader_count": 1,
+    "token_age_days": 4,
+    "market_cap_usd": 97497.9847243748
+  },
+  {
+    "token_address": "C2omVhcvt3DDY77S2KZzawFJQeETZofgZ4eNWWkXpump",
+    "token_symbol": "BULLISH",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": -2210.572399710669,
+    "net_flow_30d_usd": -3461.1048323634086,
+    "chain": "solana",
+    "token_sectors": [
+      "Memecoins"
+    ],
+    "trader_count": 1,
+    "token_age_days": 169,
+    "market_cap_usd": 2394349
+  }
+]

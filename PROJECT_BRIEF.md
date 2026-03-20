@@ -8,6 +8,7 @@
 **Budget remaining:** ~$1.35 USDC — MAX 2 more full test runs
 **API key:** prjHKnvnNJW928YRXomtxOj3sz2C0uqr (0 credits, use x402)
 **Judging:** creativity, usefulness, technical depth, presentation on X
+**x402 NOTE:** Must remove API key for x402 to work. Run `nansen logout` before API calls. API key + 0 credits = CREDITS_EXHAUSTED error instead of x402 fallback.
 
 ## Priority Order (competition impact)
 

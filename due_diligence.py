@@ -252,12 +252,12 @@ def collect_token_flows(chain: str, token: str, days: int = 7) -> dict | None:
     )
 
 
-def collect_token_ohlcv(chain: str, token: str, timeframe: str = "1h") -> list:
-    """Get OHLCV candle data."""
+def collect_token_ohlcv(chain: str, token: str, timeframe: str = "4h") -> list:
+    """Get OHLCV candle data. 4h timeframe × 42 candles = ~7 days."""
     return _collect(
         "token_ohlcv",
         ["research", "token", "ohlcv", "--chain", chain,
-         "--token", token, "--timeframe", timeframe, "--limit", "24"],
+         "--token", token, "--timeframe", timeframe, "--limit", "42"],
         "OHLCV"
     )
 

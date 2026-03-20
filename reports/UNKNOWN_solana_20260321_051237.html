@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Due Diligence: {{SYMBOL}} | Unchain Data</title>
+<title>Due Diligence: UNKNOWN | Unchain Data</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
   :root {
@@ -190,16 +190,16 @@
 <!-- Header -->
 <div class="header">
   <div>
-    <h1>Due Diligence: <span>{{SYMBOL}}</span></h1>
+    <h1>Due Diligence: <span>UNKNOWN</span></h1>
     <div style="color:var(--text-dim);font-size:14px;margin-top:4px;">
-      <a href="{{EXPLORER_TOKEN_URL}}" target="_blank" class="addr-link">{{TOKEN_ADDRESS}}</a>
+      <a href="https://solscan.io/token/pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn" target="_blank" class="addr-link">pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn</a>
     </div>
   </div>
   <div class="header-meta">
-    <div><span class="chain-badge">{{CHAIN}}</span></div>
-    <div>{{TIMESTAMP}}</div>
-    <div>{{API_CALLS}} Nansen API calls via x402</div>
-    <div>Cost: ~${{COST}}</div>
+    <div><span class="chain-badge">Solana</span></div>
+    <div>2026-03-20 21:12 UTC</div>
+    <div>0 Nansen API calls via x402</div>
+    <div>Cost: ~$0.00</div>
   </div>
 </div>
 
@@ -207,52 +207,52 @@
 <div class="metrics-row">
   <div class="metric-card">
     <div class="label">Market Cap</div>
-    <div class="value">{{MARKET_CAP}}</div>
+    <div class="value">N/A</div>
   </div>
   <div class="metric-card">
     <div class="label">Price</div>
-    <div class="value">{{PRICE}}</div>
-    <div class="sub {{PRICE_CHANGE_CLASS}}">{{PRICE_CHANGE}} (24h)</div>
+    <div class="value">N/A</div>
+    <div class="sub neutral">N/A (24h)</div>
   </div>
   <div class="metric-card">
     <div class="label">24h Volume</div>
-    <div class="value">{{VOLUME}}</div>
+    <div class="value">N/A</div>
   </div>
   <div class="metric-card">
     <div class="label">Liquidity</div>
-    <div class="value">{{LIQUIDITY}}</div>
+    <div class="value">N/A</div>
   </div>
   <div class="metric-card">
     <div class="label">Token Age</div>
-    <div class="value">{{TOKEN_AGE}} days</div>
+    <div class="value">N/A days</div>
   </div>
   <div class="metric-card">
     <div class="label">Smart Money Conviction</div>
-    <div class="value {{CONVICTION_CLASS}}">{{CONVICTION_SCORE}}/100</div>
-    <div class="conviction-bar"><div class="conviction-fill" style="width:{{CONVICTION_SCORE}}%;background:{{CONVICTION_COLOR}}"></div></div>
+    <div class="value negative">0/100</div>
+    <div class="conviction-bar"><div class="conviction-fill" style="width:0%;background:#ef4444"></div></div>
   </div>
 </div>
 
 <!-- Actionable Summary -->
-<div class="verdict-box {{VERDICT_CLASS}}">
+<div class="verdict-box bearish">
   <div class="verdict-header">
     <div class="verdict-label">Verdict</div>
-    <div class="verdict-value {{VERDICT_COLOR_CLASS}}">{{VERDICT}}</div>
-    <div class="verdict-desc">{{VERDICT_DESC}}</div>
+    <div class="verdict-value negative">BEARISH</div>
+    <div class="verdict-desc">No clear smart money accumulation signal</div>
   </div>
   <div class="cases-grid">
     <div class="case-box bull">
       <h3>Bull Case</h3>
-      <ul>{{BULL_CASE_ITEMS}}</ul>
+      <ul><li>Insufficient data for clear bull signals — proceed with caution</li></ul>
     </div>
     <div class="case-box bear">
       <h3>Bear Case</h3>
-      <ul>{{BEAR_CASE_ITEMS}}</ul>
+      <ul><li>No smart money flow data found — token may be off smart money radar</li></ul>
     </div>
   </div>
   <div class="key-questions">
     <h3>Key Questions to Monitor</h3>
-    <ul>{{KEY_QUESTIONS_ITEMS}}</ul>
+    <ul><li>Why aren't sophisticated traders tracking this token?</li></ul>
   </div>
 </div>
 
@@ -260,7 +260,7 @@
 <div class="card">
   <h2><span class="icon">📈</span> Price Action (7d)</h2>
   <div class="chart-container" id="priceChartContainer">
-    {{PRICE_CHART_NO_DATA}}
+    <div class="no-data-overlay"><span>OHLCV price data not available</span></div>
     <canvas id="priceChart"></canvas>
   </div>
   <div class="explainer">
@@ -274,23 +274,23 @@
   <div class="card">
     <h2><span class="icon">📊</span> Smart Money Net Flows</h2>
     <div class="chart-container" id="smFlowContainer">
-      {{SM_FLOW_NO_DATA}}
+      <div class="no-data-overlay"><span>Smart money flow data not available for this token</span></div>
       <canvas id="smFlowChart"></canvas>
     </div>
     <div class="explainer">
       <div class="ex-title">Why it matters</div>
-      <p>{{SM_FLOW_EXPLAINER}}</p>
+      <p>Smart money flow data was not available for this specific token in Nansen's aggregated view. This doesn't necessarily mean smart money isn't trading it — they may be using DEX aggregators or the token may not meet Nansen's tracking threshold. Check the Who Bought/Sold section for individual wallet activity.</p>
     </div>
   </div>
   <div class="card">
     <h2><span class="icon">🏷️</span> Flow Intelligence by Label</h2>
     <div class="chart-container" id="fiContainer">
-      {{FI_NO_DATA}}
+      <div class="no-data-overlay"><span>Flow intelligence data not available</span></div>
       <canvas id="flowIntelChart"></canvas>
     </div>
     <div class="explainer">
       <div class="ex-title">Why it matters</div>
-      <p>{{FLOW_INTEL_EXPLAINER}}</p>
+      <p>Flow intelligence data shows minimal activity across wallet labels. This token may have limited institutional or whale interest, or the activity period was quiet.</p>
     </div>
   </div>
 </div>
@@ -300,21 +300,21 @@
   <div class="card">
     <h2><span class="icon">⚠️</span> Risk Indicators</h2>
     <div class="risk-grid">
-      {{RISK_INDICATORS_HTML}}
+      <div class="risk-item"><div class="risk-item-header"><span class="ri-label">No data available</span></div></div>
     </div>
     <div class="explainer">
       <div class="ex-title">What to watch</div>
-      <p>{{RISK_EXPLAINER}}</p>
+      <p>No Nansen Score data available for this token. Consider this a data gap — the token may be too new or too small for Nansen's scoring model.</p>
     </div>
   </div>
   <div class="card">
     <h2><span class="icon">💰</span> Reward Indicators</h2>
     <div class="risk-grid">
-      {{REWARD_INDICATORS_HTML}}
+      <div class="risk-item"><div class="risk-item-header"><span class="ri-label">No data available</span></div></div>
     </div>
     <div class="explainer">
       <div class="ex-title">What to watch</div>
-      <p>{{REWARD_EXPLAINER}}</p>
+      <p>No Nansen Score data available for this token. Consider this a data gap — the token may be too new or too small for Nansen's scoring model.</p>
     </div>
   </div>
 </div>
@@ -327,12 +327,12 @@
       <tr><th>Address</th><th>Label</th><th>Bought</th><th>Sold</th><th>Net</th></tr>
     </thead>
     <tbody>
-      {{BUYERS_SELLERS_ROWS}}
+      <tr><td colspan="5" style="text-align:center;color:var(--text-dim)">No buyer/seller data available for this period</td></tr>
     </tbody>
   </table>
   <div class="explainer">
     <div class="ex-title">Why it matters</div>
-    <p>{{BUYERS_EXPLAINER}}</p>
+    <p>No buyer/seller data available for this token in the analyzed period.</p>
   </div>
 </div>
 
@@ -342,23 +342,23 @@
     <h2><span class="icon">👥</span> Top Holders</h2>
     <table>
       <thead><tr><th>#</th><th>Address</th><th>Label</th><th>Holdings</th><th>Value (USD)</th></tr></thead>
-      <tbody>{{HOLDERS_ROWS}}</tbody>
+      <tbody><tr><td colspan="5" style="text-align:center;color:var(--text-dim)">No holder data available</td></tr></tbody>
     </table>
     <div class="explainer">
       <div class="ex-title">Why it matters</div>
-      <p>{{HOLDERS_EXPLAINER}}</p>
+      <p>No holder data available.</p>
     </div>
   </div>
   <div class="card">
-    <h2><span class="icon">🧠</span> What Else Smart Money Holds on {{CHAIN}}</h2>
-    <p style="color:var(--text-dim);font-size:12px;margin-bottom:12px;">{{SM_HOLDINGS_CONTEXT}}</p>
+    <h2><span class="icon">🧠</span> What Else Smart Money Holds on Solana</h2>
+    <p style="color:var(--text-dim);font-size:12px;margin-bottom:12px;">No smart money holdings data available.</p>
     <table>
       <thead><tr><th>Token</th><th>Smart Money Value</th><th>% of Portfolio</th></tr></thead>
-      <tbody>{{SM_HOLDINGS_ROWS}}</tbody>
+      <tbody><tr><td colspan="3" style="text-align:center;color:var(--text-dim)">No data available</td></tr></tbody>
     </table>
     <div class="explainer">
       <div class="ex-title">Why it matters</div>
-      <p>This shows the full portfolio context of smart money on {{CHAIN}}. If the token you're researching appears here, it means sophisticated traders hold meaningful positions. Compare its rank to get a sense of relative conviction. Tokens NOT on this list may lack institutional interest.</p>
+      <p>This shows the full portfolio context of smart money on Solana. If the token you're researching appears here, it means sophisticated traders hold meaningful positions. Compare its rank to get a sense of relative conviction. Tokens NOT on this list may lack institutional interest.</p>
     </div>
   </div>
 </div>
@@ -367,15 +367,15 @@
 <div class="card">
   <h2><span class="icon">🔍</span> Top Buyer Portfolio Deep Dive</h2>
   <p style="color:var(--text-dim);font-size:13px;margin-bottom:12px;">
-    Wallet: <a href="{{TOP_BUYER_EXPLORER_URL}}" target="_blank" class="addr-link">{{TOP_BUYER_ADDR}}</a>
+    Wallet: <a href="#" target="_blank" class="addr-link">N/A</a>
   </p>
   <table>
     <thead><tr><th>Token</th><th>Amount</th><th>Value (USD)</th></tr></thead>
-    <tbody>{{TOP_BUYER_ROWS}}</tbody>
+    <tbody><tr><td colspan="3" style="text-align:center;color:var(--text-dim)">Portfolio data unavailable</td></tr></tbody>
   </table>
   <div class="explainer">
     <div class="ex-title">Why it matters</div>
-    <p>{{TOP_BUYER_EXPLAINER}}</p>
+    <p>Could not retrieve portfolio data for the top buyer.</p>
   </div>
 </div>
 
@@ -385,20 +385,20 @@
   <p style="color:var(--text-dim);font-size:12px;margin-bottom:12px;">Every data point in this report came from Nansen CLI via x402 micropayments. No CoinGecko. No Dune. No Etherscan. 100% Nansen.</p>
   <table>
     <thead><tr><th>#</th><th>Command</th><th>Status</th></tr></thead>
-    <tbody>{{API_LOG_ROWS}}</tbody>
+    <tbody><tr><td>1</td><td><code style="font-size:11px">nansen research token screener --chain solana --timeframe 24h --limit 20</code></td><td class="negative">x402 Payment</td></tr><tr><td>2</td><td><code style="font-size:11px">nansen research smart-money netflow --chain solana --limit 20</code></td><td class="negative">x402 Payment</td></tr><tr><td>3</td><td><code style="font-size:11px">nansen research smart-money holdings --chain solana --limit 10</code></td><td class="negative">x402 Payment</td></tr><tr><td>4</td><td><code style="font-size:11px">nansen research smart-money dex-trades --chain solana --limit 5</code></td><td class="negative">x402 Payment</td></tr><tr><td>5</td><td><code style="font-size:11px">nansen research token info --chain solana --token pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn</code></td><td class="negative">x402 Payment</td></tr><tr><td>6</td><td><code style="font-size:11px">nansen research token flow-intelligence --chain solana --token pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn --days 7</code></td><td class="negative">x402 Payment</td></tr><tr><td>7</td><td><code style="font-size:11px">nansen research token who-bought-sold --chain solana --token pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn --days 7 --limit 10</code></td><td class="negative">x402 Payment</td></tr><tr><td>8</td><td><code style="font-size:11px">nansen research token indicators --chain solana --token pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn</code></td><td class="negative">x402 Payment</td></tr><tr><td>9</td><td><code style="font-size:11px">nansen research token holders --chain solana --token pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn --limit 10</code></td><td class="negative">x402 Payment</td></tr><tr><td>10</td><td><code style="font-size:11px">nansen research token pnl --chain solana --token pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn --days 30 --limit 10</code></td><td class="negative">x402 Payment</td></tr><tr><td>11</td><td><code style="font-size:11px">nansen research token dex-trades --chain solana --token pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn --days 7 --limit 10</code></td><td class="negative">x402 Payment</td></tr><tr><td>12</td><td><code style="font-size:11px">nansen research token flows --chain solana --token pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn --days 7</code></td><td class="negative">x402 Payment</td></tr><tr><td>13</td><td><code style="font-size:11px">nansen research token ohlcv --chain solana --token pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn --timeframe 4h --limit 42</code></td><td class="negative">x402 Payment</td></tr></tbody>
   </table>
 </div>
 
 <!-- Footer -->
 <div class="footer">
-  <p>Generated with <strong>{{API_CALLS}} Nansen API calls</strong> via CLI + x402 micropayments</p>
+  <p>Generated with <strong>0 Nansen API calls</strong> via CLI + x402 micropayments</p>
   <p>Built by <a href="https://unchaindata.xyz" target="_blank">Unchain Data</a> | <a href="https://twitter.com/0x_vcharles" target="_blank">@0x_vcharles</a> | #NansenCLI</p>
   <p style="margin-top:8px;">This is not financial advice. Always do your own research.</p>
 </div>
 
 <script>
 // Price Chart
-const priceData = {{OHLCV_JSON}};
+const priceData = [];
 if (priceData && priceData.length > 0) {
   const priceCtx = document.getElementById('priceChart').getContext('2d');
   const labels = priceData.map(d => d.label);
@@ -470,7 +470,7 @@ if (priceData && priceData.length > 0) {
 }
 
 // Smart Money Flow Chart
-const smData = [{{SM_FLOW_1H}}, {{SM_FLOW_24H}}, {{SM_FLOW_7D}}, {{SM_FLOW_30D}}];
+const smData = [0, 0, 0, 0];
 const hasSmData = smData.some(v => v !== 0);
 if (hasSmData) {
   const smCtx = document.getElementById('smFlowChart').getContext('2d');
@@ -517,7 +517,7 @@ if (hasSmData) {
 }
 
 // Flow Intelligence Donut
-const fiData = [{{FI_WHALE}}, {{FI_SMART}}, {{FI_EXCHANGE}}, {{FI_FRESH}}, {{FI_PNL}}, {{FI_PUBLIC}}];
+const fiData = [0, 0, 0, 0, 0, 0];
 const hasFiData = fiData.some(v => v !== 0);
 if (hasFiData) {
   const fiCtx = document.getElementById('flowIntelChart').getContext('2d');
