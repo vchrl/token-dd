@@ -1,4 +1,4 @@
-# Protocol Due Diligence Engine
+# NANSEN CLI - Token Due Diligence Engine
 
 > One command. 15+ Nansen API calls. A full protocol due diligence report that would take an analyst 4 hours.
 
