@@ -20,7 +20,7 @@ RATE_LIMIT_SECONDS = 300  # 5 minutes
 
 
 # ─── Landing Page ────────────────────────────────────────────────────
-LANDING_HTML = """<!DOCTYPE html>
+LANDING_HTML = r"""<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -67,7 +67,12 @@ LANDING_HTML = """<!DOCTYPE html>
     max-height: 80vh;
   }
   @media (max-width: 600px) {
-    .terminal { font-size: 12px; padding: 14px; }
+    .terminal { font-size: 11px; padding: 12px; }
+    .ascii-art { font-size: 4.5px !important; letter-spacing: 0.5px !important; }
+    .ascii-sub { font-size: 11px !important; }
+  }
+  @media (min-width: 601px) and (max-width: 780px) {
+    .ascii-art { font-size: 6.5px !important; }
   }
   .g { color: #00D4AA; }
   .y { color: #ffa502; }
@@ -93,25 +98,53 @@ LANDING_HTML = """<!DOCTYPE html>
   }
   .input-line input::placeholder { color: #30363d; }
   .separator { color: #21262d; }
-  .result-box {
-    border: 1px solid #00D4AA;
-    border-radius: 4px;
-    padding: 10px 14px;
-    margin: 8px 0;
-    background: rgba(0,212,170,0.04);
-  }
   .spinner { display: inline-block; }
   @keyframes spin {
-    0% { content: "⠋"; } 10% { content: "⠙"; } 20% { content: "⠹"; }
-    30% { content: "⠸"; } 40% { content: "⠼"; } 50% { content: "⠴"; }
-    60% { content: "⠦"; } 70% { content: "⠧"; } 80% { content: "⠇"; } 90% { content: "⠏"; }
+    0% { content: "\2807"; } 10% { content: "\2819"; } 20% { content: "\2839"; }
+    30% { content: "\2838"; } 40% { content: "\283c"; } 50% { content: "\2834"; }
+    60% { content: "\2826"; } 70% { content: "\2827"; } 80% { content: "\2807"; } 90% { content: "\280f"; }
   }
   .spinner::before {
-    content: "⠋";
+    content: "\2807";
     animation: spin 0.8s linear infinite;
     color: #ffa502;
   }
   .hidden { display: none; }
+  .ascii-art {
+    color: #00D4AA;
+    font-size: 8px;
+    line-height: 1.15;
+    letter-spacing: 1px;
+    white-space: pre;
+    margin-bottom: 4px;
+    text-shadow: 0 0 10px rgba(0,212,170,0.3);
+  }
+  .ascii-sub {
+    color: #9ca3af;
+    font-size: 13px;
+    letter-spacing: 3px;
+    margin-bottom: 16px;
+  }
+  .report-btn {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 8px 24px;
+    border: 1px solid #00D4AA;
+    border-radius: 4px;
+    color: #00D4AA;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    background: rgba(0,212,170,0.06);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .report-btn:hover {
+    background: rgba(0,212,170,0.15);
+    box-shadow: 0 0 15px rgba(0,212,170,0.2);
+    text-shadow: 0 0 8px rgba(0,212,170,0.4);
+  }
 </style>
 </head>
 <body>
@@ -141,22 +174,36 @@ const tokenInput = document.getElementById('tokenInput');
 const DEMO_TOKEN = 'pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn';
 
 const STEPS = [
-  ["Token overview",           "PUMP · $1.1B market cap +0.9%"],
-  ["Smart money netflow",      "$728.4K net inflow (7d) · 4 traders"],
+  ["Token overview",           "PUMP \u00b7 $1.1B market cap +0.9%"],
+  ["Smart money netflow",      "$728.4K net inflow (7d) \u00b7 4 traders"],
   ["Smart money holdings",     "$14.1M across 10 tokens"],
   ["Smart money DEX trades",   "5 recent trades"],
   ["Token info",               "PUMP metadata loaded"],
   ["Flow intelligence",        "Whales +$236.3K, Exchanges -$815.5K"],
   ["Who bought/sold",          "$52.1M bought vs $37.8M sold"],
-  ["Nansen Score",             "⚠ HIGH risk: BTC Reflexivity"],
+  ["Nansen Score",             "\u26a0 HIGH risk: BTC Reflexivity"],
   ["Holder distribution",      "Top holder: 49% (pump.fun custody)"],
   ["PnL leaderboard",          "Top traders mapped"],
   ["DEX trades",               "10 trades analyzed"],
   ["Token flows",              "Flow data loaded"],
-  ["Price history",            "721 candles · $0.0017 – $0.0022"],
+  ["Price history",            "721 candles \u00b7 $0.0017 \u2013 $0.0022"],
   ["Profiler balance",         "Top buyer portfolio: $40.87"],
   ["Profiler counterparties",  "5 counterparties identified"],
 ];
+
+const ASCII_BANNER = `\
+ \u2588\u2588\u2588\u2557   \u2588\u2588\u2557 \u2588\u2588\u2588\u2588\u2588\u2557 \u2588\u2588\u2588\u2557   \u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2557   \u2588\u2588\u2557
+ \u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d\u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2551
+ \u2588\u2588\u2554\u2588\u2588\u2557 \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2554\u2588\u2588\u2557 \u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2557  \u2588\u2588\u2554\u2588\u2588\u2557 \u2588\u2588\u2551
+ \u2588\u2588\u2551\u255a\u2588\u2588\u2557\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2551\u255a\u2588\u2588\u2557\u2588\u2588\u2551\u255a\u2550\u2550\u2550\u2550\u2588\u2588\u2551\u2588\u2588\u2554\u2550\u2550\u255d  \u2588\u2588\u2551\u255a\u2588\u2588\u2557\u2588\u2588\u2551
+ \u2588\u2588\u2551 \u255a\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2551  \u2588\u2588\u2551\u2588\u2588\u2551 \u255a\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2551\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2551 \u255a\u2588\u2588\u2588\u2588\u2551
+ \u255a\u2550\u255d  \u255a\u2550\u2550\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u2550\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u255d  \u255a\u2550\u2550\u2550\u255d
+           \u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2557      \u2588\u2588\u2557
+           \u2588\u2588\u2554\u2550\u2550\u2550\u2550\u255d\u2588\u2588\u2551      \u2588\u2588\u2551
+           \u2588\u2588\u2551     \u2588\u2588\u2551      \u2588\u2588\u2551
+           \u2588\u2588\u2551     \u2588\u2588\u2551      \u2588\u2588\u2551
+           \u255a\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2557\u2588\u2588\u2551
+            \u255a\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u2550\u2550\u2550\u2550\u2550\u255d\u255a\u2550\u255d`;
 
 function addLine(html, cls) {
   const div = document.createElement('div');
@@ -167,28 +214,43 @@ function addLine(html, cls) {
   return div;
 }
 
+function addRaw(html, cls) {
+  const div = document.createElement('div');
+  if (cls) div.className = cls;
+  div.innerHTML = html;
+  output.appendChild(div);
+  return div;
+}
+
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 async function typeText(text, speed) {
   const line = addLine('');
   for (let i = 0; i < text.length; i++) {
+    // skip inside HTML tags
+    if (text[i] === '<') {
+      const close = text.indexOf('>', i);
+      if (close !== -1) { line.innerHTML += text.substring(i, close + 1); i = close; continue; }
+    }
     line.innerHTML += text[i];
-    await sleep(speed || 25);
+    await sleep(speed || 30);
   }
   return line;
 }
 
 async function showBanner() {
-  await sleep(300);
-  await typeText('<span class="g">Token Due Diligence Engine</span> <span class="d">v1.0</span>', 20);
-  await sleep(100);
-  addLine('<span class="d">Powered by Nansen CLI + x402 micropayments</span>');
-  addLine('<span class="d">Built by Vincent Charles · #NansenCLI</span>');
-  addLine('<span class="separator">───────────────────────────────────────────</span>');
+  // ASCII art — instant
+  addRaw('<pre>' + ASCII_BANNER + '</pre>', 'ascii-art');
+  addRaw('token due diligence engine', 'ascii-sub');
   addLine('');
-  addLine('<span class="d">Enter a Solana token address to generate a</span>');
-  addLine('<span class="d">comprehensive due diligence report using 15</span>');
-  addLine('<span class="d">Nansen CLI API calls via x402 micropayments.</span>');
+
+  // Typewriter text
+  await typeText('<span class="d">Powered by Nansen CLI + x402 micropayments</span>', 30);
+  await typeText('<span class="d">Built by Vincent Charles \u00b7 #NansenCLI</span>', 30);
+  addLine('<span class="separator">\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500</span>');
+  addLine('');
+  await typeText('<span class="d">Enter a token address to run 15 Nansen CLI</span>', 30);
+  await typeText('<span class="d">calls and generate a due diligence report.</span>', 30);
   addLine('');
 }
 
@@ -196,7 +258,6 @@ async function showPrompt() {
   inputArea.classList.remove('hidden');
   tokenInput.focus();
 
-  // Auto-demo after 5 seconds of inactivity
   const params = new URLSearchParams(window.location.search);
   const autoDemo = params.get('demo') === 'true';
   let demoTimer = null;
@@ -228,7 +289,6 @@ async function showPrompt() {
 
 async function runDemo() {
   inputArea.classList.add('hidden');
-  // Type out the demo address
   const line = addLine('<span class="prompt">$ </span>');
   for (let i = 0; i < DEMO_TOKEN.length; i++) {
     line.innerHTML += DEMO_TOKEN[i];
@@ -242,10 +302,11 @@ async function runPipeline(token) {
   addLine('');
   addLine('<span class="d">Select chain [solana]: </span><span class="w">solana</span>');
   addLine('');
+  await sleep(800);
   addLine('<span class="g">Initializing pipeline...</span>');
   addLine('');
 
-  // POST to /run in background to generate the report
+  // POST to /run in background
   const formData = new FormData();
   formData.append('token', token);
   formData.append('chain', 'solana');
@@ -253,32 +314,37 @@ async function runPipeline(token) {
     method: 'POST', body: formData, redirect: 'follow'
   }).then(r => r.url).catch(() => '/sample');
 
-  // Animate steps
+  // Animate steps: show spinner for 600ms, then resolve
   for (let i = 0; i < STEPS.length; i++) {
     const [name, snippet] = STEPS[i];
     const num = String(i + 1).padStart(2, ' ');
     const stepLine = addLine(
-      '<span class="d">[' + num + '/15]</span> <span class="spinner"></span> <span class="d">' + name + '</span> <span class="d">Loading...</span>'
+      '<span class="d">[' + num + '/15]</span> <span class="spinner"></span> <span class="d">' + name + '</span>'
     );
-    await sleep(250 + Math.random() * 150);
+    await sleep(600);
     stepLine.innerHTML =
-      '<span class="d">[' + num + '/15]</span> <span class="g">✓</span> <span class="w">' + name + '</span>  <span class="d">' + snippet + '</span>';
+      '<span class="d">[' + num + '/15]</span> <span class="g">\u2713</span> <span class="w">' + name + '</span>  <span class="d">' + snippet + '</span>';
+    if (i < STEPS.length - 1) await sleep(200);
   }
 
   addLine('');
-  addLine('<span class="g">═══════════════════════════════════════════</span>');
-  addLine('<span class="w">  REPORT READY</span>');
+  addLine('<span class="g">\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550</span>');
+  addLine('<span class="w">  \u2705 REPORT READY</span>');
   addLine('<span class="d">  Token:</span> <span class="w">PUMP</span> <span class="d">|</span> <span class="d">Verdict:</span> <span class="g">BULLISH</span>');
   addLine('<span class="d">  Smart Money Conviction:</span> <span class="y">60/100</span>');
   addLine('<span class="d">  API Calls: 15 | Cost: ~$0.45</span>');
-  addLine('<span class="g">═══════════════════════════════════════════</span>');
+  addLine('<span class="g">\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550</span>');
   addLine('');
-  addLine('<span class="g">Opening report...</span>');
 
-  // Wait for the real report URL, then navigate
+  // Store report URL, show button
   const reportUrl = await reportPromise;
-  await sleep(800);
-  window.location.href = reportUrl;
+  const btnLine = addLine('');
+  const btn = document.createElement('a');
+  btn.href = reportUrl;
+  btn.className = 'report-btn';
+  btn.textContent = '[ View Full Report \u2192 ]';
+  btnLine.appendChild(btn);
+  btn.scrollIntoView({ behavior: 'smooth', block: 'end' });
 }
 
 // Boot
