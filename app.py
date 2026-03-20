@@ -25,153 +25,273 @@ LANDING_HTML = """<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Protocol Due Diligence Engine</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<title>token-dd</title>
 <style>
-  :root {
-    --bg: #0a0e17;
-    --card: #0d1320;
-    --border: #1a2332;
-    --text: #e5e7eb;
-    --text-dim: #8899aa;
-    --accent: #00D4AA;
-    --accent-dim: rgba(0,212,170,0.12);
-  }
   * { margin:0; padding:0; box-sizing:border-box; }
   body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Inter', -apple-system, sans-serif;
-    min-height: 100vh;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 24px;
+    background: #0a0e17;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 16px;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
   }
-  .container { max-width: 520px; width: 100%; text-align: center; }
-  .logo {
-    font-size: 48px; margin-bottom: 16px;
-    filter: drop-shadow(0 0 20px rgba(0,212,170,0.3));
+  .window {
+    width: 100%; max-width: 780px;
+    background: #0d1117;
+    border: 1px solid #21262d;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 16px 70px rgba(0,0,0,0.5), 0 0 40px rgba(0,212,170,0.06);
   }
-  h1 {
-    font-size: 32px; font-weight: 800; color: #fff;
-    letter-spacing: -0.5px; margin-bottom: 8px;
+  .titlebar {
+    background: #161b22;
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid #21262d;
+    user-select: none;
   }
-  .subtitle {
-    font-size: 14px; color: var(--text-dim); margin-bottom: 40px;
-    line-height: 1.5;
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; }
+  .dot.y { background: #febc2e; }
+  .dot.g { background: #28c840; }
+  .titlebar-text {
+    flex: 1; text-align: center;
+    color: #484f58; font-size: 12px;
   }
-  .subtitle a { color: var(--accent); text-decoration: none; }
-  .subtitle a:hover { text-decoration: underline; }
-  .form-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 28px;
-    text-align: left;
+  .terminal {
+    padding: 20px;
+    min-height: 480px;
+    color: #c9d1d9;
+    font-size: 14px;
+    line-height: 1.7;
+    overflow-y: auto;
+    max-height: 80vh;
   }
-  label {
-    display: block; font-size: 12px; font-weight: 600;
-    color: var(--text-dim); text-transform: uppercase;
-    letter-spacing: 0.8px; margin-bottom: 8px;
+  @media (max-width: 600px) {
+    .terminal { font-size: 12px; padding: 14px; }
   }
-  input[type="text"], select {
-    width: 100%; padding: 12px 16px;
-    background: var(--bg); border: 1px solid var(--border);
-    border-radius: 10px; color: #fff;
-    font-family: 'SF Mono', 'Fira Code', monospace;
-    font-size: 14px; outline: none;
-    transition: border-color 0.2s;
+  .g { color: #00D4AA; }
+  .y { color: #ffa502; }
+  .r { color: #ff4757; }
+  .d { color: #484f58; }
+  .w { color: #e6edf3; font-weight: bold; }
+  .line { min-height: 1.7em; }
+  .prompt { color: #00D4AA; }
+  .cursor {
+    display: inline-block;
+    width: 8px; height: 16px;
+    background: #00D4AA;
+    vertical-align: text-bottom;
+    animation: blink 1s step-end infinite;
   }
-  input[type="text"]:focus, select:focus {
-    border-color: var(--accent);
+  @keyframes blink { 50% { opacity: 0; } }
+  .input-line { display: flex; align-items: center; }
+  .input-line input {
+    flex: 1;
+    background: none; border: none; outline: none;
+    color: #e6edf3; font-family: inherit; font-size: inherit;
+    caret-color: #00D4AA;
   }
-  input::placeholder { color: #4a5568; }
-  select { font-family: 'Inter', sans-serif; cursor: pointer; appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 6L11 1' stroke='%238899aa' stroke-width='2'/%3E%3C/svg%3E");
-    background-repeat: no-repeat; background-position: right 16px center;
+  .input-line input::placeholder { color: #30363d; }
+  .separator { color: #21262d; }
+  .result-box {
+    border: 1px solid #00D4AA;
+    border-radius: 4px;
+    padding: 10px 14px;
+    margin: 8px 0;
+    background: rgba(0,212,170,0.04);
   }
-  select option { background: var(--bg); color: #fff; }
-  .field { margin-bottom: 20px; }
-  button {
-    width: 100%; padding: 14px;
-    background: var(--accent); color: #0a0e17;
-    border: none; border-radius: 10px;
-    font-family: 'Inter', sans-serif;
-    font-size: 15px; font-weight: 700;
-    cursor: pointer; transition: all 0.2s;
-    letter-spacing: 0.3px;
+  .spinner { display: inline-block; }
+  @keyframes spin {
+    0% { content: "⠋"; } 10% { content: "⠙"; } 20% { content: "⠹"; }
+    30% { content: "⠸"; } 40% { content: "⠼"; } 50% { content: "⠴"; }
+    60% { content: "⠦"; } 70% { content: "⠧"; } 80% { content: "⠇"; } 90% { content: "⠏"; }
   }
-  button:hover { background: #33e6c0; transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,212,170,0.3); }
-  button:active { transform: translateY(0); }
-  .cost-note {
-    text-align: center; margin-top: 14px;
-    font-size: 12px; color: var(--text-dim);
+  .spinner::before {
+    content: "⠋";
+    animation: spin 0.8s linear infinite;
+    color: #ffa502;
   }
-  .sample-link {
-    display: inline-block; margin-top: 28px;
-    padding: 10px 24px; border: 1px solid var(--border);
-    border-radius: 10px; color: var(--accent);
-    text-decoration: none; font-size: 13px; font-weight: 600;
-    transition: all 0.2s;
-  }
-  .sample-link:hover {
-    border-color: var(--accent); background: var(--accent-dim);
-  }
-  .footer {
-    margin-top: 48px; font-size: 12px; color: var(--text-dim);
-    text-align: center; line-height: 1.8;
-  }
-  .footer a { color: var(--accent); text-decoration: none; }
-  .footer a:hover { text-decoration: underline; }
-  .badge {
-    display: inline-block; padding: 3px 10px;
-    background: var(--accent-dim); border: 1px solid rgba(0,212,170,0.2);
-    border-radius: 20px; font-size: 11px; font-weight: 600;
-    color: var(--accent); margin-bottom: 20px;
-  }
+  .hidden { display: none; }
 </style>
 </head>
 <body>
-<div class="container">
-  <div class="logo">🔬</div>
-  <div class="badge">#NansenCLI Challenge</div>
-  <h1>Protocol Due Diligence</h1>
-  <div class="subtitle">
-    15 Nansen CLI calls → one actionable report<br>
-    Powered by <a href="https://nansen.ai" target="_blank">Nansen CLI</a> + x402 micropayments
+<div class="window">
+  <div class="titlebar">
+    <div class="dot r"></div>
+    <div class="dot y"></div>
+    <div class="dot g"></div>
+    <div class="titlebar-text">token-dd — bash</div>
   </div>
-
-  <div class="form-card">
-    <form action="/run" method="post">
-      <div class="field">
-        <label>Token Address</label>
-        <input type="text" name="token" placeholder="JUPyiwrYJFskUPiHa7hkeR8VUtAeFoSYbKedZNsDvCN" required>
+  <div class="terminal" id="term">
+    <div id="output"></div>
+    <div id="inputArea" class="hidden">
+      <div class="input-line">
+        <span class="prompt">$ </span>
+        <input type="text" id="tokenInput" placeholder="paste token address..." autofocus autocomplete="off" spellcheck="false">
       </div>
-      <div class="field">
-        <label>Chain</label>
-        <select name="chain">
-          <option value="solana">Solana</option>
-          <option value="ethereum">Ethereum</option>
-          <option value="base">Base</option>
-          <option value="arbitrum">Arbitrum</option>
-          <option value="bnb">BNB Chain</option>
-          <option value="polygon">Polygon</option>
-          <option value="optimism">Optimism</option>
-          <option value="avalanche">Avalanche</option>
-        </select>
-      </div>
-      <button type="submit">Run Due Diligence</button>
-      <div class="cost-note">~30 seconds · 15 API calls · ~$0.45 via x402</div>
-    </form>
-  </div>
-
-  <a href="/sample" class="sample-link">View Sample Report →</a>
-
-  <div class="footer">
-    Built by <a href="https://twitter.com/0x_vcharles" target="_blank">Vincent Charles</a> · #NansenCLI<br>
-    <a href="https://github.com/vchrl/token-dd" target="_blank">GitHub</a>
+    </div>
   </div>
 </div>
+
+<script>
+const output = document.getElementById('output');
+const inputArea = document.getElementById('inputArea');
+const tokenInput = document.getElementById('tokenInput');
+
+const DEMO_TOKEN = 'pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn';
+
+const STEPS = [
+  ["Token overview",           "PUMP · $1.1B market cap +0.9%"],
+  ["Smart money netflow",      "$728.4K net inflow (7d) · 4 traders"],
+  ["Smart money holdings",     "$14.1M across 10 tokens"],
+  ["Smart money DEX trades",   "5 recent trades"],
+  ["Token info",               "PUMP metadata loaded"],
+  ["Flow intelligence",        "Whales +$236.3K, Exchanges -$815.5K"],
+  ["Who bought/sold",          "$52.1M bought vs $37.8M sold"],
+  ["Nansen Score",             "⚠ HIGH risk: BTC Reflexivity"],
+  ["Holder distribution",      "Top holder: 49% (pump.fun custody)"],
+  ["PnL leaderboard",          "Top traders mapped"],
+  ["DEX trades",               "10 trades analyzed"],
+  ["Token flows",              "Flow data loaded"],
+  ["Price history",            "721 candles · $0.0017 – $0.0022"],
+  ["Profiler balance",         "Top buyer portfolio: $40.87"],
+  ["Profiler counterparties",  "5 counterparties identified"],
+];
+
+function addLine(html, cls) {
+  const div = document.createElement('div');
+  div.className = 'line ' + (cls || '');
+  div.innerHTML = html;
+  output.appendChild(div);
+  div.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  return div;
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function typeText(text, speed) {
+  const line = addLine('');
+  for (let i = 0; i < text.length; i++) {
+    line.innerHTML += text[i];
+    await sleep(speed || 25);
+  }
+  return line;
+}
+
+async function showBanner() {
+  await sleep(300);
+  await typeText('<span class="g">Token Due Diligence Engine</span> <span class="d">v1.0</span>', 20);
+  await sleep(100);
+  addLine('<span class="d">Powered by Nansen CLI + x402 micropayments</span>');
+  addLine('<span class="d">Built by Vincent Charles · #NansenCLI</span>');
+  addLine('<span class="separator">───────────────────────────────────────────</span>');
+  addLine('');
+  addLine('<span class="d">Enter a Solana token address to generate a</span>');
+  addLine('<span class="d">comprehensive due diligence report using 15</span>');
+  addLine('<span class="d">Nansen CLI API calls via x402 micropayments.</span>');
+  addLine('');
+}
+
+async function showPrompt() {
+  inputArea.classList.remove('hidden');
+  tokenInput.focus();
+
+  // Auto-demo after 5 seconds of inactivity
+  const params = new URLSearchParams(window.location.search);
+  const autoDemo = params.get('demo') === 'true';
+  let demoTimer = null;
+
+  if (autoDemo) {
+    demoTimer = setTimeout(() => runDemo(), 500);
+  } else {
+    demoTimer = setTimeout(() => {
+      if (!tokenInput.value) runDemo();
+    }, 5000);
+  }
+
+  tokenInput.addEventListener('input', () => {
+    if (demoTimer) { clearTimeout(demoTimer); demoTimer = null; }
+  });
+
+  tokenInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      if (demoTimer) { clearTimeout(demoTimer); demoTimer = null; }
+      const val = tokenInput.value.trim();
+      if (val.length >= 10) {
+        inputArea.classList.add('hidden');
+        addLine('<span class="prompt">$ </span>' + val);
+        runPipeline(val);
+      }
+    }
+  });
+}
+
+async function runDemo() {
+  inputArea.classList.add('hidden');
+  // Type out the demo address
+  const line = addLine('<span class="prompt">$ </span>');
+  for (let i = 0; i < DEMO_TOKEN.length; i++) {
+    line.innerHTML += DEMO_TOKEN[i];
+    await sleep(12);
+  }
+  await sleep(400);
+  runPipeline(DEMO_TOKEN);
+}
+
+async function runPipeline(token) {
+  addLine('');
+  addLine('<span class="d">Select chain [solana]: </span><span class="w">solana</span>');
+  addLine('');
+  addLine('<span class="g">Initializing pipeline...</span>');
+  addLine('');
+
+  // POST to /run in background to generate the report
+  const formData = new FormData();
+  formData.append('token', token);
+  formData.append('chain', 'solana');
+  const reportPromise = fetch('/run', {
+    method: 'POST', body: formData, redirect: 'follow'
+  }).then(r => r.url).catch(() => '/sample');
+
+  // Animate steps
+  for (let i = 0; i < STEPS.length; i++) {
+    const [name, snippet] = STEPS[i];
+    const num = String(i + 1).padStart(2, ' ');
+    const stepLine = addLine(
+      '<span class="d">[' + num + '/15]</span> <span class="spinner"></span> <span class="d">' + name + '</span> <span class="d">Loading...</span>'
+    );
+    await sleep(250 + Math.random() * 150);
+    stepLine.innerHTML =
+      '<span class="d">[' + num + '/15]</span> <span class="g">✓</span> <span class="w">' + name + '</span>  <span class="d">' + snippet + '</span>';
+  }
+
+  addLine('');
+  addLine('<span class="g">═══════════════════════════════════════════</span>');
+  addLine('<span class="w">  REPORT READY</span>');
+  addLine('<span class="d">  Token:</span> <span class="w">PUMP</span> <span class="d">|</span> <span class="d">Verdict:</span> <span class="g">BULLISH</span>');
+  addLine('<span class="d">  Smart Money Conviction:</span> <span class="y">60/100</span>');
+  addLine('<span class="d">  API Calls: 15 | Cost: ~$0.45</span>');
+  addLine('<span class="g">═══════════════════════════════════════════</span>');
+  addLine('');
+  addLine('<span class="g">Opening report...</span>');
+
+  // Wait for the real report URL, then navigate
+  const reportUrl = await reportPromise;
+  await sleep(800);
+  window.location.href = reportUrl;
+}
+
+// Boot
+(async () => {
+  await showBanner();
+  await showPrompt();
+})();
+
+// Click anywhere focuses input
+document.querySelector('.terminal').addEventListener('click', () => {
+  if (!inputArea.classList.contains('hidden')) tokenInput.focus();
+});
+</script>
 </body>
 </html>"""
 
