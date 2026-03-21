@@ -59,14 +59,17 @@
     min-height: 0;
     text-align: left;
   }
-  @media (max-width: 600px) {
-    .term-body { font-size: 11px; padding: 10px 12px 12px 12px; }
-    .term-header { padding: 12px 12px 8px 12px; }
-    .ascii-art { font-size: 3.8px !important; letter-spacing: 0px !important; }
-    .ascii-sub { font-size: 10px !important; letter-spacing: 1px !important; }
+  @media (max-width: 768px) {
+    .ascii-art { font-size: 8px !important; line-height: 1.1 !important; letter-spacing: -0.5px !important; }
+    .term-body { font-size: 12px; padding: 12px 16px; }
+    .term-header { padding: 14px 14px 8px 14px; }
+    .ascii-sub { font-size: 11px !important; letter-spacing: 1px !important; }
   }
-  @media (min-width: 601px) and (max-width: 780px) {
-    .ascii-art { font-size: 5.5px !important; }
+  @media (max-width: 480px) {
+    .ascii-art { font-size: 6px !important; line-height: 1.0 !important; letter-spacing: -1px !important; }
+    .term-body { font-size: 11px; padding: 10px 12px; }
+    .term-header { padding: 12px 12px 8px 12px; }
+    .ascii-sub { font-size: 10px !important; letter-spacing: 0px !important; }
   }
   .g { color: #00D4AA; }
   .y { color: #ffa502; }
