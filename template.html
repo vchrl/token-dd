@@ -231,6 +231,27 @@
     transition: transform 0.2s; margin-left: auto;
   }
   details.api-log[open] summary::after { transform: rotate(90deg); }
+
+  @media (max-width: 768px) {
+    body { padding: 12px; }
+    .header { flex-direction: column; gap: 12px; }
+    .header h1 { font-size: 24px; }
+    .header-meta { text-align: left; }
+    .metrics-row { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .metric-card .value { font-size: 18px; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .cases-grid { grid-template-columns: 1fr; }
+    .risk-grid { grid-template-columns: 1fr; }
+    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
+    .chart-container { height: 200px; }
+    .explainer p { font-size: 12px; }
+    .verdict-value { font-size: 24px; }
+  }
+  @media (max-width: 480px) {
+    .metrics-row { grid-template-columns: 1fr; }
+    .metric-card .value { font-size: 20px; }
+    .header h1 { font-size: 20px; }
+  }
 </style>
 </head>
 <body>
