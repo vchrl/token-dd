@@ -163,7 +163,7 @@
     font-size: 10px; font-weight: 700; color: var(--accent);
     text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
   }
-  .explainer p { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+  .explainer p { font-size: 13px; color: var(--text-dim); line-height: 1.6; overflow-wrap: break-word; word-wrap: break-word; }
 
   /* Chart */
   .chart-container { position: relative; height: 260px; }
@@ -436,7 +436,7 @@
 <!-- Top Buyers & Sellers -->
 <div class="card">
   <h2><span class="icon">🐋</span> Top Buyers & Sellers (7d)</h2>
-  <table>
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table>
     <thead>
       <tr><th>Address</th><th>Label</th><th>Bought</th><th>Sold</th><th>Net</th></tr>
     </thead>
@@ -503,7 +503,7 @@
             <td class="positive">$79.6K</td>
         </tr>
     </tbody>
-  </table>
+  </table></div>
   <div class="explainer">
     <div class="ex-title">Why it matters</div>
     <p>Roughly balanced: $52.07M bought vs $37.81M sold. 10 of the top addresses have Nansen labels, helping identify their trading patterns. Top buyer ([9jHrTCwp]) only bought with zero sells — conviction position, not trading.</p>
@@ -514,7 +514,7 @@
 <div class="grid-2">
   <div class="card">
     <h2><span class="icon">👥</span> Top Holders</h2>
-    <table>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table>
       <thead><tr><th>#</th><th>Address</th><th>Label</th><th>Holdings</th><th>Value (USD)</th></tr></thead>
       <tbody><tr>
             <td>1</td>
@@ -577,7 +577,7 @@
             <td>22,999,958,928</td>
             <td>$42.74M</td>
         </tr></tbody>
-    </table>
+    </table></div>
     <div class="explainer">
       <div class="ex-title">Why it matters</div>
       <p>Top holder controls 49% of tracked holdings, top 5 control 83%. Very high concentration — a single wallet dump could crash the price. Check if it's a known contract (vesting, staking, or team treasury). Click any address to investigate on the block explorer — check transaction history, age, and other holdings for context.</p>
@@ -586,10 +586,10 @@
   <div class="card">
     <h2><span class="icon">🧠</span> What Else Smart Money Holds on Solana</h2>
     <p style="color:var(--text-dim);font-size:12px;margin-bottom:12px;">PUMP ranks #6 out of 10 tracked smart money holdings on Solana, representing 13.0% of tracked smart money portfolio value.</p>
-    <table>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table>
       <thead><tr><th>Token</th><th>Smart Money Value</th><th>% of Portfolio</th></tr></thead>
       <tbody><tr><td>JUP</td><td>$2.90M</td><td>20.6%</td></tr><tr><td>PENGU</td><td>$874.5K</td><td>6.2%</td></tr><tr><td>META</td><td>$3.50M</td><td>24.9%</td></tr><tr><td>RENDER</td><td>$4.34M</td><td>30.9%</td></tr><tr><td>WOJAK</td><td>$187.5K</td><td>1.3%</td></tr><tr><td style="color:#fff;font-weight:600">PUMP</td><td>$1.83M</td><td>13.0%</td></tr><tr><td>FARTCOIN</td><td>$28.5K</td><td>0.2%</td></tr><tr><td>TESTICLE</td><td>$81.8K</td><td>0.6%</td></tr><tr><td>PUNCH</td><td>$306.7K</td><td>2.2%</td></tr><tr><td>BONK</td><td>$26.8K</td><td>0.2%</td></tr></tbody>
-    </table>
+    </table></div>
     <div class="explainer">
       <div class="ex-title">Why it matters</div>
       <p>This shows the full portfolio context of smart money on Solana. If the token you're researching appears here, it means sophisticated traders hold meaningful positions. Compare its rank to get a sense of relative conviction. Tokens NOT on this list may lack institutional interest.</p>
@@ -605,13 +605,13 @@
   <p style="color:var(--text-dim);font-size:13px;margin-bottom:12px;">
     Wallet: <a href="https://solscan.io/account/9jHrTCwpDANHLNQz5cem6XLUBM8KiTWKe766Br6KVCXM" target="_blank" class="addr-link">9jHrTCwpDANHLNQz5cem6XLUBM8KiTWKe766Br6KVCXM</a>
   </p>
-  <table>
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table>
     <thead><tr><th>Token</th><th>Amount</th><th>Value (USD)</th></tr></thead>
     <tbody><tr><td colspan="3" style="text-align:center;color:var(--yellow);padding:20px;">
             ⚠️ This trader has exited their position. They bought $7.00M but currently hold only $40.87.
             This is a completed trade, not an active holder.
         </td></tr></tbody>
-  </table>
+  </table></div>
   <div class="explainer">
     <div class="ex-title">Why it matters</div>
     <p>This wallet bought $7.00M worth of this token but currently holds only $40.87 total across all tokens. They have fully exited their position. This is important context: the biggest buyer by volume was a short-term trader, not a conviction holder. Look at buyers #2-5 in the table above for holders who may still be in.</p>
@@ -623,10 +623,10 @@
   <details class="api-log">
     <summary><span class="icon">📋</span> API Call Log (15 calls)</summary>
     <p style="color:var(--text-dim);font-size:12px;margin-bottom:12px;">Every data point in this report came from Nansen CLI via x402 micropayments.</p>
-    <table>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table>
       <thead><tr><th>#</th><th>Command</th><th>Status</th></tr></thead>
       <tbody><tr><td>1</td><td><code style="font-size:11px">nansen research token screener --chain solana</code></td><td class="positive">OK</td></tr><tr><td>2</td><td><code style="font-size:11px">nansen research smart-money netflow --chain solana</code></td><td class="positive">OK</td></tr><tr><td>3</td><td><code style="font-size:11px">nansen research smart-money holdings --chain solana</code></td><td class="positive">OK</td></tr><tr><td>4</td><td><code style="font-size:11px">nansen research smart-money dex-trades --chain solana</code></td><td class="positive">OK</td></tr><tr><td>5</td><td><code style="font-size:11px">nansen research token info --chain solana</code></td><td class="positive">OK</td></tr><tr><td>6</td><td><code style="font-size:11px">nansen research token flow-intelligence --chain solana</code></td><td class="positive">OK</td></tr><tr><td>7</td><td><code style="font-size:11px">nansen research token who-bought-sold --chain solana</code></td><td class="positive">OK</td></tr><tr><td>8</td><td><code style="font-size:11px">nansen research token indicators --chain solana</code></td><td class="positive">OK</td></tr><tr><td>9</td><td><code style="font-size:11px">nansen research token holders --chain solana</code></td><td class="positive">OK</td></tr><tr><td>10</td><td><code style="font-size:11px">nansen research token pnl --chain solana</code></td><td class="positive">OK</td></tr><tr><td>11</td><td><code style="font-size:11px">nansen research token dex-trades --chain solana</code></td><td class="positive">OK</td></tr><tr><td>12</td><td><code style="font-size:11px">nansen research token flows --chain solana</code></td><td class="positive">OK</td></tr><tr><td>13</td><td><code style="font-size:11px">nansen research token ohlcv --chain solana</code></td><td class="positive">OK</td></tr><tr><td>14</td><td><code style="font-size:11px">nansen research profiler balance --chain solana</code></td><td class="positive">OK</td></tr><tr><td>15</td><td><code style="font-size:11px">nansen research profiler counterparties --chain solana</code></td><td class="positive">OK</td></tr></tbody>
-    </table>
+    </table></div>
   </details>
 </div>
 

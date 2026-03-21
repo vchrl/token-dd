@@ -163,7 +163,7 @@
     font-size: 10px; font-weight: 700; color: var(--accent);
     text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px;
   }
-  .explainer p { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+  .explainer p { font-size: 13px; color: var(--text-dim); line-height: 1.6; overflow-wrap: break-word; word-wrap: break-word; }
 
   /* Chart */
   .chart-container { position: relative; height: 260px; }
@@ -406,14 +406,14 @@
 <!-- Top Buyers & Sellers -->
 <div class="card">
   <h2><span class="icon">🐋</span> Top Buyers & Sellers (7d)</h2>
-  <table>
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table>
     <thead>
       <tr><th>Address</th><th>Label</th><th>Bought</th><th>Sold</th><th>Net</th></tr>
     </thead>
     <tbody>
       {{BUYERS_SELLERS_ROWS}}
     </tbody>
-  </table>
+  </table></div>
   <div class="explainer">
     <div class="ex-title">Why it matters</div>
     <p>{{BUYERS_EXPLAINER}}</p>
@@ -424,10 +424,10 @@
 <div class="grid-2">
   <div class="card">
     <h2><span class="icon">👥</span> Top Holders</h2>
-    <table>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table>
       <thead><tr><th>#</th><th>Address</th><th>Label</th><th>Holdings</th><th>Value (USD)</th></tr></thead>
       <tbody>{{HOLDERS_ROWS}}</tbody>
-    </table>
+    </table></div>
     <div class="explainer">
       <div class="ex-title">Why it matters</div>
       <p>{{HOLDERS_EXPLAINER}}</p>
@@ -436,10 +436,10 @@
   <div class="card">
     <h2><span class="icon">🧠</span> What Else Smart Money Holds on {{CHAIN}}</h2>
     <p style="color:var(--text-dim);font-size:12px;margin-bottom:12px;">{{SM_HOLDINGS_CONTEXT}}</p>
-    <table>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table>
       <thead><tr><th>Token</th><th>Smart Money Value</th><th>% of Portfolio</th></tr></thead>
       <tbody>{{SM_HOLDINGS_ROWS}}</tbody>
-    </table>
+    </table></div>
     <div class="explainer">
       <div class="ex-title">Why it matters</div>
       <p>This shows the full portfolio context of smart money on {{CHAIN}}. If the token you're researching appears here, it means sophisticated traders hold meaningful positions. Compare its rank to get a sense of relative conviction. Tokens NOT on this list may lack institutional interest.</p>
@@ -455,10 +455,10 @@
   <p style="color:var(--text-dim);font-size:13px;margin-bottom:12px;">
     Wallet: <a href="{{TOP_BUYER_EXPLORER_URL}}" target="_blank" class="addr-link">{{TOP_BUYER_ADDR}}</a>
   </p>
-  <table>
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table>
     <thead><tr><th>Token</th><th>Amount</th><th>Value (USD)</th></tr></thead>
     <tbody>{{TOP_BUYER_ROWS}}</tbody>
-  </table>
+  </table></div>
   <div class="explainer">
     <div class="ex-title">Why it matters</div>
     <p>{{TOP_BUYER_EXPLAINER}}</p>
@@ -470,10 +470,10 @@
   <details class="api-log">
     <summary><span class="icon">📋</span> API Call Log ({{API_CALLS}} calls)</summary>
     <p style="color:var(--text-dim);font-size:12px;margin-bottom:12px;">Every data point in this report came from Nansen CLI via x402 micropayments.</p>
-    <table>
+    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch"><table>
       <thead><tr><th>#</th><th>Command</th><th>Status</th></tr></thead>
       <tbody>{{API_LOG_ROWS}}</tbody>
-    </table>
+    </table></div>
   </details>
 </div>
 
