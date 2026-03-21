@@ -503,6 +503,7 @@ if (priceData && priceData.length > 0) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      animation: { duration: 1500, easing: 'easeOutQuart', delay: (context) => context.dataIndex * 100 },
       interaction: { intersect: false, mode: 'index' },
       plugins: {
         legend: { display: false },
@@ -560,6 +561,7 @@ if (hasSmData) {
     },
     options: {
       responsive: true, maintainAspectRatio: false,
+      animation: { duration: 1500, easing: 'easeOutBounce', delay: (context) => context.dataIndex * 100 },
       plugins: {
         legend: { display: false },
         tooltip: {
@@ -607,6 +609,7 @@ if (hasFiData) {
     },
     options: {
       responsive: true, maintainAspectRatio: false, cutout: '65%',
+      animation: { animateRotate: true, animateScale: true, duration: 1500, delay: (context) => context.dataIndex * 100 },
       plugins: {
         legend: { position: 'right', labels: { color: '#8899aa', padding: 12, font: { size: 11 } } },
         tooltip: {
