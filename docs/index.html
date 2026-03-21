@@ -410,7 +410,7 @@ async function showPrompt() {
       const val = tokenInput.value.trim();
       if (val.length >= 10) {
         inputArea.classList.add('hidden');
-        addLine('<span class="prompt">$ </span>' + val);
+        addLine('<span class="prompt">$ </span><span style="color:#e5e7eb">' + val + '</span>');
         showChainGrid('solana').then(chain => runPipeline(val, chain));
       }
     }
@@ -421,8 +421,11 @@ async function runDemo() {
   inputArea.classList.add('hidden');
   const line = addLine('<span class="prompt">$ </span>');
   // Fast paste effect — dump in chunks of 4
+  const tokenSpan = document.createElement('span');
+  tokenSpan.style.color = '#e5e7eb';
+  line.appendChild(tokenSpan);
   for (let i = 0; i < DEMO_TOKEN.length; i += 4) {
-    line.innerHTML += DEMO_TOKEN.substring(i, i + 4);
+    tokenSpan.textContent += DEMO_TOKEN.substring(i, i + 4);
     await sleep(8);
   }
   await sleep(400);
