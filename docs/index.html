@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>token-dd</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background: #0a0e17;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100vh; padding: 16px;
+    font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', 'JetBrains Mono', monospace;
+  }
+  .window {
+    width: 100%; max-width: 780px;
+    background: #0d1117;
+    border: 1px solid #21262d;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 16px 70px rgba(0,0,0,0.5), 0 0 40px rgba(0,212,170,0.06);
+    display: flex; flex-direction: column;
+    max-height: 80vh;
+  }
+  .titlebar {
+    background: #161b22;
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 8px;
+    border-bottom: 1px solid #21262d;
+    user-select: none;
+    flex-shrink: 0;
+  }
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot.r { background: #ff5f57; }
+  .dot.y { background: #febc2e; }
+  .dot.g { background: #28c840; }
+  .titlebar-text {
+    flex: 1; text-align: center;
+    color: #484f58; font-size: 12px;
+  }
+  /* Fixed header area inside terminal */
+  .term-header {
+    padding: 20px 20px 0 20px;
+    flex-shrink: 0;
+    border-bottom: 1px solid #161b22;
+    padding-bottom: 12px;
+  }
+  /* Scrollable output area */
+  .term-body {
+    padding: 12px 20px 20px 20px;
+    flex: 1;
+    height: 0;
+    overflow-y: auto;
+    color: #c9d1d9;
+    font-size: 14px;
+    line-height: 1.7;
+  }
+  @media (max-width: 600px) {
+    .term-body { font-size: 11px; padding: 10px 12px 12px 12px; }
+    .term-header { padding: 12px 12px 8px 12px; }
+    .ascii-art { font-size: 3.8px !important; letter-spacing: 0px !important; }
+    .ascii-sub { font-size: 10px !important; letter-spacing: 1px !important; }
+  }
+  @media (min-width: 601px) and (max-width: 780px) {
+    .ascii-art { font-size: 5.5px !important; }
+  }
+  .g { color: #00D4AA; }
+  .y { color: #ffa502; }
+  .r { color: #ff4757; }
+  .d { color: #484f58; }
+  .w { color: #e6edf3; font-weight: bold; }
+  .line { min-height: 1.7em; }
+  .prompt { color: #00D4AA; }
+  @keyframes blink { 50% { opacity: 0; } }
+  .input-line { display: flex; align-items: center; }
+  .input-line input {
+    flex: 1;
+    background: none; border: none; outline: none;
+    color: #e6edf3; font-family: inherit; font-size: inherit;
+    caret-color: #00D4AA;
+  }
+  .input-line input::placeholder { color: #30363d; }
+  .separator { color: #21262d; }
+  .spinner { display: inline-block; }
+  @keyframes spin {
+    0%{content:"\2807"}10%{content:"\2819"}20%{content:"\2839"}
+    30%{content:"\2838"}40%{content:"\283c"}50%{content:"\2834"}
+    60%{content:"\2826"}70%{content:"\2827"}80%{content:"\2807"}90%{content:"\280f"}
+  }
+  .spinner::before {
+    content: "\2807";
+    animation: spin 0.8s linear infinite;
+    color: #ffa502;
+  }
+  .hidden { display: none; }
+  .ascii-art {
+    color: #00D4AA;
+    font-size: 7px;
+    line-height: 1.15;
+    letter-spacing: 0.5px;
+    white-space: pre;
+    margin-bottom: 4px;
+    text-shadow: 0 0 10px rgba(0,212,170,0.3);
+    overflow-x: hidden;
+  }
+  .ascii-sub {
+    color: #9ca3af;
+    font-size: 13px;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
+  }
+  .header-line {
+    color: #484f58;
+    font-size: 14px;
+    line-height: 1.7;
+    min-height: 1.7em;
+  }
+  .header-line a {
+    color: #00D4AA;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .header-line a:hover { text-decoration: underline; }
+  .typing-cursor {
+    display: inline-block;
+    width: 7px; height: 14px;
+    background: #00D4AA;
+    vertical-align: text-bottom;
+    margin-left: 1px;
+    animation: blink 0.7s step-end infinite;
+  }
+  .report-btn {
+    display: inline-block;
+    margin-top: 8px;
+    padding: 8px 24px;
+    border: 1px solid #00D4AA;
+    border-radius: 4px;
+    color: #00D4AA;
+    text-decoration: none;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: bold;
+    background: rgba(0,212,170,0.06);
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .report-btn:hover {
+    background: rgba(0,212,170,0.15);
+    box-shadow: 0 0 15px rgba(0,212,170,0.2);
+    text-shadow: 0 0 8px rgba(0,212,170,0.4);
+  }
+  .chain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px 16px;
+    margin: 6px 0 4px 18px;
+    font-size: 13px;
+  }
+  .chain-item {
+    color: #484f58;
+    padding: 1px 4px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: color 0.15s;
+    white-space: nowrap;
+  }
+  .chain-item:hover { color: #c9d1d9; }
+  .chain-item.active {
+    color: #00D4AA;
+    font-weight: bold;
+  }
+  .chain-item.hidden-chain { display: none; }
+  .chain-filter {
+    background: none; border: none; outline: none;
+    color: #e6edf3; font-family: inherit; font-size: inherit;
+    caret-color: #00D4AA; width: 120px;
+  }
+  .chain-filter::placeholder { color: #30363d; }
+  .chain-hint { color: #30363d; font-size: 12px; margin: 4px 0 0 18px; }
+  @keyframes pulse-chain {
+    0%,100% { text-shadow: none; }
+    50% { text-shadow: 0 0 8px rgba(0,212,170,0.6); }
+  }
+  .chain-pulse { animation: pulse-chain 0.3s ease 2; }
+</style>
+</head>
+<body>
+<div class="window">
+  <div class="titlebar">
+    <div class="dot r"></div>
+    <div class="dot y"></div>
+    <div class="dot g"></div>
+    <div class="titlebar-text">token-dd &mdash; bash</div>
+  </div>
+  <!-- Fixed header: ASCII art + info lines -->
+  <div class="term-header" id="header">
+    <pre class="ascii-art"> ███╗   ██╗ █████╗ ███╗   ██╗███████╗███████╗███╗   ██╗   ██████╗ ██╗     ██╗
+ ████╗  ██║██╔══██╗████╗  ██║██╔════╝██╔════╝████╗  ██║  ██╔════╝ ██║     ██║
+ ██╔██╗ ██║███████║██╔██╗ ██║███████╗█████╗  ██╔██╗ ██║  ██║      ██║     ██║
+ ██║╚██╗██║██╔══██║██║╚██╗██║╚════██║██╔══╝  ██║╚██╗██║  ██║      ██║     ██║
+ ██║ ╚████║██║  ██║██║ ╚████║███████║███████╗██║ ╚████║  ╚██████╗ ███████╗██║
+ ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝╚═╝  ╚═══╝  ╚═════╝ ╚══════╝╚═╝</pre>
+    <div class="ascii-sub">token due diligence engine</div>
+    <div id="headerLines"></div>
+  </div>
+  <!-- Scrollable body: prompt + pipeline output -->
+  <div class="term-body" id="body">
+    <div id="output"></div>
+    <div id="inputArea" class="hidden">
+      <div class="input-line">
+        <span class="prompt">$ </span>
+        <input type="text" id="tokenInput" placeholder="paste token address..." autofocus autocomplete="off" spellcheck="false">
+      </div>
+    </div>
+  </div>
+</div>
+<div style="text-align:center;margin-top:16px;font-family:'SF Mono','Fira Code',monospace;font-size:12px;color:#484f58;">
+  Demo mode — due to x402 API call costs, this runs from cached data · <a href="https://github.com/unchaindata/nansen-dd" target="_blank" style="color:#00D4AA;text-decoration:none;">View source on GitHub →</a>
+</div>
+
+<script>
+const headerLines = document.getElementById('headerLines');
+const output = document.getElementById('output');
+const body = document.getElementById('body');
+const inputArea = document.getElementById('inputArea');
+const tokenInput = document.getElementById('tokenInput');
+
+const DEMO_TOKEN = 'pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn';
+const CHAINS = [
+  'solana','ethereum','base',
+  'arbitrum','polygon','optimism',
+  'avalanche','bnb','linea',
+  'scroll','mantle','ronin',
+  'sei','sonic','hyperevm',
+  'monad','plasma','iotaevm',
+];
+
+const STEPS = [
+  ["Token overview",           "PUMP \· $1.1B market cap +0.9%"],
+  ["Smart money netflow",      "$728.4K net inflow (7d) \· 4 traders"],
+  ["Smart money holdings",     "$14.1M across 10 tokens"],
+  ["Smart money DEX trades",   "5 recent trades"],
+  ["Token info",               "PUMP metadata loaded"],
+  ["Flow intelligence",        "Whales +$236.3K, Exchanges -$815.5K"],
+  ["Who bought/sold",          "$52.1M bought vs $37.8M sold"],
+  ["Nansen Score",             "\⚠ HIGH risk: BTC Reflexivity"],
+  ["Holder distribution",      "Top holder: 49% (pump.fun custody)"],
+  ["PnL leaderboard",          "Top traders mapped"],
+  ["DEX trades",               "10 trades analyzed"],
+  ["Token flows",              "Flow data loaded"],
+  ["Price history",            "721 candles \· $0.0017 \– $0.0022"],
+  ["Profiler balance",         "Top buyer portfolio: $40.87"],
+  ["Profiler counterparties",  "5 counterparties identified"],
+];
+
+// ASCII art is embedded directly in the HTML <pre> tag
+
+function scrollBottom() {
+  body.scrollTop = body.scrollHeight;
+}
+
+function addLine(html, cls) {
+  const div = document.createElement('div');
+  div.className = 'line ' + (cls || '');
+  div.innerHTML = html;
+  output.appendChild(div);
+  scrollBottom();
+  return div;
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function typeHeaderLine(text, speed) {
+  const div = document.createElement('div');
+  div.className = 'header-line';
+  headerLines.appendChild(div);
+  for (let i = 0; i < text.length; i++) {
+    if (text[i] === '<') {
+      const close = text.indexOf('>', i);
+      if (close !== -1) { div.innerHTML += text.substring(i, close + 1); i = close; continue; }
+    }
+    div.innerHTML += text[i];
+    await sleep(speed || 30);
+  }
+  return div;
+}
+
+async function showBanner() {
+  await sleep(200);
+  await typeHeaderLine('Powered by Nansen CLI + x402 micropayments', 30);
+  const builtBy = document.createElement('div');
+  builtBy.className = 'header-line';
+  builtBy.innerHTML = 'Built by <a href="https://linktr.ee/vincent.charles" target="_blank" style="color:#00D4AA;font-weight:bold;text-decoration:none">Vincent Charles</a> · #NansenCLI';
+  headerLines.appendChild(builtBy);
+
+  addLine('<span class="d">Enter a token address to run 15 Nansen CLI</span>');
+  addLine('<span class="d">calls and generate a due diligence report.</span>');
+  addLine('');
+}
+
+// Chain grid selector
+function showChainGrid(selectedChain) {
+  return new Promise((resolve) => {
+    addLine('<span class="d">Select chain:</span>');
+    const gridDiv = document.createElement('div');
+    gridDiv.className = 'chain-grid';
+    output.appendChild(gridDiv);
+
+    const items = [];
+    CHAINS.forEach(c => {
+      const span = document.createElement('span');
+      span.className = 'chain-item' + (c === selectedChain ? ' active' : '');
+      span.textContent = (c === selectedChain ? '> ' : '  ') + c;
+      span.dataset.chain = c;
+      span.addEventListener('click', () => selectChain(c));
+      gridDiv.appendChild(span);
+      items.push(span);
+    });
+
+    const hintDiv = document.createElement('div');
+    hintDiv.className = 'chain-hint';
+    hintDiv.textContent = CHAINS.length + ' chains supported · Click to select or type to filter';
+    output.appendChild(hintDiv);
+
+    const filterLine = document.createElement('div');
+    filterLine.className = 'input-line';
+    filterLine.style.marginTop = '6px';
+    filterLine.innerHTML = '<span class="d">filter: </span>';
+    const filterInput = document.createElement('input');
+    filterInput.className = 'chain-filter';
+    filterInput.placeholder = '';
+    filterInput.autocomplete = 'off';
+    filterLine.appendChild(filterInput);
+    output.appendChild(filterLine);
+    filterInput.focus();
+    scrollBottom();
+
+    let currentChain = selectedChain;
+
+    filterInput.addEventListener('input', () => {
+      const q = filterInput.value.toLowerCase();
+      let firstMatch = null;
+      items.forEach(it => {
+        const c = it.dataset.chain;
+        const match = !q || c.includes(q);
+        it.classList.toggle('hidden-chain', !match);
+        if (match && !firstMatch) firstMatch = c;
+      });
+      if (firstMatch) {
+        currentChain = firstMatch;
+        items.forEach(it => {
+          const c = it.dataset.chain;
+          const isActive = c === currentChain;
+          it.classList.toggle('active', isActive);
+          it.textContent = (isActive ? '> ' : '  ') + c;
+        });
+      }
+    });
+
+    filterInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') selectChain(currentChain);
+    });
+
+    function selectChain(chain) {
+      items.forEach(it => {
+        if (it.dataset.chain === chain) {
+          it.classList.add('active', 'chain-pulse');
+        }
+      });
+      setTimeout(() => {
+        gridDiv.remove();
+        hintDiv.remove();
+        filterLine.remove();
+        addLine('<span class="d">Chain: </span><span class="g">' + chain + ' ✓</span>');
+        scrollBottom();
+        resolve(chain);
+      }, 600);
+    }
+  });
+}
+
+async function showPrompt() {
+  inputArea.classList.remove('hidden');
+  tokenInput.focus();
+  scrollBottom();
+
+  const params = new URLSearchParams(window.location.search);
+  const autoDemo = params.get('demo') === 'true';
+  let demoTimer = null;
+
+  if (autoDemo) {
+    demoTimer = setTimeout(() => runDemo(), 500);
+  } else {
+    demoTimer = setTimeout(() => {
+      if (!tokenInput.value) runDemo();
+    }, 5000);
+  }
+
+  tokenInput.addEventListener('input', () => {
+    if (demoTimer) { clearTimeout(demoTimer); demoTimer = null; }
+  });
+
+  tokenInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      if (demoTimer) { clearTimeout(demoTimer); demoTimer = null; }
+      const val = tokenInput.value.trim();
+      if (val.length >= 10) {
+        inputArea.classList.add('hidden');
+        addLine('<span class="prompt">$ </span>' + val);
+        showChainGrid('solana').then(chain => runPipeline(val, chain));
+      }
+    }
+  });
+}
+
+async function runDemo() {
+  inputArea.classList.add('hidden');
+  const line = addLine('<span class="prompt">$ </span>');
+  for (let i = 0; i < DEMO_TOKEN.length; i++) {
+    line.innerHTML += DEMO_TOKEN[i];
+    await sleep(12);
+  }
+  await sleep(400);
+
+  // Show chain grid briefly, auto-select solana
+  addLine('<span class="d">Select chain:</span>');
+  const gridDiv = document.createElement('div');
+  gridDiv.className = 'chain-grid';
+  output.appendChild(gridDiv);
+  const demoItems = [];
+  CHAINS.forEach(c => {
+    const span = document.createElement('span');
+    span.className = 'chain-item' + (c === 'solana' ? ' active' : '');
+    span.textContent = (c === 'solana' ? '> ' : '  ') + c;
+    span.dataset.chain = c;
+    gridDiv.appendChild(span);
+    demoItems.push(span);
+  });
+  const hintDiv = document.createElement('div');
+  hintDiv.className = 'chain-hint';
+  hintDiv.textContent = CHAINS.length + ' chains supported';
+  output.appendChild(hintDiv);
+  scrollBottom();
+
+  // Cycle through chains at 150ms each
+  for (let i = 0; i < CHAINS.length; i++) {
+    demoItems.forEach((it, j) => {
+      const isActive = j === i;
+      it.classList.toggle('active', isActive);
+      it.textContent = (isActive ? '> ' : '  ') + it.dataset.chain;
+    });
+    scrollBottom();
+    await sleep(150);
+  }
+
+  // Land on solana, pulse
+  demoItems.forEach((it, j) => {
+    const isActive = j === 0;
+    it.classList.toggle('active', isActive);
+    it.textContent = (isActive ? '> ' : '  ') + it.dataset.chain;
+  });
+  demoItems[0].classList.add('chain-pulse');
+  await sleep(800);
+
+  gridDiv.remove();
+  hintDiv.remove();
+  addLine('<span class="d">Chain: </span><span class="g">solana ✓</span>');
+  scrollBottom();
+
+  runPipeline(DEMO_TOKEN, 'solana');
+}
+
+async function runPipeline(token, chain) {
+  addLine('');
+  await sleep(920);
+  addLine('<span class="g">Initializing pipeline...</span>');
+  addLine('');
+
+  // Static mode — link directly to cached report
+  const reportPromise = Promise.resolve('./reports/PUMP_solana.html');
+
+  // Hacker typewriter with random delays
+  async function hackerType(el, text, baseDelay) {
+    const cur = document.createElement('span');
+    cur.className = 'typing-cursor';
+    el.appendChild(cur);
+    let buf = '';
+    for (let i = 0; i < text.length; i++) {
+      if (text[i] === '<') {
+        const close = text.indexOf('>', i);
+        if (close !== -1) { buf += text.substring(i, close + 1); i = close; continue; }
+      }
+      buf += text[i];
+      el.innerHTML = buf;
+      el.appendChild(cur);
+      scrollBottom();
+      const r = Math.random();
+      const delay = r < 0.12 ? baseDelay * 4 : r < 0.35 ? baseDelay * 1.8 : baseDelay;
+      await sleep(delay);
+    }
+    if (cur.parentNode) cur.remove();
+  }
+
+  // 15% slower: base 9.2ms (was 8), spinner 575ms (was 500), think 345-575ms (was 300-500)
+  for (let i = 0; i < STEPS.length; i++) {
+    const [name, snippet] = STEPS[i];
+    const num = String(i + 1).padStart(2, ' ');
+
+    const stepLine = addLine(
+      '<span class="d">[' + num + '/15]</span> <span class="spinner"></span> <span class="d">' + name + '</span>'
+    );
+    await sleep(575);
+
+    stepLine.innerHTML = '';
+    const fullText = '<span class="d">[' + num + '/15]</span> <span class="g">\✓</span> <span class="w">' + name + '</span>  <span class="d">' + snippet + '</span>';
+    await hackerType(stepLine, fullText, 9.2);
+    scrollBottom();
+
+    if (i < STEPS.length - 1) {
+      const thinkLine = addLine('<span class="typing-cursor"></span>');
+      await sleep(345 + Math.random() * 230);
+      thinkLine.remove();
+    }
+  }
+
+  addLine('');
+  addLine('<span class="g">\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═</span>');
+  addLine('<span class="w">  \✅ REPORT READY</span>');
+  addLine('<span class="d">  Token:</span> <span class="w">PUMP</span> <span class="d">|</span> <span class="d">Verdict:</span> <span class="g">BULLISH</span>');
+  addLine('<span class="d">  Smart Money Conviction:</span> <span class="y">60/100</span>');
+  addLine('<span class="d">  API Calls: 15 | Cost: ~$0.45</span>');
+  addLine('<span class="g">\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═</span>');
+  addLine('');
+
+  const reportUrl = await reportPromise;
+  const btnLine = addLine('');
+  const btn = document.createElement('a');
+  btn.href = reportUrl;
+  btn.className = 'report-btn';
+  btn.textContent = '[ View Full Report \→ ]';
+  btnLine.appendChild(btn);
+  scrollBottom();
+}
+
+// Boot
+(async () => {
+  await showBanner();
+  await showPrompt();
+})();
+
+// Click anywhere in body focuses input
+body.addEventListener('click', () => {
+  if (!inputArea.classList.contains('hidden')) tokenInput.focus();
+});
+</script>
+</body>
+</html>
