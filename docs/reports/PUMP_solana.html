@@ -242,9 +242,11 @@
     .grid-2 { grid-template-columns: 1fr; }
     .cases-grid { grid-template-columns: 1fr; }
     .risk-grid { grid-template-columns: 1fr; }
-    table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; white-space: nowrap; }
+    table { font-size: 11px; }
+    td, th { padding: 6px 8px; white-space: normal; word-break: break-word; }
     .chart-container { height: 200px; }
-    .explainer p { font-size: 12px; }
+    .explainer p { font-size: 12px; word-break: break-word; overflow-wrap: break-word; }
+    .card { overflow: hidden; }
     .verdict-value { font-size: 24px; }
   }
   @media (max-width: 480px) {
