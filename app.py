@@ -20,7 +20,7 @@ RATE_LIMIT_SECONDS = 300  # 5 minutes
 
 
 # ─── Landing Page ────────────────────────────────────────────────────
-LANDING_HTML = r"""<!DOCTYPE html>
+LANDING_HTML = """<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -213,19 +213,19 @@ const tokenInput = document.getElementById('tokenInput');
 const DEMO_TOKEN = 'pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn';
 
 const STEPS = [
-  ["Token overview",           "PUMP \\u00b7 $1.1B market cap +0.9%"],
-  ["Smart money netflow",      "$728.4K net inflow (7d) \\u00b7 4 traders"],
+  ["Token overview",           "PUMP \· $1.1B market cap +0.9%"],
+  ["Smart money netflow",      "$728.4K net inflow (7d) \· 4 traders"],
   ["Smart money holdings",     "$14.1M across 10 tokens"],
   ["Smart money DEX trades",   "5 recent trades"],
   ["Token info",               "PUMP metadata loaded"],
   ["Flow intelligence",        "Whales +$236.3K, Exchanges -$815.5K"],
   ["Who bought/sold",          "$52.1M bought vs $37.8M sold"],
-  ["Nansen Score",             "\\u26a0 HIGH risk: BTC Reflexivity"],
+  ["Nansen Score",             "\⚠ HIGH risk: BTC Reflexivity"],
   ["Holder distribution",      "Top holder: 49% (pump.fun custody)"],
   ["PnL leaderboard",          "Top traders mapped"],
   ["DEX trades",               "10 trades analyzed"],
   ["Token flows",              "Flow data loaded"],
-  ["Price history",            "721 candles \\u00b7 $0.0017 \\u2013 $0.0022"],
+  ["Price history",            "721 candles \· $0.0017 \– $0.0022"],
   ["Profiler balance",         "Top buyer portfolio: $40.87"],
   ["Profiler counterparties",  "5 counterparties identified"],
 ];
@@ -265,7 +265,7 @@ async function typeHeaderLine(text, speed) {
 async function showBanner() {
   await sleep(200);
   await typeHeaderLine('Powered by Nansen CLI + x402 micropayments', 30);
-  await typeHeaderLine('Built by <a href="https://linktr.ee/vincent.charles" target="_blank">Vincent Charles</a> \\u00b7 #NansenCLI', 30);
+  await typeHeaderLine('Built by <a href="https://linktr.ee/vincent.charles" target="_blank">Vincent Charles</a> \· #NansenCLI', 30);
 
   addLine('<span class="d">Enter a token address to run 15 Nansen CLI</span>');
   addLine('<span class="d">calls and generate a due diligence report.</span>');
@@ -366,7 +366,7 @@ async function runPipeline(token) {
     await sleep(575);
 
     stepLine.innerHTML = '';
-    const fullText = '<span class="d">[' + num + '/15]</span> <span class="g">\\u2713</span> <span class="w">' + name + '</span>  <span class="d">' + snippet + '</span>';
+    const fullText = '<span class="d">[' + num + '/15]</span> <span class="g">\✓</span> <span class="w">' + name + '</span>  <span class="d">' + snippet + '</span>';
     await hackerType(stepLine, fullText, 9.2);
     scrollBottom();
 
@@ -378,12 +378,12 @@ async function runPipeline(token) {
   }
 
   addLine('');
-  addLine('<span class="g">\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550</span>');
-  addLine('<span class="w">  \\u2705 REPORT READY</span>');
+  addLine('<span class="g">\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═</span>');
+  addLine('<span class="w">  \✅ REPORT READY</span>');
   addLine('<span class="d">  Token:</span> <span class="w">PUMP</span> <span class="d">|</span> <span class="d">Verdict:</span> <span class="g">BULLISH</span>');
   addLine('<span class="d">  Smart Money Conviction:</span> <span class="y">60/100</span>');
   addLine('<span class="d">  API Calls: 15 | Cost: ~$0.45</span>');
-  addLine('<span class="g">\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550\\u2550</span>');
+  addLine('<span class="g">\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═\═</span>');
   addLine('');
 
   const reportUrl = await reportPromise;
@@ -391,7 +391,7 @@ async function runPipeline(token) {
   const btn = document.createElement('a');
   btn.href = reportUrl;
   btn.className = 'report-btn';
-  btn.textContent = '[ View Full Report \\u2192 ]';
+  btn.textContent = '[ View Full Report \→ ]';
   btnLine.appendChild(btn);
   scrollBottom();
 }
