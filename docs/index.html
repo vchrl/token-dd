@@ -420,9 +420,10 @@ async function showPrompt() {
 async function runDemo() {
   inputArea.classList.add('hidden');
   const line = addLine('<span class="prompt">$ </span>');
-  for (let i = 0; i < DEMO_TOKEN.length; i++) {
-    line.innerHTML += DEMO_TOKEN[i];
-    await sleep(12);
+  // Fast paste effect — dump in chunks of 4
+  for (let i = 0; i < DEMO_TOKEN.length; i += 4) {
+    line.innerHTML += DEMO_TOKEN.substring(i, i + 4);
+    await sleep(8);
   }
   await sleep(400);
 
