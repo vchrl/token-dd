@@ -198,6 +198,7 @@
     <div class="dot y"></div>
     <div class="dot g"></div>
     <div class="titlebar-text">token-dd &mdash; bash</div>
+    <span id="skipBtn" style="font-size:12px;color:#9ca3af;cursor:pointer;opacity:0.6;transition:opacity 0.2s;user-select:none" onmouseover="this.style.opacity='1'" onmouseout="this.style.opacity='0.6'">Skip →</span>
   </div>
   <!-- Fixed header: ASCII art + info lines -->
   <div class="term-header" id="header">
@@ -275,7 +276,40 @@ function addLine(html, cls) {
   return div;
 }
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+let skipped = false;
+function sleep(ms) { return skipped ? Promise.resolve() : new Promise(r => setTimeout(r, ms)); }
+
+document.getElementById('skipBtn').addEventListener('click', () => {
+  skipped = true;
+  // Clear current output and show final state instantly
+  output.innerHTML = '';
+  inputArea.classList.add('hidden');
+  addLine('<span class="prompt">$ </span><span style="color:#e5e7eb">' + DEMO_TOKEN + '</span>');
+  addLine('<span class="d">Chain: </span><span class="g">solana ✓</span>');
+  addLine('');
+  addLine('<span class="g">Initializing pipeline...</span>');
+  addLine('');
+  for (let i = 0; i < STEPS.length; i++) {
+    const [name, snippet] = STEPS[i];
+    const num = String(i + 1).padStart(2, ' ');
+    addLine('<span class="d">[' + num + '/15]</span> <span class="g">✓</span> <span class="w">' + name + '</span>  <span class="d">' + snippet + '</span>');
+  }
+  addLine('');
+  addLine('<span class="g">═══════════════════════════════════════════</span>');
+  addLine('<span class="w">  ✅ REPORT READY</span>');
+  addLine('<span class="d">  Token:</span> <span class="w">PUMP</span> <span class="d">|</span> <span class="d">Verdict:</span> <span class="g">BULLISH</span>');
+  addLine('<span class="d">  Smart Money Conviction:</span> <span class="y">60/100</span>');
+  addLine('<span class="d">  API Calls: 15 | Cost: ~$0.45</span>');
+  addLine('<span class="g">═══════════════════════════════════════════</span>');
+  addLine('');
+  const btnLine = addLine('');
+  const btn = document.createElement('a');
+  btn.href = './reports/PUMP_solana.html';
+  btn.className = 'report-btn';
+  btn.textContent = '[ View Full Report → ]';
+  btnLine.appendChild(btn);
+  document.getElementById('skipBtn').style.display = 'none';
+});
 
 async function showBanner() {
   addLine('<span class="d">Enter a token address to run 15 Nansen CLI</span>');
