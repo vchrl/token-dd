@@ -42,7 +42,7 @@ LANDING_HTML = """<!DOCTYPE html>
     overflow: hidden;
     box-shadow: 0 16px 70px rgba(0,0,0,0.5), 0 0 40px rgba(0,212,170,0.06);
     display: flex; flex-direction: column;
-    max-height: 92vh;
+    max-height: 80vh;
   }
   .titlebar {
     background: #161b22;
