@@ -306,7 +306,10 @@ async function typeHeaderLine(text, speed) {
 async function showBanner() {
   await sleep(200);
   await typeHeaderLine('Powered by Nansen CLI + x402 micropayments', 30);
-  await typeHeaderLine('Built by <a href="https://linktr.ee/vincent.charles" target="_blank">Vincent Charles</a> · #NansenCLI', 30);
+  const builtBy = document.createElement('div');
+  builtBy.className = 'header-line';
+  builtBy.innerHTML = 'Built by <a href="https://linktr.ee/vincent.charles" target="_blank" style="color:#00D4AA;font-weight:bold;text-decoration:none">Vincent Charles</a> · #NansenCLI';
+  headerLines.appendChild(builtBy);
 
   addLine('<span class="d">Enter a token address to run 15 Nansen CLI</span>');
   addLine('<span class="d">calls and generate a due diligence report.</span>');
