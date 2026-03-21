@@ -205,7 +205,8 @@
  ██║ ╚████║██║  ██║██║ ╚████║███████║███████╗██║ ╚████║  ╚██████╗ ███████╗██║
  ╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝  ╚═══╝╚══════╝╚══════╝╚═╝  ╚═══╝  ╚═════╝ ╚══════╝╚═╝</pre>
     <div class="ascii-sub">token due diligence engine</div>
-    <div id="headerLines"></div>
+    <div class="header-line">Powered by Nansen CLI + x402 micropayments</div>
+    <div class="header-line">Built by <a href="https://linktr.ee/vincent.charles" target="_blank" style="color:#00D4AA;font-weight:bold;text-decoration:none">Vincent Charles</a> · #NansenCLI</div>
   </div>
   <!-- Scrollable body: prompt + pipeline output -->
   <div class="term-body" id="body">
@@ -223,7 +224,6 @@
 </div>
 
 <script>
-const headerLines = document.getElementById('headerLines');
 const output = document.getElementById('output');
 const body = document.getElementById('body');
 const inputArea = document.getElementById('inputArea');
@@ -274,29 +274,7 @@ function addLine(html, cls) {
 
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-async function typeHeaderLine(text, speed) {
-  const div = document.createElement('div');
-  div.className = 'header-line';
-  headerLines.appendChild(div);
-  for (let i = 0; i < text.length; i++) {
-    if (text[i] === '<') {
-      const close = text.indexOf('>', i);
-      if (close !== -1) { div.innerHTML += text.substring(i, close + 1); i = close; continue; }
-    }
-    div.innerHTML += text[i];
-    await sleep(speed || 30);
-  }
-  return div;
-}
-
 async function showBanner() {
-  await sleep(200);
-  await typeHeaderLine('Powered by Nansen CLI + x402 micropayments', 30);
-  const builtBy = document.createElement('div');
-  builtBy.className = 'header-line';
-  builtBy.innerHTML = 'Built by <a href="https://linktr.ee/vincent.charles" target="_blank" style="color:#00D4AA;font-weight:bold;text-decoration:none">Vincent Charles</a> · #NansenCLI';
-  headerLines.appendChild(builtBy);
-
   addLine('<span class="d">Enter a token address to run 15 Nansen CLI</span>');
   addLine('<span class="d">calls and generate a due diligence report.</span>');
   addLine('');
