@@ -1,6 +1,8 @@
 # NANSEN CLI - Token Due Diligence Engine
 
-> One command. 15+ Nansen API calls. A full protocol due diligence report that would take an analyst 4 hours.
+🔴 **Live Demo: [https://vchrl.github.io/token-dd/](https://vchrl.github.io/token-dd/)**
+
+> One command. 15+ Nansen API calls. A full token due diligence report that would take an analyst 4 hours.
 
 **Live tool built with [Nansen CLI](https://agents.nansen.ai) for the #NansenCLI challenge.**
 
@@ -32,7 +34,7 @@ Token Address
     └── 15. Profiler: Counterparties ─ Who the top buyer is transacting with
          │
          ▼
-    Structured Due Diligence Report (Markdown)
+    Interactive HTML Due Diligence Report
 ```
 
 ### The Report
@@ -137,7 +139,7 @@ All 18 chains supported by Nansen CLI:
 │         │                                   │
 │         ▼                                   │
 │  ┌──────────────────────────────────────┐   │
-│  │      Markdown Report Generator       │   │
+│  │      HTML Report Generator            │   │
 │  │  • Professional DD format            │   │
 │  │  • Automated risk scoring            │   │
 │  │  • SM conviction analysis            │   │
@@ -164,11 +166,7 @@ No subscriptions. No lock-in. Pay per insight.
 
 ## Who Built This
 
-**[Vincent Charles](https://linkedin.com/in/vincentcfr/)** - Fractional Head of Data for Web3 projects. Previously Senior BI/Data Lead at Binance and Morpho Labs.
-
-**[Unchain Data](https://unchaindata.xyz)** - Tool-agnostic Web3 data consulting. We build ON TOP of the best tools (like Nansen) to deliver insights.
-
-**Lens** - AI agent running on [OpenClaw](https://openclaw.ai), built the code.
+Built by **[Vincent Charles](https://linkedin.com/in/vincentcfr/)** - Fractional Head of Data for Web3 projects. Previously Senior BI/Data Lead at Binance and Morpho Labs.
 
 ## Why This Exists
 
