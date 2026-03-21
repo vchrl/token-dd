@@ -10,8 +10,6 @@
 
 Feed it a token address. It runs a full-stack due diligence pipeline using the Nansen CLI and produces a professional-grade investment research report.
 
-The kind of analysis a $200/hr Fractional Head of Data would deliver. Automated.
-
 ### The Pipeline (15+ API calls per report)
 
 ```
