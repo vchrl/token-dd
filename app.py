@@ -170,6 +170,39 @@ LANDING_HTML = """<!DOCTYPE html>
     box-shadow: 0 0 15px rgba(0,212,170,0.2);
     text-shadow: 0 0 8px rgba(0,212,170,0.4);
   }
+  .chain-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px 16px;
+    margin: 6px 0 4px 18px;
+    font-size: 13px;
+  }
+  .chain-item {
+    color: #484f58;
+    padding: 1px 4px;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: color 0.15s;
+    white-space: nowrap;
+  }
+  .chain-item:hover { color: #c9d1d9; }
+  .chain-item.active {
+    color: #00D4AA;
+    font-weight: bold;
+  }
+  .chain-item.hidden-chain { display: none; }
+  .chain-filter {
+    background: none; border: none; outline: none;
+    color: #e6edf3; font-family: inherit; font-size: inherit;
+    caret-color: #00D4AA; width: 120px;
+  }
+  .chain-filter::placeholder { color: #30363d; }
+  .chain-hint { color: #30363d; font-size: 12px; margin: 4px 0 0 18px; }
+  @keyframes pulse-chain {
+    0%,100% { text-shadow: none; }
+    50% { text-shadow: 0 0 8px rgba(0,212,170,0.6); }
+  }
+  .chain-pulse { animation: pulse-chain 0.3s ease 2; }
 </style>
 </head>
 <body>
@@ -211,6 +244,14 @@ const inputArea = document.getElementById('inputArea');
 const tokenInput = document.getElementById('tokenInput');
 
 const DEMO_TOKEN = 'pumpCmXqMfrsAkQ5r49WcJnRayYRqmXz6ae8H7H9Dfn';
+const CHAINS = [
+  'solana','ethereum','base',
+  'arbitrum','polygon','optimism',
+  'avalanche','bnb','linea',
+  'scroll','mantle','ronin',
+  'sei','sonic','hyperevm',
+  'monad','plasma','iotaevm',
+];
 
 const STEPS = [
   ["Token overview",           "PUMP \· $1.1B market cap +0.9%"],
@@ -272,6 +313,87 @@ async function showBanner() {
   addLine('');
 }
 
+// Chain grid selector
+function showChainGrid(selectedChain) {
+  return new Promise((resolve) => {
+    addLine('<span class="d">Select chain:</span>');
+    const gridDiv = document.createElement('div');
+    gridDiv.className = 'chain-grid';
+    output.appendChild(gridDiv);
+
+    const items = [];
+    CHAINS.forEach(c => {
+      const span = document.createElement('span');
+      span.className = 'chain-item' + (c === selectedChain ? ' active' : '');
+      span.textContent = (c === selectedChain ? '> ' : '  ') + c;
+      span.dataset.chain = c;
+      span.addEventListener('click', () => selectChain(c));
+      gridDiv.appendChild(span);
+      items.push(span);
+    });
+
+    const hintDiv = document.createElement('div');
+    hintDiv.className = 'chain-hint';
+    hintDiv.textContent = CHAINS.length + ' chains supported · Click to select or type to filter';
+    output.appendChild(hintDiv);
+
+    const filterLine = document.createElement('div');
+    filterLine.className = 'input-line';
+    filterLine.style.marginTop = '6px';
+    filterLine.innerHTML = '<span class="d">filter: </span>';
+    const filterInput = document.createElement('input');
+    filterInput.className = 'chain-filter';
+    filterInput.placeholder = '';
+    filterInput.autocomplete = 'off';
+    filterLine.appendChild(filterInput);
+    output.appendChild(filterLine);
+    filterInput.focus();
+    scrollBottom();
+
+    let currentChain = selectedChain;
+
+    filterInput.addEventListener('input', () => {
+      const q = filterInput.value.toLowerCase();
+      let firstMatch = null;
+      items.forEach(it => {
+        const c = it.dataset.chain;
+        const match = !q || c.includes(q);
+        it.classList.toggle('hidden-chain', !match);
+        if (match && !firstMatch) firstMatch = c;
+      });
+      if (firstMatch) {
+        currentChain = firstMatch;
+        items.forEach(it => {
+          const c = it.dataset.chain;
+          const isActive = c === currentChain;
+          it.classList.toggle('active', isActive);
+          it.textContent = (isActive ? '> ' : '  ') + c;
+        });
+      }
+    });
+
+    filterInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') selectChain(currentChain);
+    });
+
+    function selectChain(chain) {
+      items.forEach(it => {
+        if (it.dataset.chain === chain) {
+          it.classList.add('active', 'chain-pulse');
+        }
+      });
+      setTimeout(() => {
+        gridDiv.remove();
+        hintDiv.remove();
+        filterLine.remove();
+        addLine('<span class="d">Chain: </span><span class="g">' + chain + ' ✓</span>');
+        scrollBottom();
+        resolve(chain);
+      }, 600);
+    }
+  });
+}
+
 async function showPrompt() {
   inputArea.classList.remove('hidden');
   tokenInput.focus();
@@ -300,7 +422,7 @@ async function showPrompt() {
       if (val.length >= 10) {
         inputArea.classList.add('hidden');
         addLine('<span class="prompt">$ </span>' + val);
-        runPipeline(val);
+        showChainGrid('solana').then(chain => runPipeline(val, chain));
       }
     }
   });
@@ -314,12 +436,56 @@ async function runDemo() {
     await sleep(12);
   }
   await sleep(400);
-  runPipeline(DEMO_TOKEN);
+
+  // Show chain grid briefly, auto-select solana
+  addLine('<span class="d">Select chain:</span>');
+  const gridDiv = document.createElement('div');
+  gridDiv.className = 'chain-grid';
+  output.appendChild(gridDiv);
+  const demoItems = [];
+  CHAINS.forEach(c => {
+    const span = document.createElement('span');
+    span.className = 'chain-item' + (c === 'solana' ? ' active' : '');
+    span.textContent = (c === 'solana' ? '> ' : '  ') + c;
+    span.dataset.chain = c;
+    gridDiv.appendChild(span);
+    demoItems.push(span);
+  });
+  const hintDiv = document.createElement('div');
+  hintDiv.className = 'chain-hint';
+  hintDiv.textContent = CHAINS.length + ' chains supported';
+  output.appendChild(hintDiv);
+  scrollBottom();
+
+  // Cycle through chains at 150ms each
+  for (let i = 0; i < CHAINS.length; i++) {
+    demoItems.forEach((it, j) => {
+      const isActive = j === i;
+      it.classList.toggle('active', isActive);
+      it.textContent = (isActive ? '> ' : '  ') + it.dataset.chain;
+    });
+    scrollBottom();
+    await sleep(150);
+  }
+
+  // Land on solana, pulse
+  demoItems.forEach((it, j) => {
+    const isActive = j === 0;
+    it.classList.toggle('active', isActive);
+    it.textContent = (isActive ? '> ' : '  ') + it.dataset.chain;
+  });
+  demoItems[0].classList.add('chain-pulse');
+  await sleep(800);
+
+  gridDiv.remove();
+  hintDiv.remove();
+  addLine('<span class="d">Chain: </span><span class="g">solana ✓</span>');
+  scrollBottom();
+
+  runPipeline(DEMO_TOKEN, 'solana');
 }
 
-async function runPipeline(token) {
-  addLine('');
-  addLine('<span class="d">Select chain [solana]: </span><span class="w">solana</span>');
+async function runPipeline(token, chain) {
   addLine('');
   await sleep(920);
   addLine('<span class="g">Initializing pipeline...</span>');
@@ -328,7 +494,7 @@ async function runPipeline(token) {
   // POST to /run in background
   const formData = new FormData();
   formData.append('token', token);
-  formData.append('chain', 'solana');
+  formData.append('chain', chain || 'solana');
   const reportPromise = fetch('/run', {
     method: 'POST', body: formData, redirect: 'follow'
   }).then(r => r.url).catch(() => '/sample');
