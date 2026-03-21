@@ -617,81 +617,105 @@
 </div>
 
 <script>
+// Scroll-triggered chart creation
+function observeChart(canvasId, createFn) {
+  const el = document.getElementById(canvasId);
+  if (!el) return;
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        createFn();
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.3 });
+  observer.observe(el);
+}
+
 // Price Chart
 const priceData = [{"label": "Mar 19 04:00", "open": 0.0019704986746871024, "high": 0.0019695109145753836, "low": 0.001949513823322331, "close": 0.0019502435170934715, "volume": 1324091.6701700045}, {"label": "Mar 19 05:00", "open": 0.0019502435170934715, "high": 0.0019504489679093037, "low": 0.001941521467723426, "close": 0.0019427477557093014, "volume": 1125942.4895777043}, {"label": "Mar 19 06:00", "open": 0.0019427477557093014, "high": 0.0019414418081382817, "low": 0.0019266188984015027, "close": 0.0019266188984015027, "volume": 1183401.5933207544}, {"label": "Mar 19 07:00", "open": 0.0019266188984015027, "high": 0.0019255880633883991, "low": 0.0018922777914326795, "close": 0.0018960595663844242, "volume": 1084905.320217661}, {"label": "Mar 19 08:00", "open": 0.0018960595663844242, "high": 0.0018957145305079082, "low": 0.001880063864694046, "close": 0.001893274301600796, "volume": 830771.1393833071}, {"label": "Mar 19 09:00", "open": 0.001893274301600796, "high": 0.001894387957519505, "low": 0.0018836644222206109, "close": 0.001894387957519505, "volume": 544339.0506212335}, {"label": "Mar 19 10:00", "open": 0.001894387957519505, "high": 0.001906569173719322, "low": 0.0018962215136307443, "close": 0.0018962215136307443, "volume": 322379.3654431793}, {"label": "Mar 19 11:00", "open": 0.0018962215136307443, "high": 0.0018972182936037552, "low": 0.0018923528231732682, "close": 0.0018940143725749172, "volume": 283172.7179817116}, {"label": "Mar 19 12:00", "open": 0.0018940143725749172, "high": 0.0018893987017556963, "low": 0.0018611976869469268, "close": 0.0018611976869469268, "volume": 766686.3948070135}, {"label": "Mar 19 13:00", "open": 0.0018611976869469268, "high": 0.0018585336057340579, "low": 0.001847819812538535, "close": 0.0018516486596165498, "volume": 1670434.347490895}, {"label": "Mar 19 14:00", "open": 0.0018516486596165498, "high": 0.0018528198412164003, "low": 0.0018285065351868965, "close": 0.0018330387700606714, "volume": 1414482.7958552942}, {"label": "Mar 19 15:00", "open": 0.0018330387700606714, "high": 0.0018326269910086698, "low": 0.00181304237041427, "close": 0.0018284178388785096, "volume": 1427645.9859370182}, {"label": "Mar 19 16:00", "open": 0.0018284178388785096, "high": 0.0018319492126074135, "low": 0.0018167151400466232, "close": 0.0018167151400466232, "volume": 1156233.8958306648}, {"label": "Mar 19 17:00", "open": 0.0018167151400466232, "high": 0.0018515844930243244, "low": 0.0018200670109844526, "close": 0.001850898437908134, "volume": 1199484.6394414073}, {"label": "Mar 19 18:00", "open": 0.001850898437908134, "high": 0.0018578081909539658, "low": 0.001851483689245413, "close": 0.0018558140943141178, "volume": 719999.3550225396}, {"label": "Mar 19 19:00", "open": 0.0018558140943141178, "high": 0.0018683793275688192, "low": 0.001851763767572636, "close": 0.001851763767572636, "volume": 1578289.7405420851}, {"label": "Mar 19 20:00", "open": 0.001851763767572636, "high": 0.0018580965344060407, "low": 0.0018463007026533638, "close": 0.0018580965344060407, "volume": 759618.5802431542}, {"label": "Mar 19 21:00", "open": 0.0018580965344060407, "high": 0.0018656810911181897, "low": 0.0018578894864469777, "close": 0.0018621356631116322, "volume": 366412.34219737776}, {"label": "Mar 19 22:00", "open": 0.0018621356631116322, "high": 0.0018623108754288386, "low": 0.0018378790756821118, "close": 0.0018420650714885062, "volume": 805598.7416945173}, {"label": "Mar 19 23:00", "open": 0.0018420650714885062, "high": 0.0018437753713596062, "low": 0.0018342127854030336, "close": 0.0018378119990645576, "volume": 539704.8170121777}, {"label": "Mar 20 00:00", "open": 0.0018378119990645576, "high": 0.0018509384429095165, "low": 0.001841611373522606, "close": 0.0018506062336924927, "volume": 360668.3752742253}, {"label": "Mar 20 01:00", "open": 0.0018506062336924927, "high": 0.0018732716335122174, "low": 0.001851265422256225, "close": 0.001869785132376453, "volume": 432406.3443891052}, {"label": "Mar 20 02:00", "open": 0.001869785132376453, "high": 0.0018929864298099439, "low": 0.0018594718180647695, "close": 0.0018929864298099439, "volume": 2924506.3222430777}, {"label": "Mar 20 03:00", "open": 0.0018929864298099439, "high": 0.001894577975241777, "low": 0.0018885434301854195, "close": 0.0018885434301854195, "volume": 508417.64347446803}, {"label": "Mar 20 04:00", "open": 0.0018885434301854195, "high": 0.0018969553712422985, "low": 0.0018777656439455345, "close": 0.0018857290276316396, "volume": 691059.3358291658}, {"label": "Mar 20 05:00", "open": 0.0018857290276316396, "high": 0.0019047847393500036, "low": 0.001890155002112955, "close": 0.0019004439624656598, "volume": 706749.2970269985}, {"label": "Mar 20 06:00", "open": 0.0019004439624656598, "high": 0.0019003436109570945, "low": 0.0018926110524037207, "close": 0.0018926818113081147, "volume": 322763.78545927955}, {"label": "Mar 20 07:00", "open": 0.0018926818113081147, "high": 0.0019002518174116975, "low": 0.0018827775016438618, "close": 0.0019002518174116975, "volume": 574040.9297086038}, {"label": "Mar 20 08:00", "open": 0.0019002518174116975, "high": 0.0019137876008055352, "low": 0.0018967143842858758, "close": 0.0018967143842858758, "volume": 744888.7226786437}, {"label": "Mar 20 09:00", "open": 0.0018967143842858758, "high": 0.0018959832885276759, "low": 0.0018832761951277977, "close": 0.0018916807635404951, "volume": 827927.9473990584}, {"label": "Mar 20 10:00", "open": 0.0018916807635404951, "high": 0.0018938692131592802, "low": 0.0018832507651771098, "close": 0.0018938692131592802, "volume": 406929.1386550708}, {"label": "Mar 20 11:00", "open": 0.0018938692131592802, "high": 0.0018972381428912861, "low": 0.0018830722379465667, "close": 0.001883321006918206, "volume": 511650.5951346023}, {"label": "Mar 20 12:00", "open": 0.001883321006918206, "high": 0.0018897770011773063, "low": 0.0018624912430369432, "close": 0.0018629302106480767, "volume": 1883775.5618322925}, {"label": "Mar 20 13:00", "open": 0.0018629302106480767, "high": 0.0018734752923057704, "low": 0.0018608936379803057, "close": 0.001864630288749023, "volume": 1708033.8752125169}, {"label": "Mar 20 14:00", "open": 0.001864630288749023, "high": 0.0018693568259584446, "low": 0.001859433423659487, "close": 0.0018602044079375308, "volume": 1355499.4319065227}, {"label": "Mar 20 15:00", "open": 0.0018602044079375308, "high": 0.001867743794102553, "low": 0.0018482103449327517, "close": 0.001867743794102553, "volume": 1148395.9009976175}, {"label": "Mar 20 16:00", "open": 0.001867743794102553, "high": 0.0018745477083070242, "low": 0.0018658424585434438, "close": 0.0018658424585434438, "volume": 850697.7704966431}, {"label": "Mar 20 17:00", "open": 0.0018658424585434438, "high": 0.0018721793540035787, "low": 0.0018627906495558356, "close": 0.0018647774734257458, "volume": 869357.1027865435}, {"label": "Mar 20 18:00", "open": 0.0018647774734257458, "high": 0.001881622098219459, "low": 0.0018447439850090615, "close": 0.0018498424608900908, "volume": 1838152.0886595168}, {"label": "Mar 20 19:00", "open": 0.0018498424608900908, "high": 0.0018612598185014837, "low": 0.0018466553884908064, "close": 0.0018612598185014837, "volume": 1177244.7575853388}, {"label": "Mar 20 20:00", "open": 0.0018612598185014837, "high": 0.0018704679085173584, "low": 0.0018511075853070726, "close": 0.001858052488890099, "volume": 987758.8161207271}, {"label": "Mar 20 21:00", "open": 0.001858052488890099, "high": 0.0018839177747359214, "low": 0.001857645329222785, "close": 0.0018839177747359214, "volume": 1131064.3961997116}];
 if (priceData && priceData.length > 0) {
-  const priceCtx = document.getElementById('priceChart').getContext('2d');
-  const labels = priceData.map(d => d.label);
-  const closes = priceData.map(d => d.close);
-  const volumes = priceData.map(d => d.volume);
-  const maxVol = Math.max(...volumes);
+  observeChart('priceChart', () => {
+    const priceCtx = document.getElementById('priceChart').getContext('2d');
+    const labels = priceData.map(d => d.label);
+    const closes = priceData.map(d => d.close);
+    const volumes = priceData.map(d => d.volume);
+    const maxVol = Math.max(...volumes);
 
-  new Chart(priceCtx, {
-    type: 'line',
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: 'Price (USD)',
-          data: closes,
-          borderColor: '#00D4AA',
-          backgroundColor: 'rgba(0,212,170,0.08)',
-          fill: true,
-          tension: 0.3,
-          pointRadius: 0,
-          pointHoverRadius: 4,
-          borderWidth: 2,
-          yAxisID: 'y',
+    new Chart(priceCtx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [
+          {
+            label: 'Price (USD)',
+            data: closes,
+            borderColor: '#00D4AA',
+            backgroundColor: 'rgba(0,212,170,0.08)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 0,
+            pointHoverRadius: 4,
+            borderWidth: 2,
+            yAxisID: 'y',
+          },
+          {
+            label: 'Volume',
+            data: volumes,
+            type: 'bar',
+            backgroundColor: 'rgba(124,92,252,0.25)',
+            borderWidth: 0,
+            yAxisID: 'y1',
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: {
+          y: {
+            from: (ctx) => ctx.chart.scales.y.getPixelForValue(ctx.chart.scales.y.min),
+            duration: 1500,
+            easing: 'easeOutQuart'
+          },
+          x: { duration: 0 }
         },
-        {
-          label: 'Volume',
-          data: volumes,
-          type: 'bar',
-          backgroundColor: 'rgba(124,92,252,0.25)',
-          borderWidth: 0,
-          yAxisID: 'y1',
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      animation: { duration: 1500, easing: 'easeOutQuart', delay: (context) => context.dataIndex * 100 },
-      interaction: { intersect: false, mode: 'index' },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#1a2332',
-          borderColor: '#2a3a4e',
-          borderWidth: 1,
-          titleColor: '#fff',
-          bodyColor: '#8899aa',
-          callbacks: {
-            label: (ctx) => {
-              if (ctx.datasetIndex === 0) return 'Price: $' + ctx.raw.toFixed(6);
-              const v = ctx.raw;
-              if (v >= 1e6) return 'Vol: $' + (v/1e6).toFixed(1) + 'M';
-              if (v >= 1e3) return 'Vol: $' + (v/1e3).toFixed(0) + 'K';
-              return 'Vol: $' + v.toFixed(0);
+        interaction: { intersect: false, mode: 'index' },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#1a2332',
+            borderColor: '#2a3a4e',
+            borderWidth: 1,
+            titleColor: '#fff',
+            bodyColor: '#8899aa',
+            callbacks: {
+              label: (ctx) => {
+                if (ctx.datasetIndex === 0) return 'Price: $' + ctx.raw.toFixed(6);
+                const v = ctx.raw;
+                if (v >= 1e6) return 'Vol: $' + (v/1e6).toFixed(1) + 'M';
+                if (v >= 1e3) return 'Vol: $' + (v/1e3).toFixed(0) + 'K';
+                return 'Vol: $' + v.toFixed(0);
+              }
             }
           }
+        },
+        scales: {
+          y: {
+            position: 'left',
+            grid: { color: 'rgba(255,255,255,0.04)' },
+            ticks: { color: '#8899aa', callback: v => '$' + v.toFixed(v < 1 ? 4 : 2) }
+          },
+          y1: {
+            position: 'right',
+            grid: { display: false },
+            ticks: { display: false },
+            max: maxVol * 4,
+          },
+          x: { grid: { display: false }, ticks: { color: '#8899aa', maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } }
         }
-      },
-      scales: {
-        y: {
-          position: 'left',
-          grid: { color: 'rgba(255,255,255,0.04)' },
-          ticks: { color: '#8899aa', callback: v => '$' + v.toFixed(v < 1 ? 4 : 2) }
-        },
-        y1: {
-          position: 'right',
-          grid: { display: false },
-          ticks: { display: false },
-          max: maxVol * 4,
-        },
-        x: { grid: { display: false }, ticks: { color: '#8899aa', maxRotation: 0, autoSkip: true, maxTicksLimit: 8 } }
       }
-    }
+    });
   });
 }
 
@@ -699,49 +723,51 @@ if (priceData && priceData.length > 0) {
 const smData = [0, 88.26, 728438.91, -63940.06];
 const hasSmData = smData.some(v => v !== 0);
 if (hasSmData) {
-  const smCtx = document.getElementById('smFlowChart').getContext('2d');
-  new Chart(smCtx, {
-    type: 'bar',
-    data: {
-      labels: ['1H', '24H', '7D', '30D'],
-      datasets: [{
-        label: 'Net Flow (USD)',
-        data: smData,
-        backgroundColor: smData.map(v => v >= 0 ? 'rgba(0,212,170,0.6)' : 'rgba(255,71,87,0.6)'),
-        borderColor: smData.map(v => v >= 0 ? '#00D4AA' : '#ff4757'),
-        borderWidth: 1, borderRadius: 8,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false,
-      animation: { duration: 1500, easing: 'easeOutBounce', delay: (context) => context.dataIndex * 100 },
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#1a2332', borderColor: '#2a3a4e', borderWidth: 1,
-          titleColor: '#fff', bodyColor: '#8899aa',
-          callbacks: {
-            label: (ctx) => {
-              const v = ctx.raw; const sign = v >= 0 ? '+' : '';
-              if (Math.abs(v) >= 1e6) return sign + '$' + (v/1e6).toFixed(2) + 'M';
-              if (Math.abs(v) >= 1e3) return sign + '$' + (v/1e3).toFixed(1) + 'K';
-              return sign + '$' + v.toFixed(2);
+  observeChart('smFlowChart', () => {
+    const smCtx = document.getElementById('smFlowChart').getContext('2d');
+    new Chart(smCtx, {
+      type: 'bar',
+      data: {
+        labels: ['1H', '24H', '7D', '30D'],
+        datasets: [{
+          label: 'Net Flow (USD)',
+          data: smData,
+          backgroundColor: smData.map(v => v >= 0 ? 'rgba(0,212,170,0.6)' : 'rgba(255,71,87,0.6)'),
+          borderColor: smData.map(v => v >= 0 ? '#00D4AA' : '#ff4757'),
+          borderWidth: 1, borderRadius: 8,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        animation: { duration: 1500, easing: 'easeOutBounce', delay: (context) => context.dataIndex * 100 },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#1a2332', borderColor: '#2a3a4e', borderWidth: 1,
+            titleColor: '#fff', bodyColor: '#8899aa',
+            callbacks: {
+              label: (ctx) => {
+                const v = ctx.raw; const sign = v >= 0 ? '+' : '';
+                if (Math.abs(v) >= 1e6) return sign + '$' + (v/1e6).toFixed(2) + 'M';
+                if (Math.abs(v) >= 1e3) return sign + '$' + (v/1e3).toFixed(1) + 'K';
+                return sign + '$' + v.toFixed(2);
+              }
             }
           }
-        }
-      },
-      scales: {
-        y: {
-          grid: { color: 'rgba(255,255,255,0.04)' },
-          ticks: { color: '#8899aa', callback: v => {
-            if (Math.abs(v) >= 1e6) return '$' + (v/1e6).toFixed(1) + 'M';
-            if (Math.abs(v) >= 1e3) return '$' + (v/1e3).toFixed(0) + 'K';
-            return '$' + v;
-          }}
         },
-        x: { grid: { display: false }, ticks: { color: '#8899aa' } }
+        scales: {
+          y: {
+            grid: { color: 'rgba(255,255,255,0.04)' },
+            ticks: { color: '#8899aa', callback: v => {
+              if (Math.abs(v) >= 1e6) return '$' + (v/1e6).toFixed(1) + 'M';
+              if (Math.abs(v) >= 1e3) return '$' + (v/1e3).toFixed(0) + 'K';
+              return '$' + v;
+            }}
+          },
+          x: { grid: { display: false }, ticks: { color: '#8899aa' } }
+        }
       }
-    }
+    });
   });
 }
 
@@ -749,38 +775,40 @@ if (hasSmData) {
 const fiData = [236323.09, 88.26, -815516.92, 4623994.01, -683685.87, 0];
 const hasFiData = fiData.some(v => v !== 0);
 if (hasFiData) {
-  const fiCtx = document.getElementById('flowIntelChart').getContext('2d');
-  new Chart(fiCtx, {
-    type: 'doughnut',
-    data: {
-      labels: ['Whales', 'Smart Traders', 'Exchanges', 'Fresh Wallets', 'Top PnL', 'Public Figures'],
-      datasets: [{
-        data: fiData.map(Math.abs),
-        backgroundColor: ['#00D4AA', '#7c5cfc', '#ffa502', '#3b82f6', '#ec4899', '#6366f1'],
-        borderWidth: 0,
-      }]
-    },
-    options: {
-      responsive: true, maintainAspectRatio: false, cutout: '65%',
-      animation: { animateRotate: true, animateScale: true, duration: 1500, delay: (context) => context.dataIndex * 100 },
-      plugins: {
-        legend: { position: 'right', labels: { color: '#8899aa', padding: 12, font: { size: 11 } } },
-        tooltip: {
-          backgroundColor: '#1a2332', borderColor: '#2a3a4e', borderWidth: 1,
-          titleColor: '#fff', bodyColor: '#8899aa',
-          callbacks: {
-            label: (ctx) => {
-              const v = ctx.raw;
-              const orig = fiData[ctx.dataIndex];
-              const sign = orig >= 0 ? '+' : '-';
-              if (v >= 1e6) return ctx.label + ': ' + sign + '$' + (v/1e6).toFixed(2) + 'M';
-              if (v >= 1e3) return ctx.label + ': ' + sign + '$' + (v/1e3).toFixed(1) + 'K';
-              return ctx.label + ': ' + sign + '$' + v.toFixed(2);
+  observeChart('flowIntelChart', () => {
+    const fiCtx = document.getElementById('flowIntelChart').getContext('2d');
+    new Chart(fiCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Whales', 'Smart Traders', 'Exchanges', 'Fresh Wallets', 'Top PnL', 'Public Figures'],
+        datasets: [{
+          data: fiData.map(Math.abs),
+          backgroundColor: ['#00D4AA', '#7c5cfc', '#ffa502', '#3b82f6', '#ec4899', '#6366f1'],
+          borderWidth: 0,
+        }]
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false, cutout: '65%',
+        animation: { animateRotate: true, animateScale: true, duration: 1500, delay: (context) => context.dataIndex * 100 },
+        plugins: {
+          legend: { position: 'right', labels: { color: '#8899aa', padding: 12, font: { size: 11 } } },
+          tooltip: {
+            backgroundColor: '#1a2332', borderColor: '#2a3a4e', borderWidth: 1,
+            titleColor: '#fff', bodyColor: '#8899aa',
+            callbacks: {
+              label: (ctx) => {
+                const v = ctx.raw;
+                const orig = fiData[ctx.dataIndex];
+                const sign = orig >= 0 ? '+' : '-';
+                if (v >= 1e6) return ctx.label + ': ' + sign + '$' + (v/1e6).toFixed(2) + 'M';
+                if (v >= 1e3) return ctx.label + ': ' + sign + '$' + (v/1e3).toFixed(1) + 'K';
+                return ctx.label + ': ' + sign + '$' + v.toFixed(2);
+              }
             }
           }
         }
       }
-    }
+    });
   });
 }
 </script>
