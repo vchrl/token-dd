@@ -599,7 +599,7 @@ def generate_report(
             # Parse token info
             token_meta = ind_data.get("token_info", {})
             if token_meta:
-                mcap_group = token_meta.get("market_cap_group", "unknown")
+                mcap_group = token_meta.get("market_cap_group") or "unknown"
                 is_stable = token_meta.get("is_stablecoin", False)
                 report.append(f"**Category:** {mcap_group.upper()} | **Stablecoin:** {'Yes' if is_stable else 'No'}")
                 report.append("")

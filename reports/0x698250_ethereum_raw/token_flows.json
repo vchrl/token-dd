@@ -1,0 +1,99 @@
+{
+  "data": [
+    {
+      "date": "2026-03-21T04:00:00",
+      "price_usd": 3.435940790256212e-06,
+      "token_amount": 325123596189911.3,
+      "value_usd": 1117105426.0237052,
+      "holders_count": 100,
+      "total_inflows_count": 197315912.50689697,
+      "total_outflows_count": -63271248.814331055
+    },
+    {
+      "date": "2026-03-21T03:00:00",
+      "price_usd": 3.434756170110063e-06,
+      "token_amount": 325123462145247.56,
+      "value_usd": 1116719817.650935,
+      "holders_count": 100,
+      "total_inflows_count": 112424713234.4447,
+      "total_outflows_count": -441538211.1312256
+    },
+    {
+      "date": "2026-03-21T02:00:00",
+      "price_usd": 3.424751707949099e-06,
+      "token_amount": 325011478970224.25,
+      "value_usd": 1113083617.7063384,
+      "holders_count": 100,
+      "total_inflows_count": 62557425687.31714,
+      "total_outflows_count": -5198247491.295044
+    },
+    {
+      "date": "2026-03-21T01:00:00",
+      "price_usd": 3.4250708813509175e-06,
+      "token_amount": 324954119792028.2,
+      "value_usd": 1112990893.4746938,
+      "holders_count": 100,
+      "total_inflows_count": 1009250183.8720703,
+      "total_outflows_count": -6450761673.260864
+    },
+    {
+      "date": "2026-03-21T00:00:00",
+      "price_usd": 3.4250440630586656e-06,
+      "token_amount": 324959561303517.6,
+      "value_usd": 1113000816.1767616,
+      "holders_count": 100,
+      "total_inflows_count": 2540437220.30249,
+      "total_outflows_count": -14166265411.416138
+    },
+    {
+      "date": "2026-03-20T23:00:00",
+      "price_usd": 3.416787472931361e-06,
+      "token_amount": 324971187131708.7,
+      "value_usd": 1110357481.2552557,
+      "holders_count": 100,
+      "total_inflows_count": 16185408178.978333,
+      "total_outflows_count": -10192359266.682617
+    },
+    {
+      "date": "2026-03-20T22:00:00",
+      "price_usd": 3.438038929649405e-06,
+      "token_amount": 324965194082796.44,
+      "value_usd": 1117242988.0377288,
+      "holders_count": 100,
+      "total_inflows_count": 3805745609.8043823,
+      "total_outflows_count": -14630440336.932007
+    },
+    {
+      "date": "2026-03-20T21:00:00",
+      "price_usd": 3.423308908875586e-06,
+      "token_amount": 324976018777523.5,
+      "value_usd": 1112493300.2520163,
+      "holders_count": 100,
+      "total_inflows_count": 15192274756.885193,
+      "total_outflows_count": -5296636088.891846
+    },
+    {
+      "date": "2026-03-20T20:00:00",
+      "price_usd": 3.398790817928242e-06,
+      "token_amount": 324966123138855.56,
+      "value_usd": 1104491875.462081,
+      "holders_count": 100,
+      "total_inflows_count": 34837327065.58728,
+      "total_outflows_count": -67246098989.66083
+    },
+    {
+      "date": "2026-03-20T19:00:00",
+      "price_usd": 3.395453060118602e-06,
+      "token_amount": 324998531910779.6,
+      "value_usd": 1103517259.7105105,
+      "holders_count": 100,
+      "total_inflows_count": 802601122030.8353,
+      "total_outflows_count": -836656307562.5999
+    }
+  ],
+  "pagination": {
+    "page": 1,
+    "per_page": 10,
+    "is_last_page": false
+  }
+}

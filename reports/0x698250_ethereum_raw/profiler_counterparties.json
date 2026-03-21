@@ -1,0 +1,80 @@
+[
+  {
+    "counterparty_address": "0x225a38bc71102999dd13478bfabd7c4d53f2dc17",
+    "counterparty_address_label": [
+      "\ud83e\udd16 MEV Bot [0x225a38]"
+    ],
+    "interaction_count": 2,
+    "total_volume_usd": 247671.88953823154,
+    "volume_in_usd": 123236.0232842356,
+    "volume_out_usd": 124435.86625399592,
+    "tokens_info": [
+      {
+        "token_address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "token_symbol": "USDC",
+        "token_name": "USD Coin",
+        "num_transfer": "1"
+      },
+      {
+        "token_address": "0x6982508145454ce325ddbe47a25d4ec3d2311933",
+        "token_symbol": "PEPE",
+        "token_name": "Pepe",
+        "num_transfer": "1"
+      }
+    ]
+  },
+  {
+    "counterparty_address": "0x88e6a0c2ddd26feeb64f039a2c41296fcb3f5640",
+    "counterparty_address_label": [
+      "\ud83e\udd16 \ud83c\udfe6 Uniswap: V3 USDC-WETH (0.05%) Liquidity Pool  [0x88e6a0]"
+    ],
+    "interaction_count": 1,
+    "total_volume_usd": 124435.86625399592,
+    "volume_in_usd": 0,
+    "volume_out_usd": 124435.86625399592,
+    "tokens_info": [
+      {
+        "token_address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "token_symbol": "USDC",
+        "token_name": "USD Coin",
+        "num_transfer": "1"
+      }
+    ]
+  },
+  {
+    "counterparty_address": "0xa43fe16908251ee70ef74718545e4fe6c5ccec9f",
+    "counterparty_address_label": [
+      "\ud83e\udd16 \ud83c\udfe6 Uniswap: V2 PEPE-WETH Liquidity Pool  [0xa43fe1]"
+    ],
+    "interaction_count": 1,
+    "total_volume_usd": 121665.96952215396,
+    "volume_in_usd": 121665.96952215396,
+    "volume_out_usd": 0,
+    "tokens_info": [
+      {
+        "token_address": "0x6982508145454ce325ddbe47a25d4ec3d2311933",
+        "token_symbol": "PEPE",
+        "token_name": "Pepe",
+        "num_transfer": "1"
+      }
+    ]
+  },
+  {
+    "counterparty_address": "0xdadb0d80178819f2319190d340ce9a924f783711",
+    "counterparty_address_label": [
+      "\u200b\u200bBuilderNet: 0xdadB0d80178819F2319190D340ce9A924f783711.eth [0xdadb0d]"
+    ],
+    "interaction_count": 2,
+    "total_volume_usd": 1.0804510406122756,
+    "volume_in_usd": 1.0804510406122756,
+    "volume_out_usd": 0,
+    "tokens_info": [
+      {
+        "token_address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "token_symbol": "ETH",
+        "token_name": "Ethereum",
+        "num_transfer": "2"
+      }
+    ]
+  }
+]

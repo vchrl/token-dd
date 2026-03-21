@@ -1,0 +1,134 @@
+[
+  {
+    "counterparty_address": "0x9008d19f58aabd9ed0d60971565aa8510560ab41",
+    "counterparty_address_label": [
+      "\ud83e\udd16 CoW Protocol: Settlement [0x9008d1]"
+    ],
+    "interaction_count": 20,
+    "total_volume_usd": 1370020.5250321454,
+    "volume_in_usd": 691967.7485265291,
+    "volume_out_usd": 678052.7765056163,
+    "tokens_info": [
+      {
+        "token_address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "token_symbol": "WETH",
+        "token_name": "Wrapped Ether",
+        "num_transfer": "8"
+      },
+      {
+        "token_address": "0xdac17f958d2ee523a2206206994597c13d831ec7",
+        "token_symbol": "USDT",
+        "token_name": "Tether USD",
+        "num_transfer": "6"
+      },
+      {
+        "token_address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "token_symbol": "USDC",
+        "token_name": "USD Coin",
+        "num_transfer": "4"
+      },
+      {
+        "token_address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+        "token_symbol": "UNI",
+        "token_name": "Uniswap",
+        "num_transfer": "2"
+      }
+    ]
+  },
+  {
+    "counterparty_address": "0x0000000000000000000000000000000000000000",
+    "counterparty_address_label": [
+      "Burn Address [0x000000]"
+    ],
+    "interaction_count": 17,
+    "total_volume_usd": 897944.8664403224,
+    "volume_in_usd": 561333.9349283157,
+    "volume_out_usd": 336610.9315120067,
+    "tokens_info": [
+      {
+        "token_address": "0x4d5f47fa6a74757f35c14fd3a6ef8e3c9bc514e8",
+        "token_symbol": "AETHWETH",
+        "token_name": "Aave Ethereum WETH",
+        "num_transfer": "7"
+      },
+      {
+        "token_address": "0x98c23e9d8f34fefb1b7bd6a91b7ff122f4e16f5c",
+        "token_symbol": "AETHUSDC",
+        "token_name": "Aave Ethereum USDC",
+        "num_transfer": "4"
+      },
+      {
+        "token_address": "0x23878914efe38d27c4d67ab83ed1b93a74d4086a",
+        "token_symbol": "AETHUSDT",
+        "token_name": "Aave Ethereum USDT",
+        "num_transfer": "4"
+      },
+      {
+        "token_address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "token_symbol": "WETH",
+        "token_name": "Wrapped Ether",
+        "num_transfer": "2"
+      }
+    ]
+  },
+  {
+    "counterparty_address": "0x98c23e9d8f34fefb1b7bd6a91b7ff122f4e16f5c",
+    "counterparty_address_label": [
+      "\ud83e\udd16 Aave: aEthUSDC Token [0x98c23e]"
+    ],
+    "interaction_count": 4,
+    "total_volume_usd": 471635.32670439663,
+    "volume_in_usd": 235823.05203012232,
+    "volume_out_usd": 235812.27467427432,
+    "tokens_info": [
+      {
+        "token_address": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+        "token_symbol": "USDC",
+        "token_name": "USD Coin",
+        "num_transfer": "4"
+      }
+    ]
+  },
+  {
+    "counterparty_address": "0xd01607c3c5ecaba394d8be377a08590149325722",
+    "counterparty_address_label": [
+      "\u200b\u200b\ud83e\udd16 Aave: Lending Gateway [0xd01607]"
+    ],
+    "interaction_count": 8,
+    "total_volume_usd": 457098.92886322667,
+    "volume_in_usd": 228741.9667226621,
+    "volume_out_usd": 228356.96214056454,
+    "tokens_info": [
+      {
+        "token_address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+        "token_symbol": "ETH",
+        "token_name": "Ethereum",
+        "num_transfer": "6"
+      },
+      {
+        "token_address": "0x4d5f47fa6a74757f35c14fd3a6ef8e3c9bc514e8",
+        "token_symbol": "AETHWETH",
+        "token_name": "Aave Ethereum WETH",
+        "num_transfer": "2"
+      }
+    ]
+  },
+  {
+    "counterparty_address": "0x4d5f47fa6a74757f35c14fd3a6ef8e3c9bc514e8",
+    "counterparty_address_label": [
+      "\ud83e\udd16 Aave: aEthWETH Token [0x4d5f47]"
+    ],
+    "interaction_count": 9,
+    "total_volume_usd": 407997.1120938016,
+    "volume_in_usd": 203612.64295272637,
+    "volume_out_usd": 204384.46914107527,
+    "tokens_info": [
+      {
+        "token_address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+        "token_symbol": "WETH",
+        "token_name": "Wrapped Ether",
+        "num_transfer": "9"
+      }
+    ]
+  }
+]

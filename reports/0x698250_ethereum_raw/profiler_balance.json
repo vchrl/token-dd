@@ -1,0 +1,32 @@
+[
+  {
+    "chain": "ethereum",
+    "address": "0xd160413a3f1eeb58bb5c5d732d2350ec075a9b11",
+    "token_address": "0x6982508145454ce325ddbe47a25d4ec3d2311933",
+    "token_symbol": "PEPE",
+    "token_name": "Pepe",
+    "token_amount": 71447965690.70348,
+    "price_usd": 3.435940790256212e-06,
+    "value_usd": 245490.97969751444
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xd160413a3f1eeb58bb5c5d732d2350ec075a9b11",
+    "token_address": "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+    "token_symbol": "ETH",
+    "token_name": "Ethereum",
+    "token_amount": 0.3806088572652599,
+    "price_usd": 2155.8137716733368,
+    "value_usd": 820.5218161132987
+  },
+  {
+    "chain": "ethereum",
+    "address": "0xd160413a3f1eeb58bb5c5d732d2350ec075a9b11",
+    "token_address": "0x6b175474e89094c44da98b954eedeac495271d0f",
+    "token_symbol": "DAI",
+    "token_name": "DAI",
+    "token_amount": 0.000614044410666764,
+    "price_usd": 0.9999684699873118,
+    "value_usd": 0.0006140250498387045
+  }
+]

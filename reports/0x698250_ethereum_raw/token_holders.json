@@ -1,0 +1,122 @@
+[
+  {
+    "address": "0xf977814e90da44bfa03b6295a0616a897441acec",
+    "address_label": "\ud83c\udfe6 Binance: Reserve Address [0xf97781]",
+    "token_amount": 56116400381117.45,
+    "total_outflow": 245659080817366.6,
+    "total_inflow": 301775481198484,
+    "balance_change_24h": 0,
+    "balance_change_7d": 0,
+    "balance_change_30d": 0,
+    "ownership_percentage": 0.1333752241606281,
+    "value_usd": 192812629.07183072
+  },
+  {
+    "address": "0x73af3bcf944a6559933396c1577b257e2054d935",
+    "address_label": "\ud83c\udfe6 Robinhood [0x73af3b]",
+    "token_amount": 26582564739477.973,
+    "total_outflow": 14635126018012.717,
+    "total_inflow": 41217690757490.69,
+    "balance_change_24h": 773891048080,
+    "balance_change_7d": 773891048080,
+    "balance_change_30d": 773891048080,
+    "ownership_percentage": 0.063180380544959,
+    "value_usd": 91336118.49799886
+  },
+  {
+    "address": "0x5a52e96bacdabb82fd05763e25335261b270efcb",
+    "address_label": "\ud83c\udfe6 Binance [0x5a52e9]",
+    "token_amount": 16611434717492.795,
+    "total_outflow": 81631471041784.02,
+    "total_inflow": 98242905759276.8,
+    "balance_change_24h": 0,
+    "balance_change_7d": -290547387400,
+    "balance_change_30d": -290547297760,
+    "ownership_percentage": 0.039481396062972546,
+    "value_usd": 57075906.13051167
+  },
+  {
+    "address": "0x3f9a8345729ea842708e080e238c92731e5699b8",
+    "address_label": "\u200b\u200b\ud83c\udfe6 Upbit [0x3f9a83]",
+    "token_amount": 15508613262018.79,
+    "total_outflow": 22196630000000,
+    "total_inflow": 37705243262018.79,
+    "balance_change_24h": 88656888049.82278,
+    "balance_change_7d": -381373393522.9553,
+    "balance_change_30d": 894938363097.6494,
+    "ownership_percentage": 0.036860253975560794,
+    "value_usd": 53286676.90727881
+  },
+  {
+    "address": "0x611f7bf868a6212f871e89f7e44684045ddfb09d",
+    "address_label": "\ud83c\udfe6 OKX: Deposit [0x611f7b]",
+    "token_amount": 12777274105360.855,
+    "total_outflow": 15846763784338.19,
+    "total_inflow": 28624037889699.043,
+    "balance_change_24h": 29139696439.78,
+    "balance_change_7d": 324508340161.81,
+    "balance_change_30d": -1844873191867.42,
+    "ownership_percentage": 0.030368515913179066,
+    "value_usd": 43901957.286893815
+  },
+  {
+    "address": "0x9b0c45d46d386cedd98873168c36efd0dcba8d46",
+    "address_label": "\ud83c\udfe6 Revolut [0x9b0c45]",
+    "token_amount": 12114558412507.57,
+    "total_outflow": 35498787410482.93,
+    "total_inflow": 47613345822990.49,
+    "balance_change_24h": 97134506292.40005,
+    "balance_change_7d": 186874549933.76007,
+    "balance_change_30d": 778388161113.5178,
+    "ownership_percentage": 0.028793399663940542,
+    "value_usd": 41624905.4054763
+  },
+  {
+    "address": "0xc671b05671a7cd3080c6ceae79d284bdde0ef271",
+    "address_label": "\ud83c\udfe6 Bithumb: Wallet [0xc671b0]",
+    "token_amount": 8743344154919.162,
+    "total_outflow": 73593631434109.98,
+    "total_inflow": 82336975589029.14,
+    "balance_change_24h": -319999999996,
+    "balance_change_7d": -305255928975.94714,
+    "balance_change_30d": 989416141328.0581,
+    "ownership_percentage": 0.02078083196099399,
+    "value_usd": 30041612.825134978
+  },
+  {
+    "address": "0x76ec5a0d3632b2133d9f1980903305b62678fbd3",
+    "address_label": "\u200b\u200b\ud83c\udfe6 BTCTurk [0x76ec5a]",
+    "token_amount": 8415528586211.872,
+    "total_outflow": 18287219014699.44,
+    "total_inflow": 26702747600911.312,
+    "balance_change_24h": 99472550546.78018,
+    "balance_change_7d": -59874593133.55564,
+    "balance_change_30d": 1013783702458.9565,
+    "ownership_percentage": 0.020001692980896636,
+    "value_usd": 28915257.940932564
+  },
+  {
+    "address": "0x000000000000000000000000000000000000dead",
+    "address_label": "Burn Address [0x000000]",
+    "token_amount": 6917403191875.355,
+    "total_outflow": 0,
+    "total_inflow": 6917403191875.355,
+    "balance_change_24h": 0,
+    "balance_change_7d": 1271434.5930903067,
+    "balance_change_30d": 5055698.62810664,
+    "ownership_percentage": 0.016441008244646213,
+    "value_usd": 23767787.789613053
+  },
+  {
+    "address": "0x40b38765696e3d5d8d9d834d8aad4bb6e418e489",
+    "address_label": "\ud83c\udfe6 Robinhood [0x40b387]",
+    "token_amount": 6499999981868.81,
+    "total_outflow": 9629407.200895078,
+    "total_inflow": 6500009611276.01,
+    "balance_change_24h": 1,
+    "balance_change_7d": 1,
+    "balance_change_30d": -578598.6115869398,
+    "ownership_percentage": 0.01544894092881885,
+    "value_usd": 22333615.074367683
+  }
+]

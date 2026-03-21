@@ -1,0 +1,11 @@
+{
+  "token_address": "0x1f9840a85d5aF5bf1D1762F925BDADdC4201F984",
+  "chain": "ethereum",
+  "token_info": {
+    "market_cap_usd": null,
+    "market_cap_group": null,
+    "is_stablecoin": null
+  },
+  "risk_indicators": [],
+  "reward_indicators": []
+}

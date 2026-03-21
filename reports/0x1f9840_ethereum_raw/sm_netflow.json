@@ -1,0 +1,315 @@
+[
+  {
+    "token_address": "0xa3931d71877c0e7a3148cb7eb4463524fec27fbd",
+    "token_symbol": "SUSDS",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -250702.3175629219,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Yield Bearing",
+      "Scaling & Connectivity"
+    ],
+    "trader_count": 1,
+    "token_age_days": 563,
+    "market_cap_usd": 6437357633
+  },
+  {
+    "token_address": "0xe9689028ede16c2fdfe3d11855d28f8e3fc452a3",
+    "token_symbol": "BUBBLE",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": 1.1089940270600935,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Memecoins"
+    ],
+    "trader_count": 1,
+    "token_age_days": 682,
+    "market_cap_usd": 181980
+  },
+  {
+    "token_address": "0xd47bdf574b4f76210ed503e0efe81b58aa061f3d",
+    "token_symbol": "TRVL",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": -1325.1875771640725,
+    "net_flow_30d_usd": -1325.1875771640725,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Crypto Payments"
+    ],
+    "trader_count": 1,
+    "token_age_days": 1583,
+    "market_cap_usd": 809068
+  },
+  {
+    "token_address": "0x19062190b1925b5b6689d7073fdfc8c2976ef8cb",
+    "token_symbol": "BZZ",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -56481.78848794001,
+    "chain": "ethereum",
+    "token_sectors": [
+      "DePIN",
+      "NFTs"
+    ],
+    "trader_count": 1,
+    "token_age_days": 1746,
+    "market_cap_usd": 5930400
+  },
+  {
+    "token_address": "0x1b379a79c91a540b2bcd612b4d713f31de1b80cc",
+    "token_symbol": "NAORIS",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -56450.064958679126,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Artificial Intelligence"
+    ],
+    "trader_count": 1,
+    "token_age_days": 248,
+    "market_cap_usd": 39217204
+  },
+  {
+    "token_address": "0x656c00e1bcd96f256f224ad9112ff426ef053733",
+    "token_symbol": "EFI",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -341.0034953319456,
+    "chain": "ethereum",
+    "token_sectors": [
+      "NFTs",
+      "Appchains",
+      "Blockchain Scaling & Connectivity",
+      "NFTFi"
+    ],
+    "trader_count": 2,
+    "token_age_days": 1785,
+    "market_cap_usd": 1371802
+  },
+  {
+    "token_address": "0x1b6e9c73bee68102d9dd4a2627f97bff4183ab0a",
+    "token_symbol": "OLE",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -3754.2035543034026,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Scaling & Connectivity",
+      "DeFi Lending (Money Markets)",
+      "Perps, Options and Derivatives"
+    ],
+    "trader_count": 2,
+    "token_age_days": 866,
+    "market_cap_usd": 1251819
+  },
+  {
+    "token_address": "0x57e114b691db790c35207b2e685d4a43181e6061",
+    "token_symbol": "ENA",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 926243.2422527261,
+    "net_flow_30d_usd": 909352.7650404724,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Stablecoin Issuers"
+    ],
+    "trader_count": 3,
+    "token_age_days": 746,
+    "market_cap_usd": 868269301
+  },
+  {
+    "token_address": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
+    "token_symbol": "AAVE",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -26181403.620325167,
+    "chain": "ethereum",
+    "token_sectors": [
+      "DeFi Lending (Money Markets)"
+    ],
+    "trader_count": 5,
+    "token_age_days": 2004,
+    "market_cap_usd": 1690367943
+  },
+  {
+    "token_address": "0x3b50805453023a91a8bf641e279401a0b23fa6f9",
+    "token_symbol": "REZ",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -266360.2314574945,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Restaking"
+    ],
+    "trader_count": 2,
+    "token_age_days": 697,
+    "market_cap_usd": 27906020
+  },
+  {
+    "token_address": "0x93a2db22b7c736b341c32ff666307f4a9ed910f5",
+    "token_symbol": "HYPER",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": -80164.73965580863,
+    "net_flow_30d_usd": -161380.79988415795,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Scaling & Connectivity"
+    ],
+    "trader_count": 1,
+    "token_age_days": 341,
+    "market_cap_usd": 22598750
+  },
+  {
+    "token_address": "0x6982508145454ce325ddbe47a25d4ec3d2311933",
+    "token_symbol": "PEPE",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": 9999.44665562056,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Memecoins"
+    ],
+    "trader_count": 1,
+    "token_age_days": 1072,
+    "market_cap_usd": 1441670691
+  },
+  {
+    "token_address": "0x6e2a43be0b1d33b726f0ca3b8de60b3482b8b050",
+    "token_symbol": "ARKM",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": -1547.0450689663473,
+    "net_flow_30d_usd": -2550.0956329297605,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Artificial Intelligence"
+    ],
+    "trader_count": 1,
+    "token_age_days": 990,
+    "market_cap_usd": 61373722
+  },
+  {
+    "token_address": "0x643c4e15d7d62ad0abec4a9bd4b001aa3ef52d66",
+    "token_symbol": "SYRUP",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": -1067276.4348628942,
+    "net_flow_30d_usd": -652367.2557721613,
+    "chain": "ethereum",
+    "token_sectors": [
+      "DeFi Lending (Money Markets)",
+      "Yield Bearing"
+    ],
+    "trader_count": 2,
+    "token_age_days": 555,
+    "market_cap_usd": 276465101
+  },
+  {
+    "token_address": "0xc71b5f631354be6853efe9c3ab6b9590f8302e81",
+    "token_symbol": "ZK",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -1200.2537027949634,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Scaling & Connectivity"
+    ],
+    "trader_count": 2,
+    "token_age_days": 741,
+    "market_cap_usd": 10482445
+  },
+  {
+    "token_address": "0x56072c95faa701256059aa122697b133aded9279",
+    "token_symbol": "SKY",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": 5387122.631338721,
+    "chain": "ethereum",
+    "token_sectors": [
+      "DeFi Lending (Money Markets)",
+      "Stablecoin Issuers",
+      "Yield Farming Protocols"
+    ],
+    "trader_count": 1,
+    "token_age_days": 565,
+    "market_cap_usd": 1697158462
+  },
+  {
+    "token_address": "0xda7ad9dea9397cffddae2f8a052b82f1484252b3",
+    "token_symbol": "RIVER",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": -4955.28656663461,
+    "net_flow_30d_usd": -4955.28656663461,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Social Fi",
+      "NFTs"
+    ],
+    "trader_count": 1,
+    "token_age_days": 185,
+    "market_cap_usd": 425736941
+  },
+  {
+    "token_address": "0x4fc15c91a9c4a9efb404174464687e8e128730c2",
+    "token_symbol": "STAT",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": 1422.7186438761203,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Social Fi"
+    ],
+    "trader_count": 1,
+    "token_age_days": 1271,
+    "market_cap_usd": 1965288
+  },
+  {
+    "token_address": "0x908ddb096bfb3acb19e2280aad858186ea4935c4",
+    "token_symbol": "ESE",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -7246.864394368901,
+    "chain": "ethereum",
+    "token_sectors": [
+      "GameFi",
+      "NFTs",
+      "RWAs",
+      "NFTFi",
+      "Yield Bearing"
+    ],
+    "trader_count": 1,
+    "token_age_days": 717,
+    "market_cap_usd": 3776451
+  },
+  {
+    "token_address": "0x1a0aacec5db6bf05f6c0ed5c2e9ad2a0199c2956",
+    "token_symbol": "DEATHSTR",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -1371.0432912226383,
+    "chain": "ethereum",
+    "token_sectors": [],
+    "trader_count": 1,
+    "token_age_days": 37,
+    "market_cap_usd": 895069
+  }
+]

@@ -1,0 +1,138 @@
+[
+  {
+    "chain": "ethereum",
+    "token_address": "0x1f9840a85d5af5bf1d1762f925bdaddc4201f984",
+    "token_symbol": "UNI",
+    "token_sectors": [
+      "Decentralised Exchanges"
+    ],
+    "value_usd": 147117713.02576283,
+    "balance_24h_percent_change": 0,
+    "holders_count": 30,
+    "share_of_holdings_percent": 0.09104481137207465,
+    "token_age_days": 2014,
+    "market_cap_usd": 2283305671
+  },
+  {
+    "chain": "ethereum",
+    "token_address": "0x163f8c2467924be0ae7b5347228cabf260318753",
+    "token_symbol": "WLD",
+    "token_sectors": [],
+    "value_usd": 62836306.94436757,
+    "balance_24h_percent_change": 0,
+    "holders_count": 21,
+    "share_of_holdings_percent": 0.03888668193248694,
+    "token_age_days": 978,
+    "market_cap_usd": 952155902
+  },
+  {
+    "chain": "ethereum",
+    "token_address": "0xd46ba6d942050d489dbd938a2c909a5d5039a161",
+    "token_symbol": "AMPL",
+    "token_sectors": [
+      "Crypto Payments"
+    ],
+    "value_usd": 8071630.28668559,
+    "balance_24h_percent_change": 0,
+    "holders_count": 18,
+    "share_of_holdings_percent": 0.004995184072686912,
+    "token_age_days": 2472,
+    "market_cap_usd": 8262402
+  },
+  {
+    "chain": "ethereum",
+    "token_address": "0xfaba6f8e4a5e8ab82f62fe7c39859fa577269be3",
+    "token_symbol": "ONDO",
+    "token_sectors": [
+      "RWAs"
+    ],
+    "value_usd": 87545964.33010942,
+    "balance_24h_percent_change": 0,
+    "holders_count": 18,
+    "share_of_holdings_percent": 0.05417842382735652,
+    "token_age_days": 1423,
+    "market_cap_usd": 1268709640
+  },
+  {
+    "chain": "ethereum",
+    "token_address": "0x5afe3855358e112b5647b952709e6165e1c1eeee",
+    "token_symbol": "SAFE",
+    "token_sectors": [],
+    "value_usd": 1255772.4321816985,
+    "balance_24h_percent_change": 0,
+    "holders_count": 17,
+    "share_of_holdings_percent": 0.0007771434306772613,
+    "token_age_days": 1431,
+    "market_cap_usd": 76179443
+  },
+  {
+    "chain": "ethereum",
+    "token_address": "0x57e114b691db790c35207b2e685d4a43181e6061",
+    "token_symbol": "ENA",
+    "token_sectors": [
+      "Stablecoin Issuers"
+    ],
+    "value_usd": 17285949.77827897,
+    "balance_24h_percent_change": 0,
+    "holders_count": 16,
+    "share_of_holdings_percent": 0.010697529240921287,
+    "token_age_days": 746,
+    "market_cap_usd": 866919341
+  },
+  {
+    "chain": "ethereum",
+    "token_address": "0x643c4e15d7d62ad0abec4a9bd4b001aa3ef52d66",
+    "token_symbol": "SYRUP",
+    "token_sectors": [
+      "DeFi Lending (Money Markets)",
+      "Yield Bearing"
+    ],
+    "value_usd": 16548815.969317507,
+    "balance_24h_percent_change": 0,
+    "holders_count": 15,
+    "share_of_holdings_percent": 0.010241348899257582,
+    "token_age_days": 555,
+    "market_cap_usd": 277644326
+  },
+  {
+    "chain": "ethereum",
+    "token_address": "0x5a98fcbea516cf06857215779fd812ca3bef1b32",
+    "token_symbol": "LDO",
+    "token_sectors": [],
+    "value_usd": 6999858.5786588015,
+    "balance_24h_percent_change": 0,
+    "holders_count": 15,
+    "share_of_holdings_percent": 0.0043319107591999265,
+    "token_age_days": 1920,
+    "market_cap_usd": 253945012
+  },
+  {
+    "chain": "ethereum",
+    "token_address": "0xd0a6053f087e87a25dc60701ba6e663b1a548e85",
+    "token_symbol": "LRDS",
+    "token_sectors": [
+      "GameFi",
+      "Metaverse"
+    ],
+    "value_usd": 80732.17393925584,
+    "balance_24h_percent_change": 0,
+    "holders_count": 15,
+    "share_of_holdings_percent": 4.9961662649486096e-05,
+    "token_age_days": 793,
+    "market_cap_usd": 1568274
+  },
+  {
+    "chain": "ethereum",
+    "token_address": "0x7fc66500c84a76ad7e9c93437bfc5ac33e2ddae9",
+    "token_symbol": "AAVE",
+    "token_sectors": [
+      "DeFi Lending (Money Markets)"
+    ],
+    "value_usd": 40115677.145585276,
+    "balance_24h_percent_change": 0,
+    "holders_count": 14,
+    "share_of_holdings_percent": 0.024825863478065847,
+    "token_age_days": 2004,
+    "market_cap_usd": 1696018143
+  }
+]

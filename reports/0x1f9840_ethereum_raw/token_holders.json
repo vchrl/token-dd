@@ -1,0 +1,122 @@
+[
+  {
+    "address": "0x1a9c8182c09f50c8318d769245bea52c32be35bc",
+    "address_label": "\ud83e\udd16 \ud83c\udfe6 Uniswap: UNI Timelock [0x1a9c81]",
+    "token_amount": 264634857.2901,
+    "total_outflow": 165365150.71,
+    "total_inflow": 430000008.00009996,
+    "balance_change_24h": 0,
+    "balance_change_7d": 0,
+    "balance_change_30d": 0,
+    "ownership_percentage": 0.26463485729010056,
+    "value_usd": 950244559.5488127
+  },
+  {
+    "address": "0x000000000000000000000000000000000000dead",
+    "address_label": "Burn Address [0x000000]",
+    "token_amount": 102095579.96336967,
+    "total_outflow": 0,
+    "total_inflow": 102095579.96336967,
+    "balance_change_24h": 86000,
+    "balance_change_7d": 308000,
+    "balance_change_30d": 818000,
+    "ownership_percentage": 0.10209557996336988,
+    "value_usd": 366602383.4034133
+  },
+  {
+    "address": "0xf977814e90da44bfa03b6295a0616a897441acec",
+    "address_label": "\ud83c\udfe6 Binance: Reserve Address [0xf97781]",
+    "token_amount": 56573534.717,
+    "total_outflow": 147339890.21407697,
+    "total_inflow": 203913424.93107694,
+    "balance_change_24h": 0,
+    "balance_change_7d": 0,
+    "balance_change_30d": 1467586.3620000002,
+    "ownership_percentage": 0.056573534717000114,
+    "value_usd": 203142904.64140698
+  },
+  {
+    "address": "0x61cb39bece033c5bda281747db1c15cced2096eb",
+    "address_label": "\u200b\u200bUNI Investment Recipient [0x61cb39]",
+    "token_amount": 23047480.51329852,
+    "total_outflow": 0,
+    "total_inflow": 23047480.51329852,
+    "balance_change_24h": 0,
+    "balance_change_7d": 0,
+    "balance_change_30d": 0,
+    "ownership_percentage": 0.023047480513298566,
+    "value_usd": 82758345.56844112
+  },
+  {
+    "address": "0x611f7bf868a6212f871e89f7e44684045ddfb09d",
+    "address_label": "\ud83c\udfe6 OKX: Deposit [0x611f7b]",
+    "token_amount": 15187598.0802,
+    "total_outflow": 10629553.42,
+    "total_inflow": 25817151.5002,
+    "balance_change_24h": 0,
+    "balance_change_7d": 254940.91,
+    "balance_change_30d": 737744.5,
+    "ownership_percentage": 0.01518759808020003,
+    "value_usd": 54535266.42751889
+  },
+  {
+    "address": "0x5069a64bc6616dec1584ee0500b7813a9b680f7e",
+    "address_label": "\u200b\u200b\ud83c\udfe6 Uniswap [0x5069a6]",
+    "token_amount": 14880124.557563609,
+    "total_outflow": 5440871.585,
+    "total_inflow": 20320996.142563608,
+    "balance_change_24h": 0,
+    "balance_change_7d": 0,
+    "balance_change_30d": 0,
+    "ownership_percentage": 0.01488012455756364,
+    "value_usd": 53431197.80601356
+  },
+  {
+    "address": "0x36ca0abdf3852f00aee7798c7dfb5ead5d3fec2a",
+    "address_label": "\ud83c\udfe6 Coinbase Prime: Custody Wallet [0x36ca0a]",
+    "token_amount": 12611331.35576091,
+    "total_outflow": 0,
+    "total_inflow": 12611331.35576091,
+    "balance_change_24h": 0,
+    "balance_change_7d": 0,
+    "balance_change_30d": 0,
+    "ownership_percentage": 0.012611331355760935,
+    "value_usd": 45284469.06879744
+  },
+  {
+    "address": "0x090d4613473dee047c3f2706764f49e0821d256e",
+    "address_label": "\ud83e\udd16 \ud83c\udfe6 Uniswap: UNI Token Distributor [0x090d46]",
+    "token_amount": 12569221.844278844,
+    "total_outflow": 137433378.615475,
+    "total_inflow": 150002600.45975384,
+    "balance_change_24h": -400,
+    "balance_change_7d": -2000,
+    "balance_change_30d": -11061.344858,
+    "ownership_percentage": 0.01256922184427887,
+    "value_usd": 45133263.23521662
+  },
+  {
+    "address": "0x6d278351f4a973d1349ef1e54ed37daed0799e19",
+    "address_label": "\ud83c\udfe6 Coinbase Prime: Custody Wallet [0x6d2783]",
+    "token_amount": 10286054.26409608,
+    "total_outflow": 0,
+    "total_inflow": 10286054.26409608,
+    "balance_change_24h": 0,
+    "balance_change_7d": 0,
+    "balance_change_30d": 0,
+    "ownership_percentage": 0.0102860542640961,
+    "value_usd": 36934919.32155538
+  },
+  {
+    "address": "0x19d373d0f95f00d368a8d57605af746c4ea9b1d0",
+    "address_label": "\ud83c\udfe6 Coinbase Prime: Custody Wallet [0x19d373]",
+    "token_amount": 9295469.0339692,
+    "total_outflow": 200,
+    "total_inflow": 9295669.0339692,
+    "balance_change_24h": 0,
+    "balance_change_7d": 0,
+    "balance_change_30d": 0,
+    "ownership_percentage": 0.009295469033969219,
+    "value_usd": 33377949.407098502
+  }
+]

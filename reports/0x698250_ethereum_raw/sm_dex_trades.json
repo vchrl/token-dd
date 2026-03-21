@@ -1,0 +1,20 @@
+[
+  {
+    "chain": "ethereum",
+    "block_timestamp": "2026-03-20T15:55:23",
+    "transaction_hash": "0xfb701274be9b1d84752ae6e9cdd631cb2e904c93c05a5c2a07d736ddd6d8f109",
+    "trader_address": "0x4f2083f5fbede34c2714affb3105539775f7fe64",
+    "trader_address_label": "[0x307834]",
+    "token_bought_address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+    "token_sold_address": "0xae78736cd615f374d3085123a210448e74fc6393",
+    "token_bought_amount": 19.114349245479612,
+    "token_sold_amount": 16.5,
+    "token_bought_symbol": "WETH",
+    "token_sold_symbol": "RETH",
+    "token_bought_age_days": 3021,
+    "token_sold_age_days": 1633,
+    "token_bought_market_cap": 4938637792,
+    "token_sold_market_cap": 851242889,
+    "trade_value_usd": 40962.670745639
+  }
+]

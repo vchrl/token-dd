@@ -1,0 +1,29 @@
+{
+  "data": {
+    "name": "Pepe",
+    "symbol": "PEPE",
+    "contract_address": "0x6982508145454ce325ddbe47a25d4ec3d2311933",
+    "logo": "https://coin-images.coingecko.com/coins/images/29850/small/pepe-token.jpeg?1696528776",
+    "token_details": {
+      "token_deployment_date": "2023-04-14 14:51:35",
+      "website": "https://www.pepe.vip/",
+      "x": "pepecoineth",
+      "telegram": "",
+      "market_cap_usd": 1445540034.3784492,
+      "fdv_usd": 1445478458,
+      "circulating_supply": 420690000000000,
+      "total_supply": 420690000000000
+    },
+    "spot_metrics": {
+      "volume_total_usd": 1017948.8557294284,
+      "buy_volume_usd": 573219.0023535637,
+      "sell_volume_usd": 444729.8533758646,
+      "total_buys": 239,
+      "total_sells": 258,
+      "unique_buyers": 116,
+      "unique_sellers": 132,
+      "liquidity_usd": 14688231.871700525,
+      "total_holders": 378419
+    }
+  }
+}

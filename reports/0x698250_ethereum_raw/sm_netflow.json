@@ -1,0 +1,320 @@
+[
+  {
+    "token_address": "0xc4441c2be5d8fa8126822b9929ca0b81ea0de38e",
+    "token_symbol": "USUAL",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -33960.47638280355,
+    "chain": "ethereum",
+    "token_sectors": [
+      "RWAs",
+      "Stablecoin Issuers"
+    ],
+    "trader_count": 1,
+    "token_age_days": 493,
+    "market_cap_usd": 23661923
+  },
+  {
+    "token_address": "0xf944e35f95e819e752f3ccb5faf40957d311e8c5",
+    "token_symbol": "MOCA",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": 8157.82728786613,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Crypto Payments",
+      "NFTs"
+    ],
+    "trader_count": 1,
+    "token_age_days": 695,
+    "market_cap_usd": 61193527
+  },
+  {
+    "token_address": "0x2798b1cc5a993085e8a9d46e80499f1b63f42204",
+    "token_symbol": "GWEI",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -430.24241197783203,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Perps, Options and Derivatives",
+      "Scaling & Connectivity"
+    ],
+    "trader_count": 2,
+    "token_age_days": 71,
+    "market_cap_usd": 78516959
+  },
+  {
+    "token_address": "0x56072c95faa701256059aa122697b133aded9279",
+    "token_symbol": "SKY",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": 5387122.631338721,
+    "chain": "ethereum",
+    "token_sectors": [
+      "DeFi Lending (Money Markets)",
+      "Stablecoin Issuers",
+      "Yield Farming Protocols"
+    ],
+    "trader_count": 1,
+    "token_age_days": 565,
+    "market_cap_usd": 1698410932
+  },
+  {
+    "token_address": "0x9f52c8ecbee10e00d9faaac5ee9ba0ff6550f511",
+    "token_symbol": "SIPHER",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -923.8097575116127,
+    "chain": "ethereum",
+    "token_sectors": [
+      "GameFi",
+      "Metaverse",
+      "NFTs"
+    ],
+    "trader_count": 1,
+    "token_age_days": 1567,
+    "market_cap_usd": 2618288
+  },
+  {
+    "token_address": "0xcccccccccc33d538dbc2ee4feab0a7a1ff4e8a94",
+    "token_symbol": "CFG",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": -413005.6841599394,
+    "net_flow_30d_usd": -474378.1925040153,
+    "chain": "ethereum",
+    "token_sectors": [
+      "DeFi Lending (Money Markets)",
+      "RWAs"
+    ],
+    "trader_count": 1,
+    "token_age_days": 355,
+    "market_cap_usd": 85863762
+  },
+  {
+    "token_address": "0x909e34d3f6124c324ac83dcca84b74398a6fa173",
+    "token_symbol": "$ZKP",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": -1324.5675918746706,
+    "net_flow_30d_usd": -1324.5675918746706,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Decentralised Exchanges"
+    ],
+    "trader_count": 1,
+    "token_age_days": 1578,
+    "market_cap_usd": 3492320
+  },
+  {
+    "token_address": "0x4da27a545c0c5b758a6ba100e3a049001de870f5",
+    "token_symbol": "STKAAVE",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -154.39697331654884,
+    "chain": "ethereum",
+    "token_sectors": [
+      "DeFi Lending (Money Markets)",
+      "Yield Bearing",
+      "Yield Farming Protocols"
+    ],
+    "trader_count": 1,
+    "token_age_days": 2004,
+    "market_cap_usd": 327253455
+  },
+  {
+    "token_address": "0xca14007eff0db1f8135f4c25b34de49ab0d42766",
+    "token_symbol": "STRK",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": -4285.837721572368,
+    "net_flow_30d_usd": -187862.97865982004,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Scaling & Connectivity"
+    ],
+    "trader_count": 2,
+    "token_age_days": 1221,
+    "market_cap_usd": 202774379
+  },
+  {
+    "token_address": "0xda7ad9dea9397cffddae2f8a052b82f1484252b3",
+    "token_symbol": "RIVER",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": -4955.28656663461,
+    "net_flow_30d_usd": -4955.28656663461,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Social Fi",
+      "NFTs"
+    ],
+    "trader_count": 1,
+    "token_age_days": 185,
+    "market_cap_usd": 436752762
+  },
+  {
+    "token_address": "0xe76c6c83af64e4c60245d8c7de953df673a7a33d",
+    "token_symbol": "RAIL",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -8562.826271905325,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Scaling & Connectivity",
+      "Crypto Payments",
+      "Decentralised Exchanges"
+    ],
+    "trader_count": 1,
+    "token_age_days": 1722,
+    "market_cap_usd": 71427857
+  },
+  {
+    "token_address": "0xbe0ed4138121ecfc5c0e56b40517da27e6c5226b",
+    "token_symbol": "ATH",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": -11521.66341406645,
+    "net_flow_30d_usd": -233946.26391903483,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Artificial Intelligence",
+      "Staking",
+      "DePIN"
+    ],
+    "trader_count": 8,
+    "token_age_days": 654,
+    "market_cap_usd": 142513827
+  },
+  {
+    "token_address": "0x69af81e73a73b40adf4f3d4223cd9b1ece623074",
+    "token_symbol": "MASK",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -30.132007133672982,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Social Fi",
+      "NFTs"
+    ],
+    "trader_count": 1,
+    "token_age_days": 1856,
+    "market_cap_usd": 47970010
+  },
+  {
+    "token_address": "0xb45ffb51984d626ee758b336c61cf20990c6bf13",
+    "token_symbol": "WRBNT",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": 913.6323500265665,
+    "chain": "ethereum",
+    "token_sectors": [],
+    "trader_count": 1,
+    "token_age_days": 450,
+    "market_cap_usd": 3151731
+  },
+  {
+    "token_address": "0x2e9d63788249371f1dfc918a52f8d799f4a38c94",
+    "token_symbol": "TOKE",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": -2059.543047596177,
+    "net_flow_30d_usd": -2059.543047596177,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Yield Farming Protocols"
+    ],
+    "trader_count": 1,
+    "token_age_days": 1690,
+    "market_cap_usd": 6781598
+  },
+  {
+    "token_address": "0x76e222b07c53d28b89b0bac18602810fc22b49a8",
+    "token_symbol": "JOE",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": -10853.177283993626,
+    "net_flow_30d_usd": -10853.177283993626,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Memecoins"
+    ],
+    "trader_count": 1,
+    "token_age_days": 892,
+    "market_cap_usd": 10412822
+  },
+  {
+    "token_address": "0x8881562783028f5c1bcb985d2283d5e170d88888",
+    "token_symbol": "SHFL",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 30002.803846068327,
+    "net_flow_30d_usd": 30002.803846068327,
+    "chain": "ethereum",
+    "token_sectors": [
+      "GambleFi",
+      "GameFi"
+    ],
+    "trader_count": 1,
+    "token_age_days": 743,
+    "market_cap_usd": 88697870
+  },
+  {
+    "token_address": "0x3073f7aaa4db83f95e9fff17424f71d4751a3073",
+    "token_symbol": "MOVE",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -24331.43770240408,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Scaling & Connectivity",
+      "Crypto Payments"
+    ],
+    "trader_count": 1,
+    "token_age_days": 540,
+    "market_cap_usd": 72372329
+  },
+  {
+    "token_address": "0x423f4e6138e475d85cf7ea071ac92097ed631eea",
+    "token_symbol": "PNDC",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": 0,
+    "net_flow_30d_usd": -963.9520562595677,
+    "chain": "ethereum",
+    "token_sectors": [
+      "Memecoins"
+    ],
+    "trader_count": 1,
+    "token_age_days": 960,
+    "market_cap_usd": 8906152
+  },
+  {
+    "token_address": "0xf0db65d17e30a966c2ae6a21f6bba71cea6e9754",
+    "token_symbol": "BARD",
+    "net_flow_1h_usd": 0,
+    "net_flow_24h_usd": 0,
+    "net_flow_7d_usd": -396.6873332191827,
+    "net_flow_30d_usd": -396.6873332191827,
+    "chain": "ethereum",
+    "token_sectors": [
+      "BRC20s/Bitcoin Ecosystem",
+      "Scaling & Connectivity",
+      "DeFi Lending (Money Markets)"
+    ],
+    "trader_count": 1,
+    "token_age_days": 213,
+    "market_cap_usd": 122443874
+  }
+]
