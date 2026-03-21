@@ -1037,6 +1037,7 @@ def run_due_diligence(token: str, chain: str):
         sm_holdings=sm_holdings,
         top_buyer_addr=top_buyer_addr,
         top_buyer_balance=top_buyer_balance,
+        token_info=token_info,
     )
     
     # Save reports

@@ -511,6 +511,7 @@ def generate_html_report(
     sm_holdings: list,
     top_buyer_addr: str,
     top_buyer_balance: list,
+    token_info: dict | None = None,
 ) -> str:
     """Generate HTML dashboard from collected data."""
 
@@ -573,6 +574,54 @@ def generate_html_report(
         html = html.replace("{{VOLUME}}", format_usd(vol))
         html = html.replace("{{LIQUIDITY}}", format_usd(liq))
         html = html.replace("{{TOKEN_AGE}}", str(age) if age else "N/A")
+    elif token_info and isinstance(token_info, dict):
+        # Fallback: use token_info endpoint data
+        info_data = token_info.get("data", token_info)
+        if isinstance(info_data, list) and info_data:
+            info_data = info_data[0]
+        if isinstance(info_data, dict):
+            details = info_data.get("token_details", {}) or {}
+            spot = info_data.get("spot_metrics", {}) or {}
+            mcap = details.get("market_cap_usd", 0)
+            vol = spot.get("volume_total_usd", 0)
+            liq = spot.get("liquidity_usd", 0)
+            total_holders = spot.get("total_holders")
+            deploy_date = details.get("token_deployment_date")
+
+            age = 0
+            if deploy_date:
+                try:
+                    from datetime import datetime as _dt
+                    deployed = _dt.strptime(deploy_date[:10], "%Y-%m-%d")
+                    age = (_dt.now() - deployed).days
+                except Exception:
+                    pass
+
+            html = html.replace("{{MARKET_CAP}}", format_usd(mcap))
+            # No per-token price from token_info, derive from mcap/supply
+            circ = details.get("circulating_supply", 0)
+            if mcap and circ and circ > 0:
+                derived_price = mcap / circ
+                if derived_price < 0.001:
+                    price_str = f"${derived_price:.6f}"
+                elif derived_price < 1:
+                    price_str = f"${derived_price:.4f}"
+                else:
+                    price_str = f"${derived_price:,.2f}"
+            else:
+                price_str = "N/A"
+            html = html.replace("{{PRICE}}", price_str)
+            html = html.replace("{{PRICE_CHANGE}}", "N/A")
+            html = html.replace("{{PRICE_CHANGE_CLASS}}", "neutral")
+            html = html.replace("{{VOLUME}}", format_usd(vol))
+            html = html.replace("{{LIQUIDITY}}", format_usd(liq))
+            html = html.replace("{{TOKEN_AGE}}", str(age) if age else "N/A")
+        else:
+            for key in ["MARKET_CAP", "PRICE", "VOLUME", "LIQUIDITY"]:
+                html = html.replace("{{" + key + "}}", "N/A")
+            html = html.replace("{{PRICE_CHANGE}}", "N/A")
+            html = html.replace("{{PRICE_CHANGE_CLASS}}", "neutral")
+            html = html.replace("{{TOKEN_AGE}}", "N/A")
     else:
         for key in ["MARKET_CAP", "PRICE", "VOLUME", "LIQUIDITY"]:
             html = html.replace("{{" + key + "}}", "N/A")
@@ -608,6 +657,22 @@ def generate_html_report(
             conviction = min(conviction, 70)  # cap at 70 — can't be "high" without direct SM data
             if conviction > 0:
                 conviction_note = " (from flow intelligence — no direct smart money tracking)"
+
+    # Add SM holdings conviction (same logic as due_diligence.py)
+    token_sm_holding = None
+    for entry in sm_holdings:
+        if entry.get("token_address", "").lower() == token.lower():
+            token_sm_holding = entry
+            break
+    if token_sm_holding:
+        sm_value = token_sm_holding.get("value_usd", 0) or 0
+        sm_holders_count = token_sm_holding.get("holders_count", 0) or 0
+        if sm_value > 100_000_000: conviction += 40
+        elif sm_value > 10_000_000: conviction += 25
+        elif sm_value > 1_000_000: conviction += 15
+        if sm_holders_count > 20: conviction += 10
+        elif sm_holders_count > 10: conviction += 5
+    conviction = min(conviction, 100)
 
     html = html.replace("{{CONVICTION_SCORE}}", str(conviction))
     if conviction >= 75:
