@@ -406,9 +406,9 @@ def generate_report(
     if symbol == "UNKNOWN" and token_info and isinstance(token_info, dict):
         info_data = token_info.get("data", token_info)
         if isinstance(info_data, list) and len(info_data) > 0:
-            symbol = info_data[0].get("token_symbol", symbol)
+            symbol = info_data[0].get("symbol") or info_data[0].get("token_symbol") or symbol
         elif isinstance(info_data, dict):
-            symbol = info_data.get("token_symbol", symbol)
+            symbol = info_data.get("symbol") or info_data.get("token_symbol") or symbol
     
     # Try who_bought_sold data for symbol  
     if symbol == "UNKNOWN" and who_bought_sold:
@@ -847,9 +847,9 @@ def run_due_diligence(token: str, chain: str):
     if symbol == "UNKNOWN" and token_info:
         info_data = token_info.get("data", token_info)
         if isinstance(info_data, list) and info_data:
-            symbol = info_data[0].get("token_symbol", symbol)
+            symbol = info_data[0].get("symbol") or info_data[0].get("token_symbol") or symbol
         elif isinstance(info_data, dict):
-            symbol = info_data.get("token_symbol", symbol)
+            symbol = info_data.get("symbol") or info_data.get("token_symbol") or symbol
     if symbol == "UNKNOWN" and who_bs:
         for entry in who_bs:
             if entry.get("token_symbol"):
