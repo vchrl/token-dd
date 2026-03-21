@@ -71,6 +71,7 @@ LANDING_HTML = """<!DOCTYPE html>
   .term-body {
     padding: 12px 20px 20px 20px;
     flex: 1;
+    height: 0;
     overflow-y: auto;
     color: #c9d1d9;
     font-size: 14px;
