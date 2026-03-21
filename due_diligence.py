@@ -469,7 +469,19 @@ def generate_report(
     report.append("## 2. Smart Money Conviction")
     report.append("")
     
+    # Find token in SM holdings (chain-wide top holdings list)
+    token_sm_holding = None
+    for entry in sm_holdings:
+        if entry.get("token_address", "").lower() == token.lower():
+            token_sm_holding = entry
+            break
+    
+    score = 0
+    has_netflow = False
+    has_holdings = False
+    
     if token_sm_entry:
+        has_netflow = True
         net_1h = token_sm_entry.get("net_flow_1h_usd", 0)
         net_24h = token_sm_entry.get("net_flow_24h_usd", 0)
         net_7d = token_sm_entry.get("net_flow_7d_usd", 0)
@@ -487,27 +499,51 @@ def generate_report(
         report.append(f"**SM Trader Count:** {traders}")
         if sectors:
             report.append(f"**Sectors:** {', '.join(sectors)}")
+        report.append("")
         
-        # Conviction score
-        score = 0
+        # Netflow conviction points
         if net_1h > 0: score += 15
         if net_24h > 0: score += 25
         if net_7d > 0: score += 35
         if net_30d > 0: score += 25
+    
+    if token_sm_holding:
+        has_holdings = True
+        sm_value = token_sm_holding.get("value_usd", 0) or 0
+        sm_holders = token_sm_holding.get("holders_count", 0) or 0
+        sm_sectors = token_sm_holding.get("token_sectors", [])
+        
+        report.append(f"**SM Total Holdings:** {format_usd(sm_value)} across {sm_holders} wallets")
+        if sm_sectors and not has_netflow:
+            report.append(f"**Sectors:** {', '.join(sm_sectors)}")
+        report.append("")
+        
+        # Holdings conviction points
+        if sm_value > 100_000_000: score += 40
+        elif sm_value > 10_000_000: score += 25
+        elif sm_value > 1_000_000: score += 15
+        
+        if sm_holders > 20: score += 10
+        elif sm_holders > 10: score += 5
+    
+    if has_netflow or has_holdings:
+        # Cap at 100
+        score = min(score, 100)
         
         if score >= 75:
             conviction = "HIGH - Smart money is strongly accumulating across all timeframes"
         elif score >= 50:
-            conviction = "MODERATE - Mixed signals, SM accumulating on some timeframes"
+            conviction = "MODERATE - Significant SM positioning with mixed flow signals"
+        elif score >= 40:
+            conviction = "MODERATE - Notable SM holdings but limited recent flow data"
         elif score >= 25:
             conviction = "LOW - SM mostly distributing, some short-term buying"
         else:
             conviction = "BEARISH - SM distributing across all timeframes"
         
-        report.append(f"")
         report.append(f"**Conviction Score: {score}/100 - {conviction}**")
     else:
-        report.append("*No smart money flow data found for this token.*")
+        report.append("*No smart money flow or holdings data found for this token.*")
     report.append("")
     
     # ─── Flow Intelligence by Label ──────────────
@@ -742,6 +778,7 @@ def generate_report(
     # Auto-generate conclusion based on signals
     signals = {
         "sm_conviction": 0,
+        "sm_holdings_conviction": 0,
         "whale_signal": 0,
         "risk_level": "UNKNOWN"
     }
@@ -754,18 +791,34 @@ def generate_report(
         elif net_24h > 0 or net_7d > 0:
             signals["sm_conviction"] = 1
     
+    # Check SM holdings for this token
+    if token_sm_holding:
+        sm_val = token_sm_holding.get("value_usd", 0) or 0
+        sm_hc = token_sm_holding.get("holders_count", 0) or 0
+        if sm_val > 100_000_000: signals["sm_holdings_conviction"] = 3
+        elif sm_val > 10_000_000: signals["sm_holdings_conviction"] = 2
+        elif sm_val > 1_000_000: signals["sm_holdings_conviction"] = 1
+        if sm_hc > 20: signals["sm_holdings_conviction"] += 1
+    
     if flow_intel:
         fi = flow_intel[0] if isinstance(flow_intel, list) else flow_intel
         if isinstance(fi, dict):
             if fi.get("whale_net_flow_usd", 0) > 0:
                 signals["whale_signal"] = 1
     
-    total_signal = signals["sm_conviction"] + signals["whale_signal"]
+    total_signal = signals["sm_conviction"] + signals["sm_holdings_conviction"] + signals["whale_signal"]
     
-    if total_signal >= 3:
+    # Require actual flow signals for bullish verdicts, not just holdings
+    has_flow = signals["sm_conviction"] > 0 or signals["whale_signal"] > 0
+    
+    if total_signal >= 5:
         report.append("**VERDICT: BULLISH** - Strong smart money accumulation with whale backing.")
+    elif total_signal >= 4 and has_flow:
+        report.append("**VERDICT: CAUTIOUSLY BULLISH** - Significant SM positioning with positive flow signals.")
+    elif total_signal >= 3:
+        report.append("**VERDICT: CAUTIOUSLY BULLISH** - Significant SM positioning with positive signals.")
     elif total_signal >= 2:
-        report.append("**VERDICT: CAUTIOUSLY BULLISH** - Positive SM signals but mixed whale activity.")
+        report.append("**VERDICT: NEUTRAL** - Notable SM interest but mixed or limited flow signals.")
     elif total_signal >= 1:
         report.append("**VERDICT: NEUTRAL** - Some SM interest but insufficient conviction.")
     else:
