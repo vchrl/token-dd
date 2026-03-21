@@ -112,7 +112,7 @@ All 18 chains supported by Nansen CLI:
 
 ```
 ┌─────────────────────────────────────────────┐
-│          Protocol Due Diligence Engine       │
+│          Token Due Diligence Engine       │
 ├─────────────────────────────────────────────┤
 │                                             │
 │  CLI Arguments                              │
