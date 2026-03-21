@@ -168,13 +168,11 @@ Built by **[Vincent Charles](https://linkedin.com/in/vincentcfr/)** - Fractional
 
 ## Why This Exists
 
-At Binance, this type of due diligence report took a team of analysts 4+ hours per token. It involved pulling data from multiple sources, cross-referencing wallet labels, checking smart money flows, and synthesizing everything into actionable insights.
+Usually this type of due diligence report took a team of analysts 4+ hours per token. It involved pulling data from multiple sources, cross-referencing wallet labels, checking smart money flows, and synthesizing everything into actionable insights.
 
 Now it takes one command and 30 seconds.
 
 Nansen CLI + x402 micropayments make this possible. No API key management. No credit packs. Just pay for what you use and get institutional-grade research.
-
-This is what the future of onchain analytics looks like.
 
 ---
 
