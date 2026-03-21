@@ -461,6 +461,44 @@ def generate_report(
         report.append(f"| 24h Net Flow | {format_usd(netflow)} |")
         report.append(f"| Liquidity | {format_usd(liq)} |")
         report.append(f"| Token Age | {age} days |" if age else "| Token Age | N/A |")
+    elif token_info and isinstance(token_info, dict):
+        # Fallback: use token_info endpoint data
+        info_data = token_info.get("data", token_info)
+        if isinstance(info_data, list) and info_data:
+            info_data = info_data[0]
+        if isinstance(info_data, dict):
+            details = info_data.get("token_details", {}) or {}
+            spot = info_data.get("spot_metrics", {}) or {}
+            mcap = details.get("market_cap_usd")
+            fdv = details.get("fdv_usd")
+            volume = spot.get("volume_total_usd")
+            liq = spot.get("liquidity_usd")
+            total_holders = spot.get("total_holders")
+            buys = spot.get("total_buys")
+            sells = spot.get("total_sells")
+            deploy_date = details.get("token_deployment_date")
+            
+            # Calculate token age from deployment date
+            age = None
+            if deploy_date:
+                try:
+                    from datetime import datetime as dt
+                    deployed = dt.strptime(deploy_date[:10], "%Y-%m-%d")
+                    age = (dt.now() - deployed).days
+                except Exception:
+                    pass
+            
+            report.append(f"| Metric | Value |")
+            report.append(f"|--------|-------|")
+            report.append(f"| Market Cap | {format_usd(mcap)} |")
+            report.append(f"| FDV | {format_usd(fdv)} |")
+            report.append(f"| 24h Volume | {format_usd(volume)} |")
+            report.append(f"| Liquidity | {format_usd(liq)} |")
+            report.append(f"| Holders | {total_holders:,} |" if total_holders else "| Holders | N/A |")
+            report.append(f"| 24h Buys/Sells | {buys:,} / {sells:,} |" if buys else "| 24h Buys/Sells | N/A |")
+            report.append(f"| Token Age | {age} days |" if age else "| Token Age | N/A |")
+        else:
+            report.append("*Token not found in 24h screener. May have low activity.*")
     else:
         report.append("*Token not found in 24h screener. May have low activity.*")
     report.append("")

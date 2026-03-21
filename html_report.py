@@ -519,10 +519,24 @@ def generate_html_report(
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
 
+    # Chain logo mapping
+    chain_logos = {
+        "solana": "https://cryptologos.cc/logos/solana-sol-logo.svg?v=040",
+        "ethereum": "https://cryptologos.cc/logos/ethereum-eth-logo.svg?v=040",
+        "base": "https://raw.githubusercontent.com/base-org/brand-kit/main/logo/symbol/Base_Symbol_Blue.svg",
+        "arbitrum": "https://cryptologos.cc/logos/arbitrum-arb-logo.svg?v=040",
+        "polygon": "https://cryptologos.cc/logos/polygon-matic-logo.svg?v=040",
+        "optimism": "https://cryptologos.cc/logos/optimism-ethereum-op-logo.svg?v=040",
+        "avalanche": "https://cryptologos.cc/logos/avalanche-avax-logo.svg?v=040",
+        "bnb": "https://cryptologos.cc/logos/bnb-bnb-logo.svg?v=040",
+    }
+    chain_logo_url = chain_logos.get(chain, chain_logos["ethereum"])
+
     # Basic replacements
     html = html.replace("{{SYMBOL}}", symbol)
     html = html.replace("{{TOKEN_ADDRESS}}", token)
     html = html.replace("{{CHAIN}}", chain.capitalize())
+    html = html.replace("{{CHAIN_LOGO_URL}}", chain_logo_url)
     html = html.replace("{{TIMESTAMP}}", now)
     html = html.replace("{{API_CALLS}}", str(api_calls))
     html = html.replace("{{COST}}", f"{api_calls * 0.03:.2f}")
